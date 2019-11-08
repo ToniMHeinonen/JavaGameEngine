@@ -79,7 +79,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.5.0</version>
             <configuration>
-                <mainClass>com.mycompany.app.GameEngine</mainClass>
+                <mainClass>fi.tuni.game.Game</mainClass>
             </configuration>
         </plugin>
           <plugin>
@@ -87,7 +87,7 @@
           <artifactId>javafx-maven-plugin</artifactId>
           <version>0.0.3</version>
           <configuration>
-              <mainClass>com.mycompany.app.GameEngine</mainClass>
+              <mainClass>fi.tuni.game.Game</mainClass>
           </configuration>
         </plugin>
       </plugins>

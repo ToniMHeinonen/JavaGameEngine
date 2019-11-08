@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package fi.tuni.engine;
 
 public class GameEngine implements Runnable
 {
