@@ -1,4 +1,4 @@
-package fi.tuni.engine;
+/*package fi.tuni.engine;
 
 public class GameEngine implements Runnable
 {
@@ -64,3 +64,4 @@ public class GameEngine implements Runnable
         gc.start();
     }
 }
+*/
