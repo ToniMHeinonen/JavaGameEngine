@@ -6,7 +6,8 @@ public class Player extends GObject {
 
     @Override
     public void createEvent() {
-
+        spriteCreate("player.png");
+        spriteResize(32, 32);
     }
 
     @Override
@@ -16,7 +17,7 @@ public class Player extends GObject {
 
     @Override
     public void drawEvent() {
-
+        spriteDraw();
     }
     
 }

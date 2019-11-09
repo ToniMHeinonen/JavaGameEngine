@@ -16,6 +16,29 @@ public abstract class GObject {
 
     public abstract void drawEvent();
 
+    /*************************
+        SPRITE
+    **************************/
+    public void spriteCreate(String path) {
+        String p = "fi/tuni/game/" + path;
+        sprite = new Image(p);
+        width = sprite.getWidth();
+        height = sprite.getHeight();
+    }
+
+    public void spriteResize(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public void spriteDraw() {
+        gc.drawImage(sprite, x, y, width, height);
+    }
+
+
+    /*************************
+        GETTERS & SETTERS
+    **************************/
     public int getX() {
         return x;
     }

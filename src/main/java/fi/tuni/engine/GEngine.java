@@ -57,18 +57,15 @@ public abstract class GEngine extends Application {
                     // Clear the canvas
                     gc.clearRect(0, 0, width, height);
                     
+                    // Run main game object's step and draw events
                     stepEvent();
                     drawEvent(); 
                     
+                    // Loop through object's step and draw events
                     for (GObject o : objects) {
                         o.stepEvent();
                         o.drawEvent();
                     }
-                    
-                    // background image clears canvas
-                    /*gc.drawImage( space, 0, 0 );
-                    gc.drawImage( earth, x, y );
-                    gc.drawImage( sun, 196, 196 );*/
                 }
             });
         
@@ -105,5 +102,33 @@ public abstract class GEngine extends Application {
 
     public void closeProgram() {
         System.exit(0);
+    }
+
+    /*************************
+        GETTERS & SETTERS
+    **************************/
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
     }
 }
