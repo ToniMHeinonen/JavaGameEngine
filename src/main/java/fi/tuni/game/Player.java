@@ -12,13 +12,23 @@ public class Player extends GObject {
 
     @Override
     public void stepEvent() {
-        if (isKeyPressed("RIGHT"))
+        if (isKeyPressed("RIGHT")) {
+            System.out.println("RIGHT");
             setX(getX() + 1);
-        if (isKeyPressed("A"))
+        }
+        if (isKeyPressed("LEFT")) {
+            System.out.println("LEFT");
             setX(getX() - 1);
+        }
 
-        if (isKeyReleased("LEFT"))
-            System.out.println("Yes");
+        if (isKeyPressed("U"))
+            System.out.println("Pressed");
+        
+        if (isKeyPressedHold("U"))
+            System.out.println("Hold");
+
+        if (isKeyReleased("U"))
+            System.out.println("Released");
     }
 
     @Override

@@ -47,6 +47,10 @@ public abstract class GObject {
         return global().isKeyPressed(key);
     }
 
+    public boolean isKeyPressedHold(String key) {
+        return global().isKeyPressedHold(key);
+    }
+
     public boolean isKeyReleased(String key) {
         return global().isKeyReleased(key);
     }

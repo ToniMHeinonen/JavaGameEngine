@@ -24,8 +24,9 @@ public abstract class GEngine extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
-    private ArrayList<String> input = new ArrayList<>();
+    private ArrayList<String> pressedInput = new ArrayList<>();
     private ArrayList<String> releasedInput = new ArrayList<>();
+    private ArrayList<String> holdInput = new ArrayList<>();
 
     @Override
     public void start(Stage theStage) throws Exception {
@@ -54,10 +55,14 @@ public abstract class GEngine extends Application {
                 public void handle(KeyEvent e)
                 {
                     String code = e.getCode().toString();
+
+                    code = modifyInputCode(code);
  
                     // only add once... prevent duplicates
-                    if (!input.contains(code))
-                        addInput(code);
+                    if (!holdInput.contains(code)) {
+                        holdInput.add(code);
+                        pressedInput.add(code);
+                    }
                 }
             });
  
@@ -67,7 +72,10 @@ public abstract class GEngine extends Application {
                 public void handle(KeyEvent e)
                 {
                     String code = e.getCode().toString();
-                    input.remove(code);
+                    code = modifyInputCode(code);
+
+                    pressedInput.remove(code);
+                    holdInput.remove(code);
                     releasedInput.add(code);
                 }
             });
@@ -108,6 +116,10 @@ public abstract class GEngine extends Application {
 
     public abstract void drawEvent();
 
+    /*************************
+        WINDOW
+    **************************/
+
     public void setWindowTitle(String title) {
         stage.setTitle(title);
     }
@@ -119,6 +131,9 @@ public abstract class GEngine extends Application {
         canvas.setHeight(height);
     }
 
+    /*************************
+        OBJECTS
+    **************************/
     public void createObject(int x, int y, GObject type) {
         type.setMainClass(this);
         type.setX(x);
@@ -133,37 +148,49 @@ public abstract class GEngine extends Application {
     **************************/
 
     public boolean isKeyPressed(String key) {
+        return checkInput(pressedInput, key);
+    }
+
+    public boolean isKeyPressedHold(String key) {
+        return checkInput(holdInput, key);
+    }
+
+    public boolean isKeyReleased(String key) {
+        return checkInput(releasedInput, key);
+    }
+
+    private boolean checkInput(ArrayList<String> input, String key) {
         // Change to uppercase to allow lowercase code
         key = key.toUpperCase();
-        
+
         if (input.contains(key))
             return true;
 
         return false;
     }
 
-    public boolean isKeyReleased(String key) {
-        // Change to uppercase to allow lowercase code
-        key = key.toUpperCase();
+    /**
+     * Pressed input and released input will be cleared after each frame.
+     */
+    private void resetInput() {
+        if (!releasedInput.isEmpty())
+            releasedInput.clear();
 
-        if (releasedInput.contains(key))
-            return true;
-
-        return false;
+        if (!pressedInput.isEmpty())
+            pressedInput.clear();
     }
 
-    private void addInput(String code) {
+    private String modifyInputCode(String code) {
         // Remove word DIGIT from numbers
         if (code.startsWith("DIGIT"))
             code = code.substring(5, code.length());
 
-        input.add(code);
+        return code;
     }
 
-    private void resetInput() {
-        if (!releasedInput.isEmpty())
-            releasedInput.clear();
-    }
+    /*************************
+        SYSTEM
+    **************************/
 
     public void closeProgram() {
         System.exit(0);
