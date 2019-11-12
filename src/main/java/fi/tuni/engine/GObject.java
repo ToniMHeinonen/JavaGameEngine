@@ -9,6 +9,7 @@ public abstract class GObject {
     private double width, height;
     private GraphicsContext gc;
     private Image sprite;
+    private GEngine mainClass;
 
     public abstract void createEvent();
 
@@ -35,6 +36,20 @@ public abstract class GObject {
         gc.drawImage(sprite, x, y, width, height);
     }
 
+    /*************************
+        ENGINE METHODS
+    **************************/
+    public void createObject(int x, int y, GObject type) {
+        global().createObject(x, y, type);
+    }
+
+    public boolean isKeyPressed(String key) {
+        return global().isKeyPressed(key);
+    }
+
+    public boolean isKeyReleased(String key) {
+        return global().isKeyReleased(key);
+    }
 
     /*************************
         GETTERS & SETTERS
@@ -55,11 +70,23 @@ public abstract class GObject {
         this.y = y;
     }
 
-    public GraphicsContext getGc() {
+    public GraphicsContext getGraphicsContext() {
         return gc;
     }
 
-    public void setGc(GraphicsContext gc) {
+    public void setGraphicsContext(GraphicsContext gc) {
         this.gc = gc;
+    }
+
+    public GEngine global() {
+        return mainClass;
+    }
+
+    public void setMainClass(GEngine engine) {
+        if (null == mainClass) {
+            mainClass = engine;
+        } else {
+            System.out.println("mainClass can not be changed!");
+        }
     }
 }

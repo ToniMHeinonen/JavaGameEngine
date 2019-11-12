@@ -6,8 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-
+import javafx.scene.input.KeyEvent;
 import javafx.animation.Timeline;
 
 import java.util.ArrayList;
@@ -25,6 +24,8 @@ public abstract class GEngine extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
+    private ArrayList<String> input = new ArrayList<>();
+    private ArrayList<String> releasedInput = new ArrayList<>();
 
     @Override
     public void start(Stage theStage) throws Exception {
@@ -45,8 +46,31 @@ public abstract class GEngine extends Application {
 
         Timeline gameLoop = new Timeline();
         gameLoop.setCycleCount(Timeline.INDEFINITE);
-        
-        final long timeStart = System.currentTimeMillis();
+
+        // Handle input
+        theScene.setOnKeyPressed(
+            new EventHandler<KeyEvent>()
+            {
+                public void handle(KeyEvent e)
+                {
+                    String code = e.getCode().toString();
+ 
+                    // only add once... prevent duplicates
+                    if (!input.contains(code))
+                        addInput(code);
+                }
+            });
+ 
+        theScene.setOnKeyReleased(
+            new EventHandler<KeyEvent>()
+            {
+                public void handle(KeyEvent e)
+                {
+                    String code = e.getCode().toString();
+                    input.remove(code);
+                    releasedInput.add(code);
+                }
+            });
 
         createEvent();
         
@@ -66,6 +90,9 @@ public abstract class GEngine extends Application {
                         o.stepEvent();
                         o.drawEvent();
                     }
+
+                    // Reset released input after each frame
+                    resetInput();
                 }
             });
         
@@ -93,11 +120,49 @@ public abstract class GEngine extends Application {
     }
 
     public void createObject(int x, int y, GObject type) {
+        type.setMainClass(this);
         type.setX(x);
         type.setY(y);
         objects.add(type);
-        type.setGc(gc);
+        type.setGraphicsContext(gc);
         type.createEvent();
+    }
+
+    /*************************
+        INPUT
+    **************************/
+
+    public boolean isKeyPressed(String key) {
+        // Change to uppercase to allow lowercase code
+        key = key.toUpperCase();
+        
+        if (input.contains(key))
+            return true;
+
+        return false;
+    }
+
+    public boolean isKeyReleased(String key) {
+        // Change to uppercase to allow lowercase code
+        key = key.toUpperCase();
+
+        if (releasedInput.contains(key))
+            return true;
+
+        return false;
+    }
+
+    private void addInput(String code) {
+        // Remove word DIGIT from numbers
+        if (code.startsWith("DIGIT"))
+            code = code.substring(5, code.length());
+
+        input.add(code);
+    }
+
+    private void resetInput() {
+        if (!releasedInput.isEmpty())
+            releasedInput.clear();
     }
 
     public void closeProgram() {
