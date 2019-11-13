@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.animation.Timeline;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
@@ -134,14 +135,47 @@ public abstract class GEngine extends Application {
 
     /*************************
         OBJECTS
-    **************************/
-    public void createObject(int x, int y, GObject type) {
-        type.setMainClass(this);
-        type.setX(x);
-        type.setY(y);
-        objects.add(type);
-        type.setGraphicsContext(gc);
-        type.createEvent();
+     **************************/
+    /**
+     * Creates object from provided class type.
+     * @param x horizontal position
+     * @param y vertical position
+     * @param type object to create
+     * @return instanced object
+     */
+    @SuppressWarnings("unchecked")
+     public <T extends GObject> T createObject(int x, int y, Class<T> type) {
+        // Check if provided type is derived from GObject
+        if (type.getSuperclass().equals(GObject.class)) {
+            try {
+                GObject obj = (GObject) type.getDeclaredConstructor().newInstance(); // FIX THIS
+                obj = initObject(x, y, obj);
+                return (T) obj;     // Cast to provided class
+            }
+            catch (InstantiationException e) {} 
+            catch (IllegalAccessException e) {}
+            catch (NoSuchMethodException e) {}
+            catch (InvocationTargetException e) {}
+        } else {
+            throw new IllegalArgumentException("Object must extend GObject");
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends GObject> T createObject(int x, int y, GObject type) {
+        return (T) initObject(x, y, type);
+    }
+
+    private GObject initObject(int x, int y, GObject obj) {
+        obj.setMainClass(this);
+        obj.setX(x);
+        obj.setY(y);
+        objects.add(obj);
+        obj.setGraphicsContext(gc);
+        obj.createEvent();
+        return obj;
     }
 
     /*************************
@@ -223,5 +257,9 @@ public abstract class GEngine extends Application {
 
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
+    }
+
+    public ArrayList<GObject> getObjects() {
+        return objects;
     }
 }

@@ -11,7 +11,8 @@ public class Game extends GEngine {
     public void createEvent() {
         setWindowTitle("Game 1");
         setWindowSize(800, 600);
-        createObject(100, 50, new Player());
+        Player one = createObject(100, 50, Player.class);
+        Player two = createObject(200, 50, new Player(2));
     }
 
 

@@ -4,6 +4,14 @@ import fi.tuni.engine.*;
 
 public class Player extends GObject {
 
+    private int playerSlot = 1;
+
+    public Player() {}
+
+    public Player(int playerSlot) {
+        this.playerSlot = playerSlot;
+    }
+
     @Override
     public void createEvent() {
         spriteCreate("player.png");
@@ -12,13 +20,22 @@ public class Player extends GObject {
 
     @Override
     public void stepEvent() {
-        if (isKeyPressed("RIGHT")) {
-            System.out.println("RIGHT");
-            setX(getX() + 1);
+        if (playerSlot == 1) {
+            if (isKeyPressedHold("RIGHT")) {
+                setX(getX() + 1);
+            }
+            if (isKeyPressedHold("LEFT")) {
+                setX(getX() - 1);
+            }
         }
-        if (isKeyPressed("LEFT")) {
-            System.out.println("LEFT");
-            setX(getX() - 1);
+
+        if (playerSlot == 2) {
+            if (isKeyPressedHold("D")) {
+                setX(getX() + 1);
+            }
+            if (isKeyPressedHold("A")) {
+                setX(getX() - 1);
+            }
         }
 
         if (isKeyPressed("U"))
@@ -29,6 +46,10 @@ public class Player extends GObject {
 
         if (isKeyReleased("U"))
             System.out.println("Released");
+
+        if (collidesWith(Player.class)) {
+            System.out.println("Hit");
+        }
     }
 
     @Override
@@ -36,5 +57,4 @@ public class Player extends GObject {
         drawBounds(1);
         spriteDraw();
     }
-    
 }

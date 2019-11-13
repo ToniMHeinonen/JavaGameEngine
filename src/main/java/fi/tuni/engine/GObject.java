@@ -1,5 +1,7 @@
 package fi.tuni.engine;
 
+import java.util.ArrayList;
+
 import fi.tuni.engine.tools.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,6 +13,7 @@ public abstract class GObject {
     private Image sprite;
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
+    private ArrayList<GObject> collidedObjects = new ArrayList<>();
 
     public abstract void createEvent();
 
@@ -52,15 +55,46 @@ public abstract class GObject {
         gc.setGlobalAlpha(1);
     }
 
-    public boolean collidesWith(GObject other) {
-        return bounds.intersects(other.getBounds());
+    public boolean collidesWith(Class<?> other) {
+        // If current object is the only instance, don't check
+        if (global().getObjects().size() <= 1)
+            return false;
+        
+        boolean collision = false;
+
+        // Check if other class is derived from GObject
+        if (other.getSuperclass().equals(GObject.class)) {
+            collidedObjects.clear();    // Empty previous collisions
+            
+            // Loop through all the objects in game
+            for (GObject o : global().getObjects()) {
+                // Ignore collision with self
+                if (o.equals(this))
+                    continue;
+
+                // If collision does not happen, skip iteration
+                if (!bounds.intersects(o.getBounds()))
+                    continue;
+
+                // Check if objects class equals with parameter class
+                if (o.getClass().getName().equals(other.getName())) {
+                    collidedObjects.add(o);
+                    collision = true;
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Collisions work only" +
+            " with classes derived from GObject!");
+        }
+        
+        return collision;
     }
 
     /*************************
         ENGINE METHODS
     **************************/
-    public void createObject(int x, int y, GObject type) {
-        global().createObject(x, y, type);
+    public <T extends GObject> T createObject(int x, int y, Class<T> type) {
+        return global().createObject(x, y, type);
     }
 
     public boolean isKeyPressed(String key) {
@@ -84,6 +118,7 @@ public abstract class GObject {
 
     public void setX(double x) {
         this.x = x;
+        updateBounds();
     }
 
     public double getY() {
@@ -92,6 +127,7 @@ public abstract class GObject {
 
     public void setY(double y) {
         this.y = y;
+        updateBounds();
     }
 
     public GraphicsContext getGraphicsContext() {
