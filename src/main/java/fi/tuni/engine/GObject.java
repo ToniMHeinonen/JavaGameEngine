@@ -1,15 +1,16 @@
 package fi.tuni.engine;
 
+import fi.tuni.engine.tools.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public abstract class GObject {
     
-    private int x, y;
-    private double width, height;
+    private double x, y, width, height;
     private GraphicsContext gc;
     private Image sprite;
     private GEngine mainClass;
+    private BoundingBox bounds = new BoundingBox();
 
     public abstract void createEvent();
 
@@ -25,15 +26,34 @@ public abstract class GObject {
         sprite = new Image(p);
         width = sprite.getWidth();
         height = sprite.getHeight();
+        updateBounds();
     }
 
     public void spriteResize(double width, double height) {
         this.width = width;
         this.height = height;
+        updateBounds();
     }
 
     public void spriteDraw() {
         gc.drawImage(sprite, x, y, width, height);
+    }
+
+    /*************************
+        COLLISIONS
+    **************************/
+    private void updateBounds() {
+        bounds.setBox(x, y, width, height);
+    }
+
+    public void drawBounds(double alpha) {
+        gc.setGlobalAlpha(alpha);
+        gc.fillRect(x, y, width, height);
+        gc.setGlobalAlpha(1);
+    }
+
+    public boolean collidesWith(GObject other) {
+        return bounds.intersects(other.getBounds());
     }
 
     /*************************
@@ -58,19 +78,19 @@ public abstract class GObject {
     /*************************
         GETTERS & SETTERS
     **************************/
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
@@ -92,5 +112,9 @@ public abstract class GObject {
         } else {
             System.out.println("mainClass can not be changed!");
         }
+    }
+
+    public BoundingBox getBounds() {
+        return bounds;
     }
 }

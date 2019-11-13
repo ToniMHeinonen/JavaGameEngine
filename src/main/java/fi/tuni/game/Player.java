@@ -33,6 +33,7 @@ public class Player extends GObject {
 
     @Override
     public void drawEvent() {
+        drawBounds(1);
         spriteDraw();
     }
     
