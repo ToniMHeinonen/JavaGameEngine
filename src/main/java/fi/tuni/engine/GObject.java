@@ -25,8 +25,7 @@ public abstract class GObject {
         SPRITE
     **************************/
     public void spriteCreate(String path) {
-        String p = "fi/tuni/game/" + path;
-        sprite = new Image(p);
+        sprite = new Image(path);
         width = sprite.getWidth();
         height = sprite.getHeight();
         updateBounds();

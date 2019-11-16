@@ -14,7 +14,7 @@ public class Player extends GObject {
 
     @Override
     public void createEvent() {
-        spriteCreate("player.png");
+        spriteCreate("images/player.png");
         spriteResize(32, 32);
     }
 

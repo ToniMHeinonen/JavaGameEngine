@@ -32,6 +32,7 @@ public abstract class GEngine extends Application {
 
     @Override
     public void start(Stage theStage) throws Exception {
+        System.out.println("Author: Toni Heinonen");
         this.stage = theStage;
         stage.setTitle("GEngine");
         stage.centerOnScreen();
