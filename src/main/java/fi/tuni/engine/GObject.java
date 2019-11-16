@@ -83,8 +83,9 @@ public abstract class GObject {
                 }
             }
         } else {
-            throw new IllegalArgumentException("Collisions work only" +
+            System.out.println("Collisions work only" +
             " with classes derived from GObject!");
+            throw new IllegalArgumentException("Class extends GObject missing!");
         }
         
         return collision;

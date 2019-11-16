@@ -148,16 +148,22 @@ public abstract class GEngine extends Application {
         // Check if provided type is derived from GObject
         if (type.getSuperclass().equals(GObject.class)) {
             try {
-                GObject obj = (GObject) type.getDeclaredConstructor().newInstance(); // FIX THIS
+                GObject obj = (GObject) type.getDeclaredConstructor().newInstance();
                 obj = initObject(x, y, obj);
                 return (T) obj;     // Cast to provided class
             }
             catch (InstantiationException e) {} 
             catch (IllegalAccessException e) {}
-            catch (NoSuchMethodException e) {}
+            catch (NoSuchMethodException e) {
+                System.out.println("You need to declare" +
+                " default constructor for the class, or remove other" +
+                " constructors!");
+                throw new IllegalArgumentException("Default constructor missing!");
+            }
             catch (InvocationTargetException e) {}
         } else {
-            throw new IllegalArgumentException("Object must extend GObject");
+            System.out.println("Object must extend GObject!");
+            throw new IllegalArgumentException("Class extends GObject missing!");
         }
 
         return null;
