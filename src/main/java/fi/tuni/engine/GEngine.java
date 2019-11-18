@@ -30,6 +30,8 @@ public abstract class GEngine extends Application {
     private ArrayList<String> releasedInput = new ArrayList<>();
     private ArrayList<String> holdInput = new ArrayList<>();
 
+    public static void main(String[] args) {}
+
     @Override
     public void start(Stage theStage) throws Exception {
         System.out.println("Author: Toni Heinonen");
@@ -235,6 +237,12 @@ public abstract class GEngine extends Application {
     **************************/
 
     public void closeProgram() {
+        stop();
+    }
+
+    @Override
+    public void stop() {
+        // Close all threads
         System.exit(0);
     }
 
