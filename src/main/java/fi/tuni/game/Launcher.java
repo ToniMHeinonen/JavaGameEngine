@@ -5,7 +5,7 @@ package fi.tuni.game;
     I have tried at least 10 different ways, and this is the only one that worked.
 */
 
-public class Starter {
+public class Launcher {
     public static void main(String[] args) {
         Game.main(args);
     }

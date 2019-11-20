@@ -38,6 +38,14 @@ public class Player extends GObject {
             }
         }
 
+        if (isKeyPressed("I"))
+            destroyInstance(Player.class);
+
+        if (isKeyPressed("O")) {
+            if (playerSlot == 1)
+                destroyInstance(this);
+        }
+
         if (isKeyPressed("U"))
             System.out.println("Pressed");
         

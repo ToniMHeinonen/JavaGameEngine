@@ -14,6 +14,7 @@ public abstract class GObject {
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
     private ArrayList<GObject> collidedObjects = new ArrayList<>();
+    private boolean destroyThis;
 
     public abstract void createEvent();
 
@@ -93,8 +94,20 @@ public abstract class GObject {
     /*************************
         ENGINE METHODS
     **************************/
-    public <T extends GObject> T createObject(int x, int y, Class<T> type) {
-        return global().createObject(x, y, type);
+    public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
+        return global().createInstance(x, y, type);
+    }
+
+    public <T extends GObject> T createInstance(int x, int y, GObject type) {
+        return global().createInstance(x, y, type);
+    }
+
+    public void destroyInstance(GObject obj) {
+        global().destroyInstance(obj);
+    }
+
+    public <T extends GObject> void destroyInstance(Class<T> type) {
+        global().destroyInstance(type);
     }
 
     public boolean isKeyPressed(String key) {
@@ -152,5 +165,13 @@ public abstract class GObject {
 
     public BoundingBox getBounds() {
         return bounds;
+    }
+
+    public boolean isDestroyThis() {
+        return destroyThis;
+    }
+
+    public void setDestroyThis(boolean destroyThis) {
+        this.destroyThis = destroyThis;
     }
 }

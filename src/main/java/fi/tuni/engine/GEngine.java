@@ -30,7 +30,9 @@ public abstract class GEngine extends Application {
     private ArrayList<String> releasedInput = new ArrayList<>();
     private ArrayList<String> holdInput = new ArrayList<>();
 
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage theStage) throws Exception {
@@ -104,6 +106,8 @@ public abstract class GEngine extends Application {
                         o.drawEvent();
                     }
 
+                    destroyFlagged();
+
                     // Reset released input after each frame
                     resetInput();
                 }
@@ -147,12 +151,12 @@ public abstract class GEngine extends Application {
      * @return instanced object
      */
     @SuppressWarnings("unchecked")
-     public <T extends GObject> T createObject(int x, int y, Class<T> type) {
+     public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
         // Check if provided type is derived from GObject
         if (type.getSuperclass().equals(GObject.class)) {
             try {
                 GObject obj = (GObject) type.getDeclaredConstructor().newInstance();
-                obj = initObject(x, y, obj);
+                obj = initInstance(x, y, obj);
                 return (T) obj;     // Cast to provided class
             }
             catch (InstantiationException e) {} 
@@ -173,11 +177,11 @@ public abstract class GEngine extends Application {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends GObject> T createObject(int x, int y, GObject type) {
-        return (T) initObject(x, y, type);
+    public <T extends GObject> T createInstance(int x, int y, GObject type) {
+        return (T) initInstance(x, y, type);
     }
 
-    private GObject initObject(int x, int y, GObject obj) {
+    private GObject initInstance(int x, int y, GObject obj) {
         obj.setMainClass(this);
         obj.setX(x);
         obj.setY(y);
@@ -185,6 +189,36 @@ public abstract class GEngine extends Application {
         obj.setGraphicsContext(gc);
         obj.createEvent();
         return obj;
+    }
+
+    /**
+     * Mark only one instance for destruction.
+     * @param obj instance to destroy
+     */
+    public void destroyInstance(GObject obj) {
+        obj.setDestroyThis(true);
+    }
+
+    public <T extends GObject> void destroyInstance(Class<T> type) {
+        // Check if provided type is derived from GObject
+        if (type.getSuperclass().equals(GObject.class)) {
+            for (GObject o : objects) {
+                if (o.getClass().getName().equals(type.getName())) {
+                    o.setDestroyThis(true);
+                }
+            }
+        }
+    }
+
+    private void destroyFlagged() {
+        ArrayList<GObject> temp = new ArrayList<>(objects);
+        
+        for (GObject o : objects) {
+            if (o.isDestroyThis())
+                temp.remove(o);
+        }
+
+        objects = temp;
     }
 
     /*************************
