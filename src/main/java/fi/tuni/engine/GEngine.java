@@ -239,8 +239,9 @@ public abstract class GEngine extends Application {
         // Remove all marked for destroy
         for (GObject o : objects) {
             // Remove from temp to not disrupt this for loop
-            if (o.isDestroyThis())
-                temp.remove(o);     
+            if (o.isDestroyThis()) {
+                temp.remove(o);
+            } 
         }
 
         objects = temp;

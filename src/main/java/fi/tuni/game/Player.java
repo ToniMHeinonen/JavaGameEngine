@@ -57,18 +57,18 @@ public class Player extends GObject {
         if (isKeyReleased("U"))
             System.out.println("Released");
 
-        if (collidesWith(Player.class)) {
+        /*if (collidesWith(Player.class)) {
             System.out.println("Hit");
             for (GObject o : getCollidedObjects()) {
                 destroyInstance(o);
             }
-        }
+        }*/
 
-        /*if (collidesWith(target)) {
+        if (collidesWith(target)) {
             System.out.println("Target found");
             destroyInstance(getOther());
             target = null;
-        }*/
+        }
     }
 
     @Override
