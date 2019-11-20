@@ -5,11 +5,13 @@ import fi.tuni.engine.*;
 public class Player extends GObject {
 
     private int playerSlot = 1;
+    private GObject target;
 
     public Player() {}
 
-    public Player(int playerSlot) {
+    public Player(int playerSlot, GObject target) {
         this.playerSlot = playerSlot;
+        this.target = target;
     }
 
     @Override
@@ -57,7 +59,16 @@ public class Player extends GObject {
 
         if (collidesWith(Player.class)) {
             System.out.println("Hit");
+            for (GObject o : getCollidedObjects()) {
+                destroyInstance(o);
+            }
         }
+
+        /*if (collidesWith(target)) {
+            System.out.println("Target found");
+            destroyInstance(getOther());
+            target = null;
+        }*/
     }
 
     @Override

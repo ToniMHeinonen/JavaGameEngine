@@ -104,6 +104,7 @@ public abstract class GEngine extends Application {
                     for (GObject o : objects) {
                         o.stepEvent();
                         o.drawEvent();
+                        o.resetReferences();
                     }
 
                     destroyFlagged();
@@ -129,10 +130,17 @@ public abstract class GEngine extends Application {
         WINDOW
     **************************/
 
+    /**
+     * Sets the title for window.
+     * @param title new title to set
+     */
     public void setWindowTitle(String title) {
         stage.setTitle(title);
     }
 
+    /**
+     * Sets the width and height for the window.
+     */
     public void setWindowSize(int width, int height) {
         this.width = width;
         this.height = height;
@@ -152,35 +160,45 @@ public abstract class GEngine extends Application {
      */
     @SuppressWarnings("unchecked")
      public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
-        // Check if provided type is derived from GObject
-        if (type.getSuperclass().equals(GObject.class)) {
-            try {
-                GObject obj = (GObject) type.getDeclaredConstructor().newInstance();
-                obj = initInstance(x, y, obj);
-                return (T) obj;     // Cast to provided class
-            }
-            catch (InstantiationException e) {} 
-            catch (IllegalAccessException e) {}
-            catch (NoSuchMethodException e) {
-                System.out.println("You need to declare" +
-                " default constructor for the class, or remove other" +
-                " constructors!");
-                throw new IllegalArgumentException("Default constructor missing!");
-            }
-            catch (InvocationTargetException e) {}
-        } else {
-            System.out.println("Object must extend GObject!");
-            throw new IllegalArgumentException("Class extends GObject missing!");
+        try {
+            // Create new instance from provided class
+            GObject obj = (GObject) type.getDeclaredConstructor().newInstance();
+            obj = initInstance(x, y, obj);
+            return (T) obj;     // Cast to provided class
         }
+        catch (InstantiationException e) {} 
+        catch (IllegalAccessException e) {}
+        catch (NoSuchMethodException e) {
+            System.out.println("You need to declare" +
+            " default constructor for the class, or remove other" +
+            " constructors!");
+            throw new IllegalArgumentException("Default constructor missing!");
+        }
+        catch (InvocationTargetException e) {}
 
         return null;
     }
 
+    /**
+     * Creates provided instance.
+     * @param <T> object which extends GObject
+     * @param x coordinate for instance
+     * @param y coordinate for instance
+     * @param type instance to initialize
+     * @return initialized instance
+     */
     @SuppressWarnings("unchecked")
     public <T extends GObject> T createInstance(int x, int y, GObject type) {
         return (T) initInstance(x, y, type);
     }
 
+    /**
+     * Initializes newly created instance.
+     * @param x coordinate for instance
+     * @param y coordinate for instance
+     * @param obj created instance
+     * @return created instance
+     */
     private GObject initInstance(int x, int y, GObject obj) {
         obj.setMainClass(this);
         obj.setX(x);
@@ -192,30 +210,37 @@ public abstract class GEngine extends Application {
     }
 
     /**
-     * Mark only one instance for destruction.
+     * Marks only one instance for destruction.
      * @param obj instance to destroy
      */
     public void destroyInstance(GObject obj) {
         obj.setDestroyThis(true);
     }
 
-    public <T extends GObject> void destroyInstance(Class<T> type) {
-        // Check if provided type is derived from GObject
-        if (type.getSuperclass().equals(GObject.class)) {
-            for (GObject o : objects) {
-                if (o.getClass().getName().equals(type.getName())) {
-                    o.setDestroyThis(true);
-                }
+    /**
+     * Marks all instances derived from type for destruction.
+     * @param type class type to destroy
+     */
+    public void destroyInstance(Class<? extends GObject> type) {
+        for (GObject o : objects) {
+            if (o.getClass().getName().equals(type.getName())) {
+                o.setDestroyThis(true);
             }
         }
     }
 
+    /**
+     * Destroys all instances which are marked for destruction.
+     */
     private void destroyFlagged() {
+        // Copy objects array
         ArrayList<GObject> temp = new ArrayList<>(objects);
         
+        // Remove all marked for destroy
         for (GObject o : objects) {
+            // Remove from temp to not disrupt this for loop
             if (o.isDestroyThis())
-                temp.remove(o);
+                temp.remove(o);     
         }
 
         objects = temp;
@@ -225,18 +250,39 @@ public abstract class GEngine extends Application {
         INPUT
     **************************/
 
+    /**
+     * Checks if provided key is pressed.
+     * @param key to check
+     * @return if pressed
+     */
     public boolean isKeyPressed(String key) {
         return checkInput(pressedInput, key);
     }
 
+    /**
+     * Checks if provided key is pressed and held.
+     * @param key to check
+     * @return if pressed and held
+     */
     public boolean isKeyPressedHold(String key) {
         return checkInput(holdInput, key);
     }
 
+    /**
+     * Checks if provided key is released.
+     * @param key to check
+     * @return if released
+     */
     public boolean isKeyReleased(String key) {
         return checkInput(releasedInput, key);
     }
 
+    /**
+     * Checks if provided input array contains provided key.
+     * @param input array to check
+     * @param key key to check
+     * @return if input contains the key
+     */
     private boolean checkInput(ArrayList<String> input, String key) {
         // Change to uppercase to allow lowercase code
         key = key.toUpperCase();
@@ -248,6 +294,8 @@ public abstract class GEngine extends Application {
     }
 
     /**
+     * Clears released input and pressed input.
+     * 
      * Pressed input and released input will be cleared after each frame.
      */
     private void resetInput() {
@@ -258,6 +306,11 @@ public abstract class GEngine extends Application {
             pressedInput.clear();
     }
 
+    /**
+     * Modifys some input key codes for better usability.
+     * @param code to check if it should be modified
+     * @return modified code
+     */
     private String modifyInputCode(String code) {
         // Remove word DIGIT from numbers
         if (code.startsWith("DIGIT"))

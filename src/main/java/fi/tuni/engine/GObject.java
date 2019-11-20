@@ -14,6 +14,7 @@ public abstract class GObject {
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
     private ArrayList<GObject> collidedObjects = new ArrayList<>();
+    private GObject other;
     private boolean destroyThis;
 
     public abstract void createEvent();
@@ -25,6 +26,10 @@ public abstract class GObject {
     /*************************
         SPRITE
     **************************/
+    /**
+     * Creates new sprite.
+     * @param path image to create
+     */
     public void spriteCreate(String path) {
         sprite = new Image(path);
         width = sprite.getWidth();
@@ -32,12 +37,20 @@ public abstract class GObject {
         updateBounds();
     }
 
+    /**
+     * Resizes the sprite in use.
+     * @param width
+     * @param height
+     */
     public void spriteResize(double width, double height) {
         this.width = width;
         this.height = height;
         updateBounds();
     }
 
+    /**
+     * Draws the sprite in it's x and y coordinate.
+     */
     public void spriteDraw() {
         gc.drawImage(sprite, x, y, width, height);
     }
@@ -45,50 +58,80 @@ public abstract class GObject {
     /*************************
         COLLISIONS
     **************************/
+    /**
+     * Move bounds to new location.
+     */
     private void updateBounds() {
         bounds.setBox(x, y, width, height);
     }
 
+    /**
+     * Draws collision bounds on screen.
+     * @param alpha to use for drawing
+     */
     public void drawBounds(double alpha) {
         gc.setGlobalAlpha(alpha);
         gc.fillRect(x, y, width, height);
         gc.setGlobalAlpha(1);
     }
 
-    public boolean collidesWith(Class<?> other) {
+    /**
+     * Checks if object collides with any provided class instance.
+     * @param other class to check for collisions
+     * @return if collision happens
+     */
+    public boolean collidesWith(Class<? extends GObject> other) {
         // If current object is the only instance, don't check
         if (global().getObjects().size() <= 1)
             return false;
         
         boolean collision = false;
 
-        // Check if other class is derived from GObject
-        if (other.getSuperclass().equals(GObject.class)) {
-            collidedObjects.clear();    // Empty previous collisions
-            
-            // Loop through all the objects in game
-            for (GObject o : global().getObjects()) {
-                // Ignore collision with self
-                if (o.equals(this))
-                    continue;
+        collidedObjects.clear();    // Empty previous collisions
+        
+        // Loop through all the objects in game
+        for (GObject o : global().getObjects()) {
+            // Ignore collision with self
+            if (o.equals(this))
+                continue;
 
-                // If collision does not happen, skip iteration
-                if (!bounds.intersects(o.getBounds()))
-                    continue;
+            // If collision does not happen, skip iteration
+            if (!bounds.intersects(o.getBounds()))
+                continue;
 
-                // Check if objects class equals with parameter class
-                if (o.getClass().getName().equals(other.getName())) {
-                    collidedObjects.add(o);
-                    collision = true;
-                }
+            // Check if objects class equals with parameter class
+            if (o.getClass().getName().equals(other.getName())) {
+                collidedObjects.add(o);
+                collision = true;
             }
-        } else {
-            System.out.println("Collisions work only" +
-            " with classes derived from GObject!");
-            throw new IllegalArgumentException("Class extends GObject missing!");
         }
         
         return collision;
+    }
+
+    /**
+     * Checks collision with provided instance.
+     * @param other instance to check
+     * @return if collision happens
+     */
+    public boolean collidesWith(GObject other) {
+        if (other == null)
+            return false;
+        
+        if (bounds.intersects(other.getBounds())) {
+            this.other = other;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Resets references in case they got destroyed.
+     */
+    public void resetReferences() {
+        other = null;               // Clear collided object
+        collidedObjects.clear();    // Clear collided objects
     }
 
     /*************************
@@ -173,5 +216,13 @@ public abstract class GObject {
 
     public void setDestroyThis(boolean destroyThis) {
         this.destroyThis = destroyThis;
+    }
+
+    public ArrayList<GObject> getCollidedObjects() {
+        return collidedObjects;
+    }
+
+    public GObject getOther() {
+        return other;
     }
 }
