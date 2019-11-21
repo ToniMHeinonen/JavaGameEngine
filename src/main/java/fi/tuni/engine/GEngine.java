@@ -29,6 +29,7 @@ public abstract class GEngine extends Application {
     private ArrayList<String> pressedInput = new ArrayList<>();
     private ArrayList<String> releasedInput = new ArrayList<>();
     private ArrayList<String> holdInput = new ArrayList<>();
+    private Highscore highscore = new Highscore();
 
     public static void main(String[] args) {
         launch(args);
@@ -318,6 +319,17 @@ public abstract class GEngine extends Application {
             code = code.substring(5, code.length());
 
         return code;
+    }
+
+    /*************************
+        HIGHSCORE
+    **************************/
+    public void highscoreAdd(String name, double score) {
+        highscore.addScore(name, score);
+    }
+
+    public void highscoreClear() {
+        highscore.clearScores();
     }
 
     /*************************
