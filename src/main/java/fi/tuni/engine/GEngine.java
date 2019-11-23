@@ -324,13 +324,17 @@ public abstract class GEngine extends Application {
     /*************************
         HIGHSCORE
     **************************/
-    public void highscoreAdd(String name, double score) {
-        highscore.addScore(name, score);
-    }
+    public void highscoreAdd(String name, double score) { highscore.addScore(name, score); }
 
-    public void highscoreClear() {
-        highscore.clearScores();
-    }
+    public void highscoreRemoveAt(int index) { highscore.removeScoreAt(index); }
+
+    public void highscoreClear() { highscore.clearScores(); }
+
+    public void highscoreSortByDescending(boolean value) { highscore.sortByDescendingOrder(value); }
+
+    public ArrayList<String> highscoreGetNames() { return highscore.getNames(); }
+
+    public ArrayList<Double> highscoreGetScores() { return highscore.getScores(); }
 
     /*************************
         SYSTEM

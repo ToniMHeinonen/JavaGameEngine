@@ -1,6 +1,6 @@
 package fi.tuni.game;
 
-import fi.tuni.engine.*;
+import fi.tuni.engine.GEngine;
 
 public class Game extends GEngine {
 
@@ -15,7 +15,6 @@ public class Game extends GEngine {
         Player one = createInstance(100, 50, Player.class);
         Player two = createInstance(200, 50, new Player(2, one));
         Coin coin = createInstance(300, 50, Coin.class);
-        highscoreAdd("name", 20);
     }
 
 

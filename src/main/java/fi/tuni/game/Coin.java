@@ -1,6 +1,6 @@
 package fi.tuni.game;
 
-import fi.tuni.engine.*;
+import fi.tuni.engine.GObject;
 
 public class Coin extends GObject {
 
