@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.animation.Timeline;
 
@@ -55,6 +57,12 @@ public abstract class GEngine extends Application {
 
         Timeline gameLoop = new Timeline();
         gameLoop.setCycleCount(Timeline.INDEFINITE);
+
+        ImageView imageView = new ImageView();
+        root.getChildren().add(imageView);
+
+        ImageViewSprite anim = new ImageViewSprite(imageView, new Image("images/playerAnim.png"), 4, 1, 4, 320, 320, 60);
+        anim.start();
 
         // Handle input
         theScene.setOnKeyPressed(

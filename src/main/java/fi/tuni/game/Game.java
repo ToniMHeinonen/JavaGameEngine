@@ -13,8 +13,8 @@ public class Game extends GEngine {
         setWindowTitle("Game 1");
         setWindowSize(800, 600);
         Player one = createInstance(100, 50, Player.class);
-        Player two = createInstance(200, 50, new Player(2, one));
-        Coin coin = createInstance(300, 50, Coin.class);
+        //Player two = createInstance(200, 50, new Player(2, one));
+        //Coin coin = createInstance(300, 50, Coin.class);
     }
 
 

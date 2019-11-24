@@ -37,6 +37,10 @@ public abstract class GObject {
         updateBounds();
     }
 
+    public void spriteCreate() {
+        
+    }
+
     /**
      * Resizes the sprite in use.
      * @param width
