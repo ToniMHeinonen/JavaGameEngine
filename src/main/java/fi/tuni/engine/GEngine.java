@@ -7,9 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,8 +15,6 @@ import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
 
 public abstract class GEngine extends Application {
 
@@ -28,10 +24,6 @@ public abstract class GEngine extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
-    private ArrayList<String> pressedInput = new ArrayList<>();
-    private ArrayList<String> releasedInput = new ArrayList<>();
-    private ArrayList<String> holdInput = new ArrayList<>();
-    //private Highscore highscore = new Highscore();
 
     public static void main(String[] args) {
         launch(args);
@@ -58,70 +50,24 @@ public abstract class GEngine extends Application {
         Timeline gameLoop = new Timeline();
         gameLoop.setCycleCount(Timeline.INDEFINITE);
 
+        // Object animations are shown on this
         ImageView imageView = new ImageView();
         root.getChildren().add(imageView);
 
-        ImageViewSprite anim = new ImageViewSprite(imageView, new Image("images/playerAnim.png"), 4, 1, 4, 320, 320, 60);
-        anim.start();
+        /*ImageViewSprite anim = new ImageViewSprite(imageView, new Image("images/playerAnim.png"), 4, 1, 4, 320, 320, 60);
+        anim.start();*/
 
         // Handle input
-        theScene.setOnKeyPressed(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
-                    String code = e.getCode().toString();
+        theScene.setOnKeyPressed(Input::handlePressed);
+        theScene.setOnKeyReleased(Input::handleReleased);
 
-                    code = modifyInputCode(code);
- 
-                    // only add once... prevent duplicates
-                    if (!holdInput.contains(code)) {
-                        holdInput.add(code);
-                        pressedInput.add(code);
-                    }
-                }
-            });
- 
-        theScene.setOnKeyReleased(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
-                    String code = e.getCode().toString();
-                    code = modifyInputCode(code);
-
-                    pressedInput.remove(code);
-                    holdInput.remove(code);
-                    releasedInput.add(code);
-                }
-            });
-
+        // Run main game create event before going to game loop
         createEvent();
         
+        // Control game loop and it's speed
         KeyFrame kf = new KeyFrame(
             Duration.seconds(0.017),                // 60 FPS
-            new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent ae) {
-                    // Clear the canvas
-                    gc.clearRect(0, 0, width, height);
-                    
-                    // Run main game object's step and draw events
-                    stepEvent();
-                    drawEvent(); 
-                    
-                    // Loop through object's step and draw events
-                    for (GObject o : objects) {
-                        o.stepEvent();
-                        o.drawEvent();
-                        o.resetReferences();
-                    }
-
-                    destroyFlagged();
-
-                    // Reset released input after each frame
-                    resetInput();
-                }
-            });
+            (e)->this.controlGameLoop());
         
         gameLoop.getKeyFrames().add( kf );
         gameLoop.play();
@@ -134,6 +80,49 @@ public abstract class GEngine extends Application {
     public abstract void stepEvent();
 
     public abstract void drawEvent();
+
+    /*************************
+        SYSTEM
+    **************************/
+    /**
+     * Controls game loop for main engine and it's objects.
+     */
+    private void controlGameLoop() {
+        // Clear the canvas
+        gc.clearRect(0, 0, width, height);
+                    
+        // Run main game object's step and draw events
+        stepEvent();
+        drawEvent(); 
+        
+        // Loop through object's step and draw events
+        for (GObject o : objects) {
+            o.stepEvent();
+            o.drawEvent();
+            o.resetReferences();
+        }
+
+        destroyFlagged();
+
+        // Reset released input after each frame
+        Input.resetInput();
+    }
+
+    /**
+     * Closes program.
+     */
+    public void closeProgram() {
+        stop();
+    }
+
+    /**
+     * Stops javafx and all the other threads.
+     */
+    @Override
+    public void stop() {
+        // Close all threads
+        System.exit(0);
+    }
 
     /*************************
         WINDOW
@@ -254,93 +243,6 @@ public abstract class GEngine extends Application {
         }
 
         objects = temp;
-    }
-
-    /*************************
-        INPUT
-    **************************/
-
-    /**
-     * Checks if provided key is pressed.
-     * @param key to check
-     * @return if pressed
-     */
-    public boolean isKeyPressed(String key) {
-        return checkInput(pressedInput, key);
-    }
-
-    /**
-     * Checks if provided key is pressed and held.
-     * @param key to check
-     * @return if pressed and held
-     */
-    public boolean isKeyPressedHold(String key) {
-        return checkInput(holdInput, key);
-    }
-
-    /**
-     * Checks if provided key is released.
-     * @param key to check
-     * @return if released
-     */
-    public boolean isKeyReleased(String key) {
-        return checkInput(releasedInput, key);
-    }
-
-    /**
-     * Checks if provided input array contains provided key.
-     * @param input array to check
-     * @param key key to check
-     * @return if input contains the key
-     */
-    private boolean checkInput(ArrayList<String> input, String key) {
-        // Change to uppercase to allow lowercase code
-        key = key.toUpperCase();
-
-        if (input.contains(key))
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Clears released input and pressed input.
-     * 
-     * Pressed input and released input will be cleared after each frame.
-     */
-    private void resetInput() {
-        if (!releasedInput.isEmpty())
-            releasedInput.clear();
-
-        if (!pressedInput.isEmpty())
-            pressedInput.clear();
-    }
-
-    /**
-     * Modifys some input key codes for better usability.
-     * @param code to check if it should be modified
-     * @return modified code
-     */
-    private String modifyInputCode(String code) {
-        // Remove word DIGIT from numbers
-        if (code.startsWith("DIGIT"))
-            code = code.substring(5, code.length());
-
-        return code;
-    }
-
-    /*************************
-        SYSTEM
-    **************************/
-
-    public void closeProgram() {
-        stop();
-    }
-
-    @Override
-    public void stop() {
-        // Close all threads
-        System.exit(0);
     }
 
     /*************************

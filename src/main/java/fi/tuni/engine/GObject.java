@@ -157,18 +157,6 @@ public abstract class GObject {
         global().destroyInstance(type);
     }
 
-    public boolean isKeyPressed(String key) {
-        return global().isKeyPressed(key);
-    }
-
-    public boolean isKeyPressedHold(String key) {
-        return global().isKeyPressedHold(key);
-    }
-
-    public boolean isKeyReleased(String key) {
-        return global().isKeyReleased(key);
-    }
-
     /*************************
         GETTERS & SETTERS
     **************************/

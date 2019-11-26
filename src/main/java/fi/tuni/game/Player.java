@@ -1,6 +1,7 @@
 package fi.tuni.game;
 
 import fi.tuni.engine.GObject;
+import fi.tuni.engine.tools.*;
 
 public class Player extends GObject {
 
@@ -23,38 +24,38 @@ public class Player extends GObject {
     @Override
     public void stepEvent() {
         if (playerSlot == 1) {
-            if (isKeyPressedHold("RIGHT")) {
+            if (Input.isKeyPressedHold("RIGHT")) {
                 setX(getX() + 1);
             }
-            if (isKeyPressedHold("LEFT")) {
+            if (Input.isKeyPressedHold("LEFT")) {
                 setX(getX() - 1);
             }
         }
 
         if (playerSlot == 2) {
-            if (isKeyPressedHold("D")) {
+            if (Input.isKeyPressedHold("D")) {
                 setX(getX() + 1);
             }
-            if (isKeyPressedHold("A")) {
+            if (Input.isKeyPressedHold("A")) {
                 setX(getX() - 1);
             }
         }
 
-        if (isKeyPressed("I"))
+        if (Input.isKeyPressed("I"))
             destroyInstance(Player.class);
 
-        if (isKeyPressed("O")) {
+        if (Input.isKeyPressed("O")) {
             if (playerSlot == 1)
                 destroyInstance(this);
         }
 
-        if (isKeyPressed("U"))
+        if (Input.isKeyPressed("U"))
             System.out.println("Pressed");
         
-        if (isKeyPressedHold("U"))
+        if (Input.isKeyPressedHold("U"))
             System.out.println("Hold");
 
-        if (isKeyReleased("U"))
+        if (Input.isKeyReleased("U"))
             System.out.println("Released");
 
         /*if (collidesWith(Player.class)) {
