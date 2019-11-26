@@ -1,6 +1,7 @@
 package fi.tuni.game;
 
 import fi.tuni.engine.GEngine;
+import fi.tuni.engine.tools.*;
 
 public class Game extends GEngine {
 

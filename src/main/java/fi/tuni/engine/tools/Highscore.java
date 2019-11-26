@@ -7,21 +7,21 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Highscore {
+public abstract class Highscore {
     
-    private ArrayList<String> names = new ArrayList<>();
-    private ArrayList<Double> scores = new ArrayList<>();
-    private String path = "src/main/resources/Highscore.ini";
-    private String valueIndicator = "::";
-    private String nameID = "name" + valueIndicator;
-    private String sep = "/";
-    private String scoreID = "score" + valueIndicator;
-    private boolean sortByDesc = true;
+    private static ArrayList<String> names = new ArrayList<>();
+    private static ArrayList<Double> scores = new ArrayList<>();
+    private static String path = "src/main/resources/Highscore.ini";
+    private static String valueIndicator = "::";
+    private static String nameID = "name" + valueIndicator;
+    private static String sep = "/";
+    private static String scoreID = "score" + valueIndicator;
+    private static boolean sortByDesc = true;
 
     /**
      * Loads previously saved highscores.
      */
-    public Highscore() {
+    static {
         try {
             // Read all the lines to a list
             List<String> list = Files.readAllLines(Path.of(path));
@@ -47,7 +47,7 @@ public class Highscore {
      * @param name to add
      * @param score to add
      */
-    public void addScore(String name, double score) {
+    public static void addScore(String name, double score) {
         names.add(name);
         scores.add(score);
         sortScores();
@@ -58,7 +58,7 @@ public class Highscore {
      * Removes name and score at the given position.
      * @param index to remove at
      */
-    public void removeScoreAt(int index) {
+    public static void removeScoreAt(int index) {
         names.remove(index);
         scores.remove(index);
         saveScores();
@@ -68,7 +68,7 @@ public class Highscore {
      * Sets how to sort the list.
      * @param value sort descending or ascending
      */
-    public void sortByDescendingOrder(boolean value) {
+    public static void sortByDescendingOrder(boolean value) {
         if (sortByDesc != value) {
             sortByDesc = value;
             sortScores();
@@ -79,7 +79,7 @@ public class Highscore {
     /**
      * Sorts scores by either descending or ascending order.
      */
-    private void sortScores() {
+    private static void sortScores() {
         for (int j = 0; j < names.size(); j++) {
             boolean modified = false;
             
@@ -118,7 +118,7 @@ public class Highscore {
     /**
      * Saves scores to a file.
      */
-    private void saveScores() {
+    private static void saveScores() {
         try {
             // Overwrite provided file in path
             PrintWriter out = new PrintWriter(path);
@@ -140,7 +140,7 @@ public class Highscore {
     /**
      * Removes all the names and scores.
      */
-    public void clearScores() {
+    public static void clearScores() {
         scores.clear();
         saveScores();
     }
@@ -150,7 +150,7 @@ public class Highscore {
      * Gets all the names.
      * @return ArrayList<String> all names
      */
-    public ArrayList<String> getNames() {
+    public static ArrayList<String> getNames() {
         return names;
     }
 
@@ -159,7 +159,7 @@ public class Highscore {
      * Gets all the scores.
      * @return ArrayList<Double> all scores
      */
-    public ArrayList<Double> getScores() {
+    public static ArrayList<Double> getScores() {
         return scores;
     }
 }

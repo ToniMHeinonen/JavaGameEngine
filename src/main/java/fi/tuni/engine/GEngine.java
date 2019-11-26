@@ -31,7 +31,7 @@ public abstract class GEngine extends Application {
     private ArrayList<String> pressedInput = new ArrayList<>();
     private ArrayList<String> releasedInput = new ArrayList<>();
     private ArrayList<String> holdInput = new ArrayList<>();
-    private Highscore highscore = new Highscore();
+    //private Highscore highscore = new Highscore();
 
     public static void main(String[] args) {
         launch(args);
@@ -328,21 +328,6 @@ public abstract class GEngine extends Application {
 
         return code;
     }
-
-    /*************************
-        HIGHSCORE
-    **************************/
-    public void highscoreAdd(String name, double score) { highscore.addScore(name, score); }
-
-    public void highscoreRemoveAt(int index) { highscore.removeScoreAt(index); }
-
-    public void highscoreClear() { highscore.clearScores(); }
-
-    public void highscoreSortByDescending(boolean value) { highscore.sortByDescendingOrder(value); }
-
-    public ArrayList<String> highscoreGetNames() { return highscore.getNames(); }
-
-    public ArrayList<Double> highscoreGetScores() { return highscore.getScores(); }
 
     /*************************
         SYSTEM
