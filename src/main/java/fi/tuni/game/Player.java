@@ -17,8 +17,9 @@ public class Player extends GObject {
 
     @Override
     public void createEvent() {
-        spriteCreate("images/player.png");
-        spriteResize(32, 32);
+        //spriteCreate("images/player.png");
+        //spriteResize(32, 32);
+        Animation idle = animationCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 50);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class Player extends GObject {
 
     @Override
     public void drawEvent() {
-        drawBounds(1);
-        spriteDraw();
+        //drawBounds(1);
+        //spriteDraw();
     }
 }

@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import fi.tuni.engine.tools.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public abstract class GObject {
     
     private double x, y, width, height;
     private GraphicsContext gc;
-    private Image sprite;
+    private ImageView view = new ImageView();
+    private Animator animator = new Animator(view);
+    private Image self;
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
     private ArrayList<GObject> collidedObjects = new ArrayList<>();
@@ -31,14 +34,19 @@ public abstract class GObject {
      * @param path image to create
      */
     public void spriteCreate(String path) {
-        sprite = new Image(path);
-        width = sprite.getWidth();
-        height = sprite.getHeight();
+        self = new Image(path);
+        width = self.getWidth();
+        height = self.getHeight();
         updateBounds();
     }
 
-    public void spriteCreate() {
-        
+    public Animation animationCreate(String imagePath, int columns, int rows,
+        int totalFrames, int frameWidth, int frameHeight, float framesPerSecond) {
+        Image img = new Image(imagePath);
+        Animation anim = new Animation(img, columns, rows,
+        totalFrames, frameWidth, frameHeight, framesPerSecond);
+        animator.startAnimation(anim);
+        return anim;
     }
 
     /**
@@ -55,8 +63,8 @@ public abstract class GObject {
     /**
      * Draws the sprite in it's x and y coordinate.
      */
-    public void spriteDraw() {
-        gc.drawImage(sprite, x, y, width, height);
+    public void drawSelf() {
+        gc.drawImage(self, x, y, width, height);
     }
 
     /*************************
@@ -216,5 +224,9 @@ public abstract class GObject {
 
     public GObject getOther() {
         return other;
+    }
+
+    public ImageView getView() {
+        return view;
     }
 }

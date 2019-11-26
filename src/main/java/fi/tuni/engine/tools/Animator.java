@@ -5,38 +5,42 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class ImageViewSprite extends AnimationTimer {
+public class Animator extends AnimationTimer {
 
+    private ImageView imageView; //Image view that will display our sprite
 
-    private final ImageView imageView; //Image view that will display our sprite
+    private int totalFrames; //Total number of frames in the sequence
+    private float fps; //frames per second I.E. 24
 
-    private final int totalFrames; //Total number of frames in the sequence
-    private final float fps; //frames per second I.E. 24
+    private int cols; //Number of columns on the sprite sheet
+    private int rows; //Number of rows on the sprite sheet
 
-    private final int cols; //Number of columns on the sprite sheet
-    private final int rows; //Number of rows on the sprite sheet
-
-    private final int frameWidth; //Width of an individual frame
-    private final int frameHeight; //Height of an individual frame
+    private int frameWidth; //Width of an individual frame
+    private int frameHeight; //Height of an individual frame
 
     private int currentCol = 0;
     private int currentRow = 0;
 
     private long lastFrame = 0;
 
-    public ImageViewSprite(ImageView imageView, Image image, int columns, int rows, int totalFrames, int frameWidth, int frameHeight, float framesPerSecond) {
-        this.imageView = imageView;
-        imageView.setImage(image);
+    public Animator(ImageView view) {
+        this.imageView = view;
+    }
+
+    public void startAnimation(Animation anim) {
+        cols = anim.cols;
+        this.rows = anim.rows;
+        this.totalFrames = anim.totalFrames;
+        this.frameWidth = anim.frameWidth;
+        this.frameHeight = anim.frameHeight;
+        fps = anim.fps;
+
+        imageView.setImage(anim.image);
         imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
 
-        cols = columns;
-        this.rows = rows;
-        this.totalFrames = totalFrames;
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        fps = framesPerSecond;
-
         lastFrame = System.nanoTime();
+
+        this.start();
     }
 
     @Override

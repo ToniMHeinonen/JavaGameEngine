@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.ImageView;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,6 +19,7 @@ public abstract class GEngine extends Application {
 
     private int width = 1280;
     private int height = 720;
+    private Group root;
     private Stage stage;
     private Canvas canvas;
     private GraphicsContext gc;
@@ -31,48 +31,47 @@ public abstract class GEngine extends Application {
 
     @Override
     public void start(Stage theStage) throws Exception {
-        System.out.println("Author: Toni Heinonen");
-        this.stage = theStage;
-        stage.setTitle("GEngine");
-        stage.centerOnScreen();
+        try {
+            System.out.println("Author: Toni Heinonen");
+            this.stage = theStage;
+            stage.setTitle("GEngine");
+            stage.centerOnScreen();
 
-        Group root = new Group();
-        Scene theScene = new Scene(root);
-        theStage.setScene(theScene);
-        
-        Canvas canvas = new Canvas(width, height);
-        root.getChildren().add(canvas);
-        this.canvas = canvas;
-        
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        this.gc = gc;
+            Group root = new Group();
+            this.root = root;
+            Scene theScene = new Scene(root);
+            theStage.setScene(theScene);
+            
+            Canvas canvas = new Canvas(width, height);
+            root.getChildren().add(canvas);
+            this.canvas = canvas;
+            
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            this.gc = gc;
 
-        Timeline gameLoop = new Timeline();
-        gameLoop.setCycleCount(Timeline.INDEFINITE);
+            Timeline gameLoop = new Timeline();
+            gameLoop.setCycleCount(Timeline.INDEFINITE);
 
-        // Object animations are shown on this
-        ImageView imageView = new ImageView();
-        root.getChildren().add(imageView);
+            // Handle input
+            theScene.setOnKeyPressed(Input::handlePressed);
+            theScene.setOnKeyReleased(Input::handleReleased);
 
-        /*ImageViewSprite anim = new ImageViewSprite(imageView, new Image("images/playerAnim.png"), 4, 1, 4, 320, 320, 60);
-        anim.start();*/
+            // Run main game create event before going to game loop
+            createEvent();
+            
+            // Control game loop and it's speed
+            KeyFrame kf = new KeyFrame(
+                Duration.seconds(0.017),                // 60 FPS
+                (e)->this.controlGameLoop());
+            
+            gameLoop.getKeyFrames().add( kf );
+            gameLoop.play();
 
-        // Handle input
-        theScene.setOnKeyPressed(Input::handlePressed);
-        theScene.setOnKeyReleased(Input::handleReleased);
-
-        // Run main game create event before going to game loop
-        createEvent();
-        
-        // Control game loop and it's speed
-        KeyFrame kf = new KeyFrame(
-            Duration.seconds(0.017),                // 60 FPS
-            (e)->this.controlGameLoop());
-        
-        gameLoop.getKeyFrames().add( kf );
-        gameLoop.play();
-
-        stage.show();
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            stop();
+        }
     }
 
     public abstract void createEvent();
@@ -204,6 +203,7 @@ public abstract class GEngine extends Application {
         objects.add(obj);
         obj.setGraphicsContext(gc);
         obj.createEvent();
+        root.getChildren().add(obj.getView());
         return obj;
     }
 

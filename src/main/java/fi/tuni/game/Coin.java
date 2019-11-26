@@ -20,6 +20,6 @@ public class Coin extends GObject {
 
     @Override
     public void drawEvent() {
-        spriteDraw();
+        //spriteDraw();
     }
 }
