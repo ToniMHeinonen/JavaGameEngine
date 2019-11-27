@@ -5,29 +5,60 @@ import javafx.scene.image.Image;
 
 public class AnimatedImage {
 	
-	protected final Image source;
-	protected final double frameWidth;
-	protected final double frameHeight;
-	protected final int frameCount;
-	protected int frameRepeat;
-	protected int currentFrame;
+	protected final Image image;
+	public final int totalFrames; //Total number of frames in the sequence
+    private float fps; //frames per second I.E. 24
+
+    public final int cols; //Number of columns on the sprite sheet
+    public final int rows; //Number of rows on the sprite sheet
+
+    public final int frameWidth; //Width of an individual frame
+    public final int frameHeight; //Height of an individual frame
+
+	private int currentCol = 0;
+    private int currentRow = 0;
+
+    private long lastFrame = 0;
 	
-	public AnimatedImage(Image source, double frameWidth, double frameHeight, int frameCount, int frameRepeat) {
-		this.source = source;
+	public AnimatedImage(Image image, int columns, int rows, int frameWidth, int frameHeight, int totalFrames, int framesPerSecond) {
+		this.image = image;
+
+		cols = columns;
+        this.rows = rows;
 		this.frameWidth = frameWidth;
 		this.frameHeight = frameHeight;
-		this.frameCount = frameCount;
-		this.frameRepeat = frameRepeat;
-		currentFrame = 0;
+		this.totalFrames = totalFrames;
+		fps = framesPerSecond;
 	}
 	
 	public void render(GraphicsContext gc, double x, double y, double width, double height) {
-		currentFrame++;
-		if(currentFrame/frameRepeat >= frameCount) {
-			currentFrame = 0;
-		}
-		gc.drawImage(source, (int)(currentFrame/frameRepeat)*frameWidth,
-			0, frameWidth, frameHeight, x, y, width, height);
+		long now = System.nanoTime();
+		int frameJump = (int) Math.floor((now - lastFrame) / (1000000000 / fps)); //Determine how many frames we need to advance to maintain frame rate independence
+
+        //Do a bunch of math to determine where the viewport needs to be positioned on the sprite sheet
+        if (frameJump >= 1) {
+			lastFrame = now;
+            int addRows = (int) Math.floor((float) frameJump / (float) cols);
+            int frameAdd = frameJump - (addRows * cols);
+
+            if (currentCol + frameAdd >= cols) {
+                currentRow += addRows + 1;
+                currentCol = frameAdd - (cols - currentCol);
+            } else {
+                currentRow += addRows;
+                currentCol += frameAdd;
+            }
+            currentRow = (currentRow >= rows) ? currentRow - ((int) Math.floor((float) currentRow / rows) * rows) : currentRow;
+
+            //The last row may or may not contain the full number of columns
+            if ((currentRow * cols) + currentCol >= totalFrames) {
+                currentRow = 0;
+                currentCol = Math.abs(currentCol - (totalFrames - (int) (Math.floor((float) totalFrames / cols) * cols)));
+            }
+        }
+		
+		gc.drawImage(image, currentCol * frameWidth,
+			currentRow * frameHeight, frameWidth, frameHeight, x, y, width, height);
     }
 
     public double getFrameWidth() {
@@ -38,11 +69,11 @@ public class AnimatedImage {
         return frameHeight;
 	}
 
-	public int getFrameRepeat() {
-		return frameRepeat;
+	public float getFps() {
+		return fps;
 	}
 
-	public void setFrameRepeat(int frameRepeat) {
-		this.frameRepeat = frameRepeat;
+	public void setFps(int fps) {
+		this.fps = fps;
 	}
 }

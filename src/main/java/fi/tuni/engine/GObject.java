@@ -41,7 +41,8 @@ public abstract class GObject implements Global {
     public AnimatedImage spriteCreate(String imagePath, int columns, int rows,
         int totalFrames, int frameWidth, int frameHeight, int frameSpeed) {
         Image img = new Image(imagePath);
-        AnimatedImage anim = new AnimatedImage(img, frameWidth, frameHeight, totalFrames, frameSpeed);
+        AnimatedImage anim = new AnimatedImage(img, columns, rows, frameWidth,
+             frameHeight, totalFrames, frameSpeed);
 
         return anim;
     }
@@ -66,8 +67,8 @@ public abstract class GObject implements Global {
         drawAnimation = true;
     }
 
-    public void spriteSpeed(AnimatedImage sprite, int frameSpeed) {
-        sprite.setFrameRepeat(frameSpeed);
+    public void spriteSpeed(AnimatedImage sprite, int fps) {
+        sprite.setFps(fps);
     }
 
     /**

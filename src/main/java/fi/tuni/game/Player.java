@@ -23,7 +23,7 @@ public class Player extends GObject {
         Image img = spriteCreate("images/player.png");
         //spriteResize(32, 32);
 
-        AnimatedImage idle = spriteCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 20);
+        AnimatedImage idle = spriteCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 10);
         spriteSet(idle);
         spriteResize(32, 32);
     }
