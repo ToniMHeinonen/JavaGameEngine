@@ -11,9 +11,9 @@ public abstract class GObject {
     
     private double x, y, width, height, origWidth, origHeight;
     private GraphicsContext gc;
-    private ImageView view = new ImageView();
-    private Animator animator = new Animator(view);
+    private AnimatedImage currentAnim;
     private Image self;
+    private boolean drawAnimation;
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
     private ArrayList<GObject> collidedObjects = new ArrayList<>();
@@ -38,27 +38,32 @@ public abstract class GObject {
         return self;
     }
 
-    public Animation spriteCreate(String imagePath, int columns, int rows,
-        int totalFrames, int frameWidth, int frameHeight, float framesPerSecond) {
+    public AnimatedImage spriteCreate(String imagePath, int columns, int rows,
+        int totalFrames, int frameWidth, int frameHeight, int framesPerSecond) {
         Image img = new Image(imagePath);
-        Animation anim = new Animation(img, columns, rows,
-        totalFrames, frameWidth, frameHeight, framesPerSecond);
+        AnimatedImage anim = new AnimatedImage(img, frameWidth, frameHeight, totalFrames, framesPerSecond);
 
         return anim;
     }
 
     public void spriteSet(Image sprite) {
+        width = sprite.getWidth();
+        height = sprite.getHeight();
+        setOriginalSize();
+        updatePositionAndSize();
+
         self = sprite;
-        view.setImage(self);
+        drawAnimation = false;
     }
 
-    public void spriteSet(Animation sprite) {
+    public void spriteSet(AnimatedImage sprite) {
         width = sprite.getFrameWidth();
         height = sprite.getFrameHeight();
         setOriginalSize();
         updatePositionAndSize();
 
-        playAnimation(sprite);
+        this.currentAnim = sprite;
+        drawAnimation = true;
     }
 
     /**
@@ -86,23 +91,15 @@ public abstract class GObject {
      * Draws the sprite in it's x and y coordinate.
      */
     public void drawSelf() {
-        gc.drawImage(self, x, y, width, height);
+        if (drawAnimation)
+            currentAnim.render(gc, x, y, width, height);
+        else
+            gc.drawImage(self, x, y, width, height);
     }
 
     private void setOriginalSize() {
         origWidth = width;
         origHeight = height;
-    }
-
-    /*************************
-        ANIMATIONS
-    **************************/
-    public void playAnimation(Animation sprite) {
-        animator.playAnimation(sprite);
-    }
-
-    public void stopAnimation() {
-        animator.stop();
     }
 
     /*************************
@@ -113,10 +110,6 @@ public abstract class GObject {
      */
     private void updatePositionAndSize() {
         bounds.setBox(x, y, width, height);
-        view.setX(x);
-        view.setY(y);
-        view.setFitWidth(width);
-        view.setFitHeight(height);
     }
 
     /**
@@ -264,10 +257,6 @@ public abstract class GObject {
 
     public GObject getOther() {
         return other;
-    }
-
-    public ImageView getView() {
-        return view;
     }
 
     public double getWidth() {

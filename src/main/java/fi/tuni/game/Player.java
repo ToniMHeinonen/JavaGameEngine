@@ -2,6 +2,7 @@ package fi.tuni.game;
 
 import fi.tuni.engine.GObject;
 import fi.tuni.engine.tools.*;
+import javafx.scene.image.Image;
 
 public class Player extends GObject {
 
@@ -18,12 +19,12 @@ public class Player extends GObject {
 
     @Override
     public void createEvent() {
-        //spriteCreate("images/player.png");
+        Image img = spriteCreate("images/player.png");
         //spriteResize(32, 32);
-        Animation idle = spriteCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 20);
-        this.idle = idle;
+
+        AnimatedImage idle = spriteCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 20);
         spriteSet(idle);
-        spriteResize(0.5);
+        spriteResize(32, 32);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class Player extends GObject {
 
     @Override
     public void drawEvent() {
-        //drawBounds(1);
+        drawBounds(1);
         drawSelf();
     }
 }

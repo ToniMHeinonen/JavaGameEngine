@@ -21,7 +21,7 @@ public class Coin extends GObject {
 
     @Override
     public void drawEvent() {
-        drawBounds(1);
-        drawSelf();
+        //drawBounds(1);
+        //drawSelf();
     }
 }

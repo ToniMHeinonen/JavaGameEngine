@@ -202,7 +202,6 @@ public abstract class GEngine extends Application {
         objects.add(obj);
         obj.setGraphicsContext(gc);
         obj.createEvent();
-        root.getChildren().add(obj.getView());
         return obj;
     }
 
@@ -238,7 +237,6 @@ public abstract class GEngine extends Application {
             // Remove from temp to not disrupt this for loop
             if (o.isDestroyThis()) {
                 temp.remove(o);
-                root.getChildren().remove(o.getView());
             } 
         }
 
