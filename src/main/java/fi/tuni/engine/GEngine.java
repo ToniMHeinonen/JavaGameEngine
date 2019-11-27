@@ -98,7 +98,6 @@ public abstract class GEngine extends Application {
         for (GObject o : objects) {
             o.stepEvent();
             o.drawEvent();
-            o.resetReferences();
         }
 
         destroyFlagged();
@@ -239,6 +238,7 @@ public abstract class GEngine extends Application {
             // Remove from temp to not disrupt this for loop
             if (o.isDestroyThis()) {
                 temp.remove(o);
+                root.getChildren().remove(o.getView());
             } 
         }
 

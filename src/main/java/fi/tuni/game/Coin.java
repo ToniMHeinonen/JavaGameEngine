@@ -1,6 +1,7 @@
 package fi.tuni.game;
 
 import fi.tuni.engine.GObject;
+import fi.tuni.engine.tools.*;
 
 public class Coin extends GObject {
 
@@ -20,6 +21,7 @@ public class Coin extends GObject {
 
     @Override
     public void drawEvent() {
-        //spriteDraw();
+        drawBounds(1);
+        drawSelf();
     }
 }

@@ -1,8 +1,6 @@
 package fi.tuni.engine.tools;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Animation {
 
@@ -10,7 +8,7 @@ public class Animation {
     public final Image image;
 
     public final int totalFrames; //Total number of frames in the sequence
-    public final float fps; //frames per second I.E. 24
+    private float fps; //frames per second I.E. 24
 
     public final int cols; //Number of columns on the sprite sheet
     public final int rows; //Number of rows on the sprite sheet
@@ -27,5 +25,21 @@ public class Animation {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         fps = framesPerSecond;
+    }
+
+    public void setFps(float fps) {
+        this.fps = fps;
+    }
+
+    public float getFps() {
+        return fps;
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public int getFrameHeight() {
+        return frameHeight;
     }
 }

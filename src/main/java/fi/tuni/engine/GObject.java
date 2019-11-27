@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 
 public abstract class GObject {
     
-    private double x, y, width, height;
+    private double x, y, width, height, origWidth, origHeight;
     private GraphicsContext gc;
     private ImageView view = new ImageView();
     private Animator animator = new Animator(view);
@@ -31,33 +31,55 @@ public abstract class GObject {
     **************************/
     /**
      * Creates new sprite.
-     * @param path image to create
+     * @param imagePath image to create
      */
-    public void spriteCreate(String path) {
-        self = new Image(path);
-        width = self.getWidth();
-        height = self.getHeight();
-        updateBounds();
+    public Image spriteCreate(String imagePath) {
+        self = new Image(imagePath);
+        return self;
     }
 
-    public Animation animationCreate(String imagePath, int columns, int rows,
+    public Animation spriteCreate(String imagePath, int columns, int rows,
         int totalFrames, int frameWidth, int frameHeight, float framesPerSecond) {
         Image img = new Image(imagePath);
         Animation anim = new Animation(img, columns, rows,
         totalFrames, frameWidth, frameHeight, framesPerSecond);
-        animator.startAnimation(anim);
+
         return anim;
+    }
+
+    public void spriteSet(Image sprite) {
+        self = sprite;
+        view.setImage(self);
+    }
+
+    public void spriteSet(Animation sprite) {
+        width = sprite.getFrameWidth();
+        height = sprite.getFrameHeight();
+        setOriginalSize();
+        updatePositionAndSize();
+
+        playAnimation(sprite);
     }
 
     /**
      * Resizes the sprite in use.
-     * @param width
-     * @param height
+     * @param width to change
+     * @param height to change
      */
     public void spriteResize(double width, double height) {
         this.width = width;
         this.height = height;
-        updateBounds();
+        updatePositionAndSize();
+    }
+
+    /**
+     * Resizes the sprite in use.
+     * @param percent 1 = 100%
+     */
+    public void spriteResize(double percent) {
+        this.width = origWidth * percent;
+        this.height = origHeight * percent;
+        updatePositionAndSize();
     }
 
     /**
@@ -67,14 +89,34 @@ public abstract class GObject {
         gc.drawImage(self, x, y, width, height);
     }
 
+    private void setOriginalSize() {
+        origWidth = width;
+        origHeight = height;
+    }
+
+    /*************************
+        ANIMATIONS
+    **************************/
+    public void playAnimation(Animation sprite) {
+        animator.playAnimation(sprite);
+    }
+
+    public void stopAnimation() {
+        animator.stop();
+    }
+
     /*************************
         COLLISIONS
     **************************/
     /**
      * Move bounds to new location.
      */
-    private void updateBounds() {
+    private void updatePositionAndSize() {
         bounds.setBox(x, y, width, height);
+        view.setX(x);
+        view.setY(y);
+        view.setFitWidth(width);
+        view.setFitHeight(height);
     }
 
     /**
@@ -138,14 +180,6 @@ public abstract class GObject {
         return false;
     }
 
-    /**
-     * Resets references in case they got destroyed.
-     */
-    public void resetReferences() {
-        other = null;               // Clear collided object
-        collidedObjects.clear();    // Clear collided objects
-    }
-
     /*************************
         ENGINE METHODS
     **************************/
@@ -168,13 +202,19 @@ public abstract class GObject {
     /*************************
         GETTERS & SETTERS
     **************************/
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+        updatePositionAndSize();
+    }
+
     public double getX() {
         return x;
     }
 
     public void setX(double x) {
         this.x = x;
-        updateBounds();
+        updatePositionAndSize();
     }
 
     public double getY() {
@@ -183,7 +223,7 @@ public abstract class GObject {
 
     public void setY(double y) {
         this.y = y;
-        updateBounds();
+        updatePositionAndSize();
     }
 
     public GraphicsContext getGraphicsContext() {
@@ -228,5 +268,13 @@ public abstract class GObject {
 
     public ImageView getView() {
         return view;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 }

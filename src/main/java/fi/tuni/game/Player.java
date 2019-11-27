@@ -7,6 +7,7 @@ public class Player extends GObject {
 
     private int playerSlot = 1;
     private GObject target;
+    private Animation idle;
 
     public Player() {}
 
@@ -19,11 +20,15 @@ public class Player extends GObject {
     public void createEvent() {
         //spriteCreate("images/player.png");
         //spriteResize(32, 32);
-        Animation idle = animationCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 50);
+        Animation idle = spriteCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 20);
+        this.idle = idle;
+        spriteSet(idle);
+        spriteResize(0.5);
     }
 
     @Override
     public void stepEvent() {
+        // Player 1 movement
         if (playerSlot == 1) {
             if (Input.isKeyPressedHold("RIGHT")) {
                 setX(getX() + 1);
@@ -33,6 +38,7 @@ public class Player extends GObject {
             }
         }
 
+        // Player 2 movement
         if (playerSlot == 2) {
             if (Input.isKeyPressedHold("D")) {
                 setX(getX() + 1);
@@ -42,6 +48,14 @@ public class Player extends GObject {
             }
         }
 
+        // Change animation speed
+        if (Input.isKeyPressed("J"))
+            idle.setFps(idle.getFps() - 1);
+
+        if (Input.isKeyPressed("K"))
+            idle.setFps(idle.getFps() + 1);
+
+        // Destroy classes
         if (Input.isKeyPressed("I"))
             destroyInstance(Player.class);
 
@@ -50,6 +64,7 @@ public class Player extends GObject {
                 destroyInstance(this);
         }
 
+        // Test input methods
         if (Input.isKeyPressed("U"))
             System.out.println("Pressed");
         
@@ -59,6 +74,7 @@ public class Player extends GObject {
         if (Input.isKeyReleased("U"))
             System.out.println("Released");
 
+        // Test collisions
         /*if (collidesWith(Player.class)) {
             System.out.println("Hit");
             for (GObject o : getCollidedObjects()) {
@@ -76,6 +92,6 @@ public class Player extends GObject {
     @Override
     public void drawEvent() {
         //drawBounds(1);
-        //spriteDraw();
+        drawSelf();
     }
 }

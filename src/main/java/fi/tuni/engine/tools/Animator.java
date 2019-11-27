@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 public class Animator extends AnimationTimer {
 
     private ImageView imageView; //Image view that will display our sprite
+    private Animation currentAnim;
 
     private int totalFrames; //Total number of frames in the sequence
     private float fps; //frames per second I.E. 24
@@ -27,13 +28,14 @@ public class Animator extends AnimationTimer {
         this.imageView = view;
     }
 
-    public void startAnimation(Animation anim) {
+    public void playAnimation(Animation anim) {
+        currentAnim = anim;
         cols = anim.cols;
         this.rows = anim.rows;
         this.totalFrames = anim.totalFrames;
         this.frameWidth = anim.frameWidth;
         this.frameHeight = anim.frameHeight;
-        fps = anim.fps;
+        fps = anim.getFps();
 
         imageView.setImage(anim.image);
         imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
@@ -45,6 +47,8 @@ public class Animator extends AnimationTimer {
 
     @Override
     public void handle(long now) {
+        fps = currentAnim.getFps();
+        
         int frameJump = (int) Math.floor((now - lastFrame) / (1000000000 / fps)); //Determine how many frames we need to advance to maintain frame rate independence
 
         //Do a bunch of math to determine where the viewport needs to be positioned on the sprite sheet
