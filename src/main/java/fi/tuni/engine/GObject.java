@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import fi.tuni.engine.tools.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
-public abstract class GObject {
+public abstract class GObject implements Global {
     
     private double x, y, width, height, origWidth, origHeight;
     private GraphicsContext gc;
@@ -39,9 +39,9 @@ public abstract class GObject {
     }
 
     public AnimatedImage spriteCreate(String imagePath, int columns, int rows,
-        int totalFrames, int frameWidth, int frameHeight, int framesPerSecond) {
+        int totalFrames, int frameWidth, int frameHeight, int frameSpeed) {
         Image img = new Image(imagePath);
-        AnimatedImage anim = new AnimatedImage(img, frameWidth, frameHeight, totalFrames, framesPerSecond);
+        AnimatedImage anim = new AnimatedImage(img, frameWidth, frameHeight, totalFrames, frameSpeed);
 
         return anim;
     }
@@ -64,6 +64,10 @@ public abstract class GObject {
 
         this.currentAnim = sprite;
         drawAnimation = true;
+    }
+
+    public void spriteSpeed(AnimatedImage sprite, int frameSpeed) {
+        sprite.setFrameRepeat(frameSpeed);
     }
 
     /**
@@ -115,11 +119,15 @@ public abstract class GObject {
     /**
      * Draws collision bounds on screen.
      * @param alpha to use for drawing
+     * @param color to use for drawing
      */
-    public void drawBounds(double alpha) {
+    public void drawBounds(double alpha, Color color) {
         gc.setGlobalAlpha(alpha);
+        gc.setFill(color);
         gc.fillRect(x, y, width, height);
+        // Reset values
         gc.setGlobalAlpha(1);
+        gc.setFill(cBlack);
     }
 
     /**

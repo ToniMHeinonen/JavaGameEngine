@@ -25,10 +25,6 @@ public abstract class GEngine extends Application {
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void start(Stage theStage) throws Exception {
         try {

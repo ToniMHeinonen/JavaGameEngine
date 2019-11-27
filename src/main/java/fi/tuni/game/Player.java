@@ -3,6 +3,7 @@ package fi.tuni.game;
 import fi.tuni.engine.GObject;
 import fi.tuni.engine.tools.*;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class Player extends GObject {
 
@@ -92,7 +93,7 @@ public class Player extends GObject {
 
     @Override
     public void drawEvent() {
-        drawBounds(1);
+        drawBounds(1, Color.RED);
         drawSelf();
     }
 }

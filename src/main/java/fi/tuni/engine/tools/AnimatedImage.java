@@ -3,8 +3,8 @@ package fi.tuni.engine.tools;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class AnimatedImage
-{
+public class AnimatedImage {
+	
 	protected final Image source;
 	protected final double frameWidth;
 	protected final double frameHeight;
@@ -36,5 +36,13 @@ public class AnimatedImage
 
     public double getFrameHeight() {
         return frameHeight;
-    }
+	}
+
+	public int getFrameRepeat() {
+		return frameRepeat;
+	}
+
+	public void setFrameRepeat(int frameRepeat) {
+		this.frameRepeat = frameRepeat;
+	}
 }
