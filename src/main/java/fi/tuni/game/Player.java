@@ -8,8 +8,9 @@ import javafx.scene.paint.Color;
 public class Player extends GObject {
 
     private int playerSlot = 1;
+    private Image img;
+    private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
     private GObject target;
-    private Animation idle;
 
     public Player() {}
 
@@ -21,11 +22,13 @@ public class Player extends GObject {
     @Override
     public void createEvent() {
         Image img = spriteCreate("images/player.png");
-        //spriteResize(32, 32);
+        this.img = img;
 
-        AnimatedImage idle = spriteCreate("images/playerAnim.png", 4, 1, 4, 320, 320, 10);
-        spriteSet(idle);
-        spriteResize(32, 32);
+        playerDown = spriteCreate("images/playerDown.png", 4, 1, 4, 48, 70, 10);
+        playerUp = spriteCreate("images/playerUp.png", 4, 1, 4, 48, 70, 10);
+        playerLeft = spriteCreate("images/playerLeft.png", 4, 1, 4, 48, 70, 10);
+        playerRight = spriteCreate("images/playerRight.png", 4, 1, 4, 48, 70, 10);
+        spriteSet(playerDown);
     }
 
     @Override
@@ -33,10 +36,24 @@ public class Player extends GObject {
         // Player 1 movement
         if (playerSlot == 1) {
             if (Input.isKeyPressedHold("RIGHT")) {
+                spriteSet(playerRight);
                 setX(getX() + 1);
             }
             if (Input.isKeyPressedHold("LEFT")) {
+                spriteSet(playerLeft);
                 setX(getX() - 1);
+            }
+            if (Input.isKeyPressedHold("DOWN")) {
+                spriteSet(playerDown);
+                setY(getY() + 1);
+            }
+            if (Input.isKeyPressedHold("UP")) {
+                spriteSet(playerUp);
+                setY(getY() - 1);
+            }
+
+            if (Input.isKeyPressedHold("R")) {
+                spriteSet(img);
             }
         }
 
@@ -52,10 +69,10 @@ public class Player extends GObject {
 
         // Change animation speed
         if (Input.isKeyPressed("J"))
-            idle.setFps(idle.getFps() - 1);
+            spriteSpeed(getCurrentAnimation().getFps() + 1);
 
         if (Input.isKeyPressed("K"))
-            idle.setFps(idle.getFps() + 1);
+            spriteSpeed(getCurrentAnimation().getFps() - 1);
 
         // Destroy classes
         if (Input.isKeyPressed("I"))

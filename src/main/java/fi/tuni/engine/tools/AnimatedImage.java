@@ -61,6 +61,12 @@ public class AnimatedImage {
 			currentRow * frameHeight, frameWidth, frameHeight, x, y, width, height);
     }
 
+    public void startOver() {
+        this.currentRow = 0;
+        this.currentCol = 0;
+        this.lastFrame = System.nanoTime();
+    }
+
     public double getFrameWidth() {
         return frameWidth;
     }
@@ -73,7 +79,7 @@ public class AnimatedImage {
 		return fps;
 	}
 
-	public void setFps(int fps) {
+	public void setFps(float fps) {
 		this.fps = fps;
 	}
 }
