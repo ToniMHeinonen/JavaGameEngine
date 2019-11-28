@@ -13,6 +13,7 @@ public abstract class GObject implements Global {
     private GraphicsContext gc;
     private Animator animator = new Animator();
     private Image self;
+    private AnimatedImage curAnim;
     private float spriteSpd = -99;
     private boolean drawAnimation;
     private GEngine mainClass;
@@ -62,12 +63,13 @@ public abstract class GObject implements Global {
         self = sprite;
     }
 
-    public void spriteSet(AnimatedImage sprite) {
+    public void spriteSet(AnimatedImage sprite, boolean startFromBeginning, boolean loop) {
         // If animation running and it's this one, skip code
-        if (drawAnimation && animator.getCurrentAnimation() == sprite)
+        if (drawAnimation && curAnim == sprite)
             return;
         
         drawAnimation = true;
+        curAnim = sprite;
 
         // If spriteSpd has not been altered, use given sprite's fps
         if (this.spriteSpd == -99)
@@ -78,17 +80,24 @@ public abstract class GObject implements Global {
         setOriginalSize();
         updatePositionAndSize();
 
-        animator.setAnimation(sprite);
+        animator.setAnimation(sprite, loop);
         animator.setFps(this.spriteSpd);
+
+        if (startFromBeginning)
+            animator.startFromBeginning();
     }
 
-    public void spriteSpeed(boolean addToCurrent, float fps) {
+    public void spriteSpeed(float fps, boolean addToCurrent) {
         if (addToCurrent)
             this.spriteSpd += fps;
         else
             this.spriteSpd = fps;
 
         this.animator.setFps(this.spriteSpd);
+    }
+
+    public void spriteIndex(int index) {
+        this.animator.setCurrentFrame(index);
     }
 
     /**
@@ -110,6 +119,10 @@ public abstract class GObject implements Global {
         this.width = origWidth * percent;
         this.height = origHeight * percent;
         updatePositionAndSize();
+    }
+
+    public boolean spriteAnimationEnded() {
+        return animator.animationEnded();
     }
 
     /**
@@ -318,5 +331,9 @@ public abstract class GObject implements Global {
 
     public float getSpriteSpd() {
         return spriteSpd;
+    }
+
+    public AnimatedImage getCurrentAnimation() {
+        return curAnim;
     }
 }

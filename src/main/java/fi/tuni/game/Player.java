@@ -9,7 +9,7 @@ public class Player extends GObject {
 
     private int playerSlot = 1;
     private Image img;
-    private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
+    private AnimatedImage whole, playerDown, playerUp, playerLeft, playerRight;
     private GObject target;
 
     public Player() {}
@@ -28,7 +28,10 @@ public class Player extends GObject {
         playerUp = spriteCreate("images/playerUp.png", 4, 1, 4, 48, 70, 10);
         playerLeft = spriteCreate("images/playerLeft.png", 4, 1, 4, 48, 70, 10);
         playerRight = spriteCreate("images/playerRight.png", 4, 1, 4, 48, 70, 10);
-        spriteSet(playerDown);
+        spriteSet(playerDown, true, true);
+
+        whole = spriteCreate("images/chrono.png", 4, 4, 16, 48, 72, 10);
+        spriteSet(whole, true, false);
     }
 
     @Override
@@ -36,24 +39,30 @@ public class Player extends GObject {
         // Player 1 movement
         if (playerSlot == 1) {
             if (Input.isKeyPressedHold("RIGHT")) {
-                spriteSet(playerRight);
+                spriteSet(playerRight, false, true);
                 setX(getX() + 1);
             }
             if (Input.isKeyPressedHold("LEFT")) {
-                spriteSet(playerLeft);
+                spriteSet(playerLeft, false,true);
                 setX(getX() - 1);
             }
             if (Input.isKeyPressedHold("DOWN")) {
-                spriteSet(playerDown);
+                spriteSet(playerDown, false, true);
                 setY(getY() + 1);
             }
             if (Input.isKeyPressedHold("UP")) {
-                spriteSet(playerUp);
+                spriteSet(playerUp, false, true);
                 setY(getY() - 1);
             }
 
             if (Input.isKeyPressedHold("R")) {
                 spriteSet(img);
+            }
+        }
+
+        if (getCurrentAnimation() == whole) {
+            if (spriteAnimationEnded()) {
+                spriteSet(playerRight, false, true);
             }
         }
 
@@ -69,10 +78,10 @@ public class Player extends GObject {
 
         // Change animation speed
         if (Input.isKeyPressed("J"))
-            spriteSpeed(true, 1);
+            spriteSpeed(1, true);
 
         if (Input.isKeyPressed("K"))
-            spriteSpeed(true, -1);
+            spriteSpeed(-1, true);
 
         // Destroy classes
         if (Input.isKeyPressed("I"))
