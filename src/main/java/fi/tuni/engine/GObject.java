@@ -205,6 +205,7 @@ public abstract class GObject implements Global {
     /*************************
         ENGINE METHODS
     **************************/
+    // Instances
     public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
         return global().createInstance(x, y, type);
     }
@@ -219,6 +220,25 @@ public abstract class GObject implements Global {
 
     public <T extends GObject> void destroyInstance(Class<T> type) {
         global().destroyInstance(type);
+    }
+
+    // Drawing
+    public void drawImage(Image img, double x, double y,
+    double width, double height) {
+        global().drawImage(img, x, y, width, height);
+    }
+
+    public void drawImage(Image img, double x, double y) {
+        global().drawImage(img, x, y);
+    }
+
+    public void drawAnimatedImage(AnimatedImage img, double x, double y,
+                 double width, double height) {
+        global().drawAnimatedImage(img, x, y, width, height);
+    }
+
+    public void drawAnimatedImage(AnimatedImage img, double x, double y) {
+        global().drawAnimatedImage(img, x, y);
     }
 
     /*************************

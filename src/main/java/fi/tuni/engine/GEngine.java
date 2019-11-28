@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
@@ -138,6 +139,27 @@ public abstract class GEngine extends Application {
         this.height = height;
         canvas.setWidth(width);
         canvas.setHeight(height);
+    }
+
+    /*************************
+        DRAWING
+    **************************/
+    public void drawImage(Image img, double x, double y,
+    double width, double height) {
+        gc.drawImage(img, x, y, width, height);
+    }
+
+    public void drawImage(Image img, double x, double y) {
+        gc.drawImage(img, x, y, img.getWidth(), img.getHeight());
+    }
+    
+    public void drawAnimatedImage(AnimatedImage img, double x, double y,
+                 double width, double height) {
+        img.render(gc, x, y, width, height);
+    }
+
+    public void drawAnimatedImage(AnimatedImage img, double x, double y) {
+        img.render(gc, x, y, img.getFrameWidth(), img.getFrameHeight());
     }
 
     /*************************

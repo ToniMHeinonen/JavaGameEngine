@@ -7,5 +7,4 @@ import javafx.scene.paint.Color;
 public interface Global {
     public final Color cBlack = Color.BLACK;
     public final Color cRed = Color.RED;
-
 }
