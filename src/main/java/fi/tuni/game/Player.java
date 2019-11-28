@@ -69,10 +69,10 @@ public class Player extends GObject {
 
         // Change animation speed
         if (Input.isKeyPressed("J"))
-            spriteSpeed(getCurrentAnimation().getFps() + 1);
+            spriteSpeed(true, 1);
 
         if (Input.isKeyPressed("K"))
-            spriteSpeed(getCurrentAnimation().getFps() - 1);
+            spriteSpeed(true, -1);
 
         // Destroy classes
         if (Input.isKeyPressed("I"))

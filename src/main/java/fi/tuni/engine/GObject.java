@@ -11,9 +11,9 @@ public abstract class GObject implements Global {
     
     private double x, y, width, height, origWidth, origHeight;
     private GraphicsContext gc;
-    private AnimatedImage currentAnimation;
+    private Animator animator = new Animator();
     private Image self;
-    private float spriteSpeed = -99;
+    private float spriteSpd = -99;
     private boolean drawAnimation;
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
@@ -64,28 +64,31 @@ public abstract class GObject implements Global {
 
     public void spriteSet(AnimatedImage sprite) {
         // If animation running and it's this one, skip code
-        if (drawAnimation && this.currentAnimation == sprite)
+        if (drawAnimation && animator.getCurrentAnimation() == sprite)
             return;
         
         drawAnimation = true;
 
-        if (this.spriteSpeed == -99)
-            this.spriteSpeed = sprite.getFps();
-        else
-            sprite.setFps(this.spriteSpeed);
+        // If spriteSpd has not been altered, use given sprite's fps
+        if (this.spriteSpd == -99)
+            this.spriteSpd = sprite.getFps();
 
         width = sprite.getFrameWidth();
         height = sprite.getFrameHeight();
         setOriginalSize();
         updatePositionAndSize();
 
-        this.currentAnimation = sprite;
-        this.currentAnimation.startOver();
+        animator.setAnimation(sprite);
+        animator.setFps(this.spriteSpd);
     }
 
-    public void spriteSpeed(float fps) {
-        this.spriteSpeed = fps;
-        this.currentAnimation.setFps(fps);
+    public void spriteSpeed(boolean addToCurrent, float fps) {
+        if (addToCurrent)
+            this.spriteSpd += fps;
+        else
+            this.spriteSpd = fps;
+
+        this.animator.setFps(this.spriteSpd);
     }
 
     /**
@@ -114,7 +117,7 @@ public abstract class GObject implements Global {
      */
     public void drawSelf() {
         if (drawAnimation)
-            currentAnimation.render(gc, x, y, width, height);
+            animator.render(gc, x, y, width, height);
         else
             gc.drawImage(self, x, y, width, height);
     }
@@ -293,7 +296,7 @@ public abstract class GObject implements Global {
         return height;
     }
 
-    public AnimatedImage getCurrentAnimation() {
-        return currentAnimation;
+    public float getSpriteSpd() {
+        return spriteSpd;
     }
 }
