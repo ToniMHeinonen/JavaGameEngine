@@ -40,6 +40,17 @@ public abstract class GObject implements Global {
         return self;
     }
 
+    /**
+     * Create animated image.
+     * @param imagePath path under resources where image is located
+     * @param columns how many columns image has
+     * @param rows how many rows image has
+     * @param totalFrames how many frames image has
+     * @param frameWidth width of 1 frame
+     * @param frameHeight height of 1 frame
+     * @param frameSpeed how many frames to show per second
+     * @return
+     */
     public AnimatedImage spriteCreate(String imagePath, int columns, int rows,
         int totalFrames, int frameWidth, int frameHeight, int frameSpeed) {
         Image img = new Image(imagePath);
@@ -49,6 +60,10 @@ public abstract class GObject implements Global {
         return anim;
     }
 
+    /**
+     * Set object's sprite to normal image.
+     * @param sprite image to set
+     */
     public void spriteSet(Image sprite) {
         // If using normal sprite already and it's this one, skip code
         if (!drawAnimation && self == sprite)
@@ -63,7 +78,12 @@ public abstract class GObject implements Global {
         self = sprite;
     }
 
-    public void spriteSet(AnimatedImage sprite, boolean startFromBeginning, boolean loop) {
+    /**
+     * Sets object's sprite to an animated image.
+     * @param sprite animated image to set
+     * @param startFromBeginning start animation from beginning
+     */
+    public void spriteSet(AnimatedImage sprite, boolean startFromBeginning) {
         // If animation running and it's this one, skip code
         if (drawAnimation && curAnim == sprite)
             return;
@@ -80,13 +100,18 @@ public abstract class GObject implements Global {
         setOriginalSize();
         updatePositionAndSize();
 
-        animator.setAnimation(sprite, loop);
+        animator.setAnimation(sprite);
         animator.setFps(this.spriteSpd);
 
         if (startFromBeginning)
             animator.startFromBeginning();
     }
 
+    /**
+     * Sets how many frames sprite shows in a second.
+     * @param fps speed to set
+     * @param addToCurrent whether to add to current speed
+     */
     public void spriteSpeed(float fps, boolean addToCurrent) {
         if (addToCurrent)
             this.spriteSpd += fps;
@@ -96,8 +121,20 @@ public abstract class GObject implements Global {
         this.animator.setFps(this.spriteSpd);
     }
 
+    /**
+     * Sets animation to provided index.
+     * @param index to set, starts from 0
+     */
     public void spriteIndex(int index) {
         this.animator.setCurrentFrame(index);
+    }
+
+    /**
+     * Sets whether to loop animation or not.
+     * @param loop whether to loop or not
+     */
+    public void spriteLoop(boolean loop) {
+        this.animator.setLooping(loop);
     }
 
     /**
@@ -121,12 +158,17 @@ public abstract class GObject implements Global {
         updatePositionAndSize();
     }
 
+    /**
+     * Returns if animation has just shown last frame.
+     */
     public boolean spriteAnimationEnded() {
         return animator.animationEnded();
     }
 
     /**
      * Draws the sprite in it's x and y coordinate.
+     * 
+     * Uses object's width and height for drawing.
      */
     public void drawSelf() {
         if (drawAnimation)
@@ -135,6 +177,12 @@ public abstract class GObject implements Global {
             gc.drawImage(self, x, y, width, height);
     }
 
+    /**
+     * Sets original size for sprite.
+     * 
+     * Can be used after spriteResize() to set to current width and height.
+     * Using this will make spriteResize(percent) 100% to be current size.
+     */
     private void setOriginalSize() {
         origWidth = width;
         origHeight = height;
@@ -219,37 +267,88 @@ public abstract class GObject implements Global {
         ENGINE METHODS
     **************************/
     // Instances
+    /**
+     * Creates object from provided class type.
+     * @param x horizontal position
+     * @param y vertical position
+     * @param type object to create
+     * @return instanced object
+     */
     public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
         return global().createInstance(x, y, type);
     }
 
+    /**
+     * Creates provided instance.
+     * @param <T> object which extends GObject
+     * @param x coordinate for instance
+     * @param y coordinate for instance
+     * @param type instance to initialize
+     * @return initialized instance
+     */
     public <T extends GObject> T createInstance(int x, int y, GObject type) {
         return global().createInstance(x, y, type);
     }
 
+    /**
+     * Marks only one instance for destruction.
+     * @param obj instance to destroy
+     */
     public void destroyInstance(GObject obj) {
         global().destroyInstance(obj);
     }
 
+    /**
+     * Marks all instances derived from type for destruction.
+     * @param type class type to destroy
+     */
     public <T extends GObject> void destroyInstance(Class<T> type) {
         global().destroyInstance(type);
     }
 
     // Drawing
+    /**
+     * Draws image to provided coordinate and size.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     * @param width desired width
+     * @param height desired height
+     */
     public void drawImage(Image img, double x, double y,
     double width, double height) {
         global().drawImage(img, x, y, width, height);
     }
 
+    /**
+     * Draws image to provided coordinate.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     */
     public void drawImage(Image img, double x, double y) {
         global().drawImage(img, x, y);
     }
 
+    /**
+     * Draws animated image to provided coordinate and size.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     * @param width desired width
+     * @param height desired height
+     */
     public void drawAnimatedImage(AnimatedImage img, double x, double y,
                  double width, double height) {
         global().drawAnimatedImage(img, x, y, width, height);
     }
 
+    /**
+     * Draws image to provided coordinate.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     */
     public void drawAnimatedImage(AnimatedImage img, double x, double y) {
         global().drawAnimatedImage(img, x, y);
     }
@@ -257,42 +356,81 @@ public abstract class GObject implements Global {
     /*************************
         GETTERS & SETTERS
     **************************/
+    /**
+     * Sets position of object.
+     * @param x coordinate
+     * @param y coordinate
+     */
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
         updatePositionAndSize();
     }
 
+    /**
+     * Returns x coordinate.
+     * @return x coordinate
+     */
     public double getX() {
         return x;
     }
 
+    /**
+     * Sets x position of object.
+     * @param x coordinate
+     */
     public void setX(double x) {
         this.x = x;
         updatePositionAndSize();
     }
 
+    /**
+     * Returns y coordinate.
+     * @return y coordinate
+     */
     public double getY() {
         return y;
     }
 
+    /**
+     * Sets y position of object.
+     * @param y coordinate
+     */
     public void setY(double y) {
         this.y = y;
         updatePositionAndSize();
     }
 
+    /**
+     * Returns canvas's graphicscontext where object draws on.
+     * @return graphics context
+     */
     public GraphicsContext getGraphicsContext() {
         return gc;
     }
 
+    /**
+     * Sets canvas's graphicscontext where object draws on.
+     * @param gc graphics context
+     */
     public void setGraphicsContext(GraphicsContext gc) {
         this.gc = gc;
     }
 
+    /**
+     * Returns reference to main class, which extends GEngine.
+     * @return main class
+     */
     public GEngine global() {
         return mainClass;
     }
 
+    /**
+     * Sets main class when object is created.
+     * 
+     * Main class can not be changed.
+     * @param engine main class
+     */
     public void setMainClass(GEngine engine) {
         if (null == mainClass) {
             mainClass = engine;
@@ -301,38 +439,80 @@ public abstract class GObject implements Global {
         }
     }
 
+    /**
+     * Returns object's collision bounds.
+     * @return bounding box of collision bounds.
+     */
     public BoundingBox getBounds() {
         return bounds;
     }
 
+    /**
+     * Returns if object is marked for destruction.
+     * @return if destroyThis is true
+     */
     public boolean isDestroyThis() {
         return destroyThis;
     }
 
+    /**
+     * Marks object for destruction.
+     * 
+     * Main class uses this, if you want to destroy object, call
+     * instanceDestroy() to destroy it properly.
+     * @param destroyThis
+     */
     public void setDestroyThis(boolean destroyThis) {
         this.destroyThis = destroyThis;
     }
 
+    /**
+     * Returns list of instances which collision happened with.
+     * @return list of instances 
+     */
     public ArrayList<GObject> getCollidedObjects() {
         return collidedObjects;
     }
 
+    /**
+     * Returns other instance which collision happened with.
+     * 
+     * Use this if there is specific instance which you checked
+     * collision with.
+     * @return reference to other instance
+     */
     public GObject getOther() {
         return other;
     }
 
+    /**
+     * Returns width of the object.
+     * @return width
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Returns height of the object.
+     * @return height
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * Returns current sprite's animation speed.
+     * @return
+     */
     public float getSpriteSpd() {
         return spriteSpd;
     }
 
+    /**
+     * Returns current animation which is running.
+     * @return current animation
+     */
     public AnimatedImage getCurrentAnimation() {
         return curAnim;
     }

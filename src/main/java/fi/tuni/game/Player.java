@@ -28,10 +28,10 @@ public class Player extends GObject {
         playerUp = spriteCreate("images/playerUp.png", 4, 1, 4, 48, 70, 10);
         playerLeft = spriteCreate("images/playerLeft.png", 4, 1, 4, 48, 70, 10);
         playerRight = spriteCreate("images/playerRight.png", 4, 1, 4, 48, 70, 10);
-        spriteSet(playerDown, true, true);
+        spriteSet(playerDown, true);
 
         whole = spriteCreate("images/chrono.png", 4, 4, 16, 48, 72, 10);
-        spriteSet(whole, true, false);
+        spriteSet(whole, true);
     }
 
     @Override
@@ -39,19 +39,19 @@ public class Player extends GObject {
         // Player 1 movement
         if (playerSlot == 1) {
             if (Input.isKeyPressedHold("RIGHT")) {
-                spriteSet(playerRight, false, true);
+                spriteSet(playerRight, false);
                 setX(getX() + 1);
             }
             if (Input.isKeyPressedHold("LEFT")) {
-                spriteSet(playerLeft, false,true);
+                spriteSet(playerLeft, false);
                 setX(getX() - 1);
             }
             if (Input.isKeyPressedHold("DOWN")) {
-                spriteSet(playerDown, false, true);
+                spriteSet(playerDown, false);
                 setY(getY() + 1);
             }
             if (Input.isKeyPressedHold("UP")) {
-                spriteSet(playerUp, false, true);
+                spriteSet(playerUp, false);
                 setY(getY() - 1);
             }
 
@@ -62,7 +62,7 @@ public class Player extends GObject {
 
         if (getCurrentAnimation() == whole) {
             if (spriteAnimationEnded()) {
-                spriteSet(playerRight, false, true);
+                spriteSet(playerRight, false);
             }
         }
 

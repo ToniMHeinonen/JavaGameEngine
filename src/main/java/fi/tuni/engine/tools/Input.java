@@ -9,9 +9,14 @@ public abstract class Input {
     private static ArrayList<String> releasedInput = new ArrayList<>();
     private static ArrayList<String> holdInput = new ArrayList<>();
 
+    /**
+     * Handles pressed key event.
+     * @param e pressed key
+     */
     public static void handlePressed(KeyEvent e) {
         String code = e.getCode().toString();
 
+        // Modify some key strings
         code = modifyInputCode(code);
 
         // only add once... prevent duplicates
@@ -21,12 +26,18 @@ public abstract class Input {
         }
     }
 
+    /**
+     * Handles released key event.
+     * @param e released key
+     */
     public static void handleReleased(KeyEvent e) {
         String code = e.getCode().toString();
         code = modifyInputCode(code);
 
+        // Remove released key from lists handling pressed events
         pressedInput.remove(code);
         holdInput.remove(code);
+        // Add to list of released buttons
         releasedInput.add(code);
     }
 

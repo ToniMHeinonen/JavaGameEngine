@@ -19,10 +19,14 @@ public class Animator {
 
     private long lastFrame = 0;
 
-    private boolean loop;
+    private boolean loop = true;
     private boolean animationEnd;
 
-    public void setAnimation(AnimatedImage animatedImage, boolean loop) {
+    /**
+     * Retrieves values from animatedImage to animate it correctly.
+     * @param animatedImage image to animate
+     */
+    public void setAnimation(AnimatedImage animatedImage) {
         this.image = animatedImage.image;
 
 		cols = animatedImage.cols;
@@ -32,16 +36,23 @@ public class Animator {
 		this.totalFrames = animatedImage.totalFrames;
         fps = animatedImage.fps;
 
-        this.loop = loop;
         animationEnd = false;
 
-        // If new sprite has less frames than where last sprite
-        // left off, start from beginning
+        /* If new sprite has less frames than where last sprite
+           left off, start from beginning */
         if (currentCol + currentRow > totalFrames-2) {
             startFromBeginning();
         }
     }
 
+    /**
+     * Draws image on screen and animates it.
+     * @param gc GraphicsContext to which it will be drawn
+     * @param x coordinate
+     * @param y coordinate
+     * @param width of frame
+     * @param height of frame
+     */
     public void render(GraphicsContext gc, double x, double y, double width, double height) {
         animationEnd = false;
         long now = System.nanoTime();
@@ -51,7 +62,6 @@ public class Animator {
 
         //Do a bunch of math to determine where the viewport needs to be positioned on the sprite sheet
         if (frameJump >= 1) {
-            System.out.println(currentCol);
             lastFrame = now;
             int addRows = (int) Math.floor((float) frameJump / (float) cols);
             int frameAdd = frameJump - (addRows * cols);
@@ -84,16 +94,37 @@ public class Animator {
 			currentRow * frameHeight, frameWidth, frameHeight, x, y, width, height);
     }
 
+    /**
+     * Starts animation from beginning.
+     */
     public void startFromBeginning() {
         this.currentRow = 0;
         this.currentCol = 0;
         this.lastFrame = System.nanoTime();
     }
 
+    /**
+     * Sets animation speed.
+     * @param fps speed to set
+     */
     public void setFps(float fps) {
         this.fps = fps;
     }
 
+    /**
+     * Sets if animation loops.
+     * @param loop whether to loop
+     */
+    public void setLooping(boolean loop) {
+        this.loop = loop;
+    }
+
+    /**
+     * Selects frame from image.
+     * 
+     * If you want to draw only certain part of sprite sheet,
+     * set desired frame and set fps to 0.
+     */
     public void setCurrentFrame(int index) {
         // Reset current values
         startFromBeginning();
@@ -114,6 +145,10 @@ public class Animator {
         }
     }
 
+    /**
+     * Returns if animation has just ended.
+     * @return if animation ended
+     */
     public boolean animationEnded() {
         return animationEnd;
     }

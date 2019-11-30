@@ -19,8 +19,9 @@ public class AnimatedImage {
     private int currentRow = 0;
 
     private long lastFrame = 0;
-	
-	public AnimatedImage(Image image, int columns, int rows, int frameWidth, int frameHeight, int totalFrames, int framesPerSecond) {
+    
+    public AnimatedImage(Image image, int columns, int rows, int frameWidth,
+        int frameHeight, int totalFrames, int framesPerSecond) {
 		this.image = image;
 
 		cols = columns;

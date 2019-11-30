@@ -18,14 +18,18 @@ import javafx.util.Duration;
 
 public abstract class GEngine extends Application {
 
-    private int width = 1280;
-    private int height = 720;
+    private int windowWidth = 1280;
+    private int windowHeight = 720;
     private Group root;
     private Stage stage;
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
 
+    /**
+     * Runs at the start of the program.
+     * @param theStage
+     */
     @Override
     public void start(Stage theStage) throws Exception {
         try {
@@ -39,7 +43,7 @@ public abstract class GEngine extends Application {
             Scene theScene = new Scene(root);
             theStage.setScene(theScene);
             
-            Canvas canvas = new Canvas(width, height);
+            Canvas canvas = new Canvas(windowWidth, windowHeight);
             root.getChildren().add(canvas);
             this.canvas = canvas;
             
@@ -71,10 +75,19 @@ public abstract class GEngine extends Application {
         }
     }
 
+    /**
+     * Runs at the start of the program before other events.
+     */
     public abstract void createEvent();
 
+    /**
+     * Runs every frame.
+     */
     public abstract void stepEvent();
 
+    /**
+     * Runs every frame after stepEvent().
+     */
     public abstract void drawEvent();
 
     /*************************
@@ -85,7 +98,7 @@ public abstract class GEngine extends Application {
      */
     private void controlGameLoop() {
         // Clear the canvas
-        gc.clearRect(0, 0, width, height);
+        gc.clearRect(0, 0, windowWidth, windowHeight);
                     
         // Run main game object's step and draw events
         stepEvent();
@@ -135,8 +148,8 @@ public abstract class GEngine extends Application {
      * Sets the width and height for the window.
      */
     public void setWindowSize(int width, int height) {
-        this.width = width;
-        this.height = height;
+        this.windowWidth = width;
+        this.windowHeight = height;
         canvas.setWidth(width);
         canvas.setHeight(height);
     }
@@ -144,20 +157,48 @@ public abstract class GEngine extends Application {
     /*************************
         DRAWING
     **************************/
+    /**
+     * Draws image to provided coordinate and size.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     * @param width desired width
+     * @param height desired height
+     */
     public void drawImage(Image img, double x, double y,
     double width, double height) {
         gc.drawImage(img, x, y, width, height);
     }
 
+    /**
+     * Draws image to provided coordinate.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     */
     public void drawImage(Image img, double x, double y) {
         gc.drawImage(img, x, y, img.getWidth(), img.getHeight());
     }
     
+    /**
+     * Draws animated image to provided coordinate and size.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     * @param width desired width
+     * @param height desired height
+     */
     public void drawAnimatedImage(AnimatedImage img, double x, double y,
                  double width, double height) {
         img.render(gc, x, y, width, height);
     }
 
+    /**
+     * Draws image to provided coordinate.
+     * @param img image to draw
+     * @param x coordinate
+     * @param y coordinate
+     */
     public void drawAnimatedImage(AnimatedImage img, double x, double y) {
         img.render(gc, x, y, img.getFrameWidth(), img.getFrameHeight());
     }
@@ -264,31 +305,58 @@ public abstract class GEngine extends Application {
     /*************************
         GETTERS & SETTERS
     **************************/
-
-    public int getWidth() {
-        return width;
+    /**
+     * Returns width of the window.
+     * @return window width
+     */
+    public int getWindowWidth() {
+        return windowWidth;
     }
 
-    public int getHeight() {
-        return height;
+    /**
+     * Returns height of the window.
+     * @return window height
+     */
+    public int getWindowHeight() {
+        return windowHeight;
     }
 
+    /**
+     * Returns current stage.
+     * @return current stage
+     */
     public Stage getStage() {
         return stage;
     }
 
+    /**
+     * Sets current stage.
+     * @param stage stage to change to
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Returns current canvas.
+     * @return current canvas
+     */
     public Canvas getCanvas() {
         return canvas;
     }
 
+    /**
+     * Sets current canvas.
+     * @param canvas canvas to set to
+     */
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
     }
 
+    /**
+     * Returns all the instances in game.
+     * @return ArrayList<GObject> of objects
+     */
     public ArrayList<GObject> getObjects() {
         return objects;
     }
