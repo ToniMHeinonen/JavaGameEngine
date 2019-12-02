@@ -9,11 +9,22 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.3</version>
         <configuration>
-          <mainClass>fi.tuni.game.Starter</mainClass>
+          <mainClass>fi.tuni.game.Launcher</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -21,7 +32,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.5.0</version>
         <configuration>
-          <mainClass>fi.tuni.game.Starter</mainClass>
+          <mainClass>fi.tuni.game.Launcher</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -36,7 +47,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>fi.tuni.game.Starter</mainClass>
+                  <mainClass>fi.tuni.game.Launcher</mainClass>
                 </transformer>
               </transformers>
             </configuration>

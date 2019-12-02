@@ -148,7 +148,7 @@ public abstract class Highscore {
     
     /** 
      * Gets all the names.
-     * @return ArrayList<String> all names
+     * @return all names
      */
     public static ArrayList<String> getNames() {
         return names;
@@ -157,7 +157,7 @@ public abstract class Highscore {
     
     /** 
      * Gets all the scores.
-     * @return ArrayList<Double> all scores
+     * @return all scores
      */
     public static ArrayList<Double> getScores() {
         return scores;

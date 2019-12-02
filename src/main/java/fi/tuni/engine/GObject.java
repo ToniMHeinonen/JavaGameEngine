@@ -34,6 +34,7 @@ public abstract class GObject implements Global {
     /**
      * Creates new sprite.
      * @param imagePath image to create
+     * @return created image
      */
     public Image spriteCreate(String imagePath) {
         self = new Image(imagePath);
@@ -49,7 +50,7 @@ public abstract class GObject implements Global {
      * @param frameWidth width of 1 frame
      * @param frameHeight height of 1 frame
      * @param frameSpeed how many frames to show per second
-     * @return
+     * @return created animated image
      */
     public AnimatedImage spriteCreate(String imagePath, int columns, int rows,
         int totalFrames, int frameWidth, int frameHeight, int frameSpeed) {
@@ -160,6 +161,7 @@ public abstract class GObject implements Global {
 
     /**
      * Returns if animation has just shown last frame.
+     * @return if animation has just ended
      */
     public boolean spriteAnimationEnded() {
         return animator.animationEnded();
@@ -302,7 +304,7 @@ public abstract class GObject implements Global {
      * Marks all instances derived from type for destruction.
      * @param type class type to destroy
      */
-    public <T extends GObject> void destroyInstance(Class<T> type) {
+    public void destroyInstance(Class<? extends GObject> type) {
         global().destroyInstance(type);
     }
 
@@ -460,7 +462,7 @@ public abstract class GObject implements Global {
      * 
      * Main class uses this, if you want to destroy object, call
      * instanceDestroy() to destroy it properly.
-     * @param destroyThis
+     * @param destroyThis marks if this instance should be destroyed
      */
     public void setDestroyThis(boolean destroyThis) {
         this.destroyThis = destroyThis;
@@ -503,7 +505,7 @@ public abstract class GObject implements Global {
 
     /**
      * Returns current sprite's animation speed.
-     * @return
+     * @return current sprite's animation speed
      */
     public float getSpriteSpd() {
         return spriteSpd;

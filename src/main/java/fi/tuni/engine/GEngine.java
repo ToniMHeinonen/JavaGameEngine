@@ -28,7 +28,7 @@ public abstract class GEngine extends Application {
 
     /**
      * Runs at the start of the program.
-     * @param theStage
+     * @param theStage main stage
      */
     @Override
     public void start(Stage theStage) throws Exception {
@@ -146,6 +146,8 @@ public abstract class GEngine extends Application {
 
     /**
      * Sets the width and height for the window.
+     * @param width width of the window
+     * @param height height of the window
      */
     public void setWindowSize(int width, int height) {
         this.windowWidth = width;
@@ -211,6 +213,7 @@ public abstract class GEngine extends Application {
      * @param x horizontal position
      * @param y vertical position
      * @param type object to create
+     * @param <T> type
      * @return instanced object
      */
     @SuppressWarnings("unchecked")
@@ -355,7 +358,7 @@ public abstract class GEngine extends Application {
 
     /**
      * Returns all the instances in game.
-     * @return ArrayList<GObject> of objects
+     * @return list of objects
      */
     public ArrayList<GObject> getObjects() {
         return objects;

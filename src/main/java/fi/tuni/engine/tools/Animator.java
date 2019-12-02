@@ -124,6 +124,7 @@ public class Animator {
      * 
      * If you want to draw only certain part of sprite sheet,
      * set desired frame and set fps to 0.
+     * @param index set animation to this frame
      */
     public void setCurrentFrame(int index) {
         // Reset current values
