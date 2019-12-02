@@ -2,15 +2,22 @@ package fi.tuni.game;
 
 import fi.tuni.engine.GObject;
 import fi.tuni.engine.tools.*;
+import javafx.scene.paint.Color;
 
 public class Coin extends GObject {
 
+    /**
+     * Creates necessary sprite.
+     */
     @Override
     public void createEvent() {
         spriteCreate("images/Coin.png");
         spriteResize(32, 32);
     }
 
+    /**
+     * Check for collision with the player.
+     */
     @Override
     public void stepEvent() {
         if (collidesWith(Player.class)) {
@@ -19,9 +26,12 @@ public class Coin extends GObject {
         }
     }
 
+    /**
+     * Draws the coin and collision border.
+     */
     @Override
     public void drawEvent() {
-        //drawBounds(1);
-        //drawSelf();
+        drawBounds(1, Color.GREEN);
+        drawSelf();
     }
 }

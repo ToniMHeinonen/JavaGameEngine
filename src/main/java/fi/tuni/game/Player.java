@@ -12,13 +12,24 @@ public class Player extends GObject {
     private AnimatedImage whole, playerDown, playerUp, playerLeft, playerRight;
     private GObject target;
 
+    /**
+     * Default constructor for intstanting.
+     */
     public Player() {}
 
+    /**
+     * Gets playerslot and target to look out for.
+     * @param playerSlot player number
+     * @param target opponent
+     */
     public Player(int playerSlot, GObject target) {
         this.playerSlot = playerSlot;
         this.target = target;
     }
 
+    /**
+     * Create necessary sprites.
+     */
     @Override
     public void createEvent() {
         Image img = spriteCreate("images/player.png");
@@ -34,6 +45,9 @@ public class Player extends GObject {
         spriteSet(whole, true);
     }
 
+    /**
+     * Checks for input, keyboard presses and collisions.
+     */
     @Override
     public void stepEvent() {
         // Player 1 movement
@@ -117,6 +131,9 @@ public class Player extends GObject {
         }
     }
 
+    /**
+     * Draws player and it's collision bounds.
+     */
     @Override
     public void drawEvent() {
         drawBounds(1, Color.RED);

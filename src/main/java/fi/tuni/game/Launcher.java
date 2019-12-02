@@ -6,6 +6,10 @@ package fi.tuni.game;
 */
 
 public class Launcher {
+    /**
+     * Launches the game.
+     * @param args given arguments
+     */
     public static void main(String[] args) {
         Game.main(args);
     }

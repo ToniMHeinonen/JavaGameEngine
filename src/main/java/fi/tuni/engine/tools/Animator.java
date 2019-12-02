@@ -4,23 +4,23 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Animator {
-    private Image image;
-	private int totalFrames; //Total number of frames in the sequence
-    private float fps; //frames per second I.E. 24
+    Image image;
+	int totalFrames; //Total number of frames in the sequence
+    float fps; //frames per second I.E. 24
 
-    private int cols; //Number of columns on the sprite sheet
-    private int rows; //Number of rows on the sprite sheet
+    int cols; //Number of columns on the sprite sheet
+    int rows; //Number of rows on the sprite sheet
 
-    private int frameWidth; //Width of an individual frame
-    private int frameHeight; //Height of an individual frame
+    int frameWidth; //Width of an individual frame
+    int frameHeight; //Height of an individual frame
 
-	private int currentCol = 0;
-    private int currentRow = 0;
+	int currentCol = 0;
+    int currentRow = 0;
 
-    private long lastFrame = 0;
+    long lastFrame = 0;
 
-    private boolean loop = true;
-    private boolean animationEnd;
+    boolean loop = true;
+    boolean animationEnd;
 
     /**
      * Retrieves values from animatedImage to animate it correctly.
@@ -29,18 +29,18 @@ public class Animator {
     public void setAnimation(AnimatedImage animatedImage) {
         this.image = animatedImage.image;
 
-		cols = animatedImage.cols;
+		this.cols = animatedImage.cols;
         this.rows = animatedImage.rows;
 		this.frameWidth = animatedImage.frameWidth;
 		this.frameHeight = animatedImage.frameHeight;
 		this.totalFrames = animatedImage.totalFrames;
-        fps = animatedImage.fps;
+        this.fps = animatedImage.fps;
 
-        animationEnd = false;
+        this.animationEnd = false;
 
         /* If new sprite has less frames than where last sprite
            left off, start from beginning */
-        if (currentCol + currentRow > totalFrames-2) {
+        if (currentCol + currentRow > totalFrames-1) {
             startFromBeginning();
         }
     }
@@ -151,5 +151,69 @@ public class Animator {
      */
     public boolean animationEnded() {
         return animationEnd;
+    }
+
+    /**
+     * Returns current image.
+     * @return current image
+     */
+    public Image getImage() {
+        return image;
+    }
+
+    /**
+     * Returns total frame count
+     * @return total frame count
+     */
+    public int getTotalFrames() {
+        return totalFrames;
+    }
+
+    /**
+     * Returns current fps.
+     * @return current fps
+     */
+    public float getFps() {
+        return fps;
+    }
+
+    /**
+     * Returns current columns count.
+     * @return current columns count
+     */
+    public int getCols() {
+        return cols;
+    }
+
+    /**
+     * Returns current rows count.
+     * @return current rows count
+     */
+    public int getRows() {
+        return rows;
+    }
+
+    /**
+     * Returns current image's frame width.
+     * @return current image's frame width
+     */
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    /**
+     * Returns current image's frame height.
+     * @return current image's frame height
+     */
+    public int getFrameHeight() {
+        return frameHeight;
+    }
+
+    /**
+     * Returns true if current image is looping.
+     * @return whether image is looping or not
+     */
+    public boolean isLoop() {
+        return loop;
     }
 }
