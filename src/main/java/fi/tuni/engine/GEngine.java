@@ -8,9 +8,12 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
@@ -25,6 +28,8 @@ public abstract class GEngine extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
+    private MediaPlayer musicPlayer;
+    private ArrayList<MediaPlayer> audioPlayers = new ArrayList<>();
 
     /**
      * Runs at the start of the program.
@@ -303,6 +308,39 @@ public abstract class GEngine extends Application {
         }
 
         objects = temp;
+    }
+
+    /*************************
+        AUDIO
+    **************************/
+
+    public void playMusic(String path) {
+        Media media = new Media(Paths.get("src/main/resources/" + path).toUri().toString());
+        musicPlayer = new MediaPlayer(media);
+        musicPlayer.play();
+    }
+
+    public void playSound(String path, boolean loop) {
+        Media media = new Media(Paths.get("src/main/resources/" + path).toUri().toString());
+        MediaPlayer player = new MediaPlayer(media);
+        audioPlayers.add(player);
+        player.play();
+
+        if (loop) {
+            player.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    player.seek(Duration.ZERO);
+                    player.play();
+                }
+            });
+        } else {
+            player.setOnEndOfMedia(()->soundFreeFromMemory(player));
+        }
+    }
+
+    private void soundFreeFromMemory(MediaPlayer player) {
+        audioPlayers.remove(player);
     }
 
     /*************************

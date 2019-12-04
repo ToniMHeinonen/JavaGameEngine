@@ -88,5 +88,11 @@
         <artifactId>javafx-graphics</artifactId>
         <version>11</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <version>11</version>
+    </dependency>
   </dependencies>
 </project>
