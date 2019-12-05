@@ -1,5 +1,8 @@
 package fi.tuni.engine.tools;
 
+/**
+ * Holds object's collision area.
+ */
 public class BoundingBox {
     private double x, y, width, height;
 

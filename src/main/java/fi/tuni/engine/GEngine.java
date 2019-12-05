@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 
+/**
+ * Main class of the software, holds main variables and launches the game.
+ */
 public abstract class GEngine extends Application {
 
     private int windowWidth = 1280;

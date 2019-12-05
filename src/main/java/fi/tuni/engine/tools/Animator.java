@@ -3,6 +3,9 @@ package fi.tuni.engine.tools;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Animates and draws given animated image.
+ */
 public class Animator {
     Image image;
 	int totalFrames; //Total number of frames in the sequence

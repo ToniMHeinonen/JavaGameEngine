@@ -7,6 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+/**
+ * Holds all the information every object will need in game.
+ */
 public abstract class GObject implements Global {
     
     private double x, y, width, height, origWidth, origHeight;

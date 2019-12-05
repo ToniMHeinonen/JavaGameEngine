@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import javafx.scene.input.KeyEvent;
 
+/**
+ * Controls keyboard input.
+ */
 public abstract class Input {
     private static ArrayList<String> pressedInput = new ArrayList<>();
     private static ArrayList<String> releasedInput = new ArrayList<>();

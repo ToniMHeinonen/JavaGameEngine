@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Controls local highscores.
+ */
 public abstract class Highscore {
     
     private static ArrayList<String> names = new ArrayList<>();
