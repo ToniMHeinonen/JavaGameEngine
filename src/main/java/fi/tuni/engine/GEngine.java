@@ -28,6 +28,7 @@ public abstract class GEngine extends Application {
     private int windowHeight = 720;
     private Group root;
     private Stage stage;
+    private Image backgroundImage;
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
@@ -105,6 +106,9 @@ public abstract class GEngine extends Application {
     private void controlGameLoop() {
         // Clear the canvas
         gc.clearRect(0, 0, windowWidth, windowHeight);
+
+        // Draw background image
+        drawBackgroundImage();
                     
         // Run main game object's step and draw events
         stepEvent();
@@ -162,6 +166,14 @@ public abstract class GEngine extends Application {
         canvas.setHeight(height);
     }
 
+    /**
+     * Sets background for the window.
+     * @param path location of the image file
+     */
+    public void setBackgroundImage(String path) {
+        backgroundImage = new Image(path);
+    }
+
     /*************************
         DRAWING
     **************************/
@@ -209,6 +221,15 @@ public abstract class GEngine extends Application {
      */
     public void drawAnimatedImage(AnimatedImage img, double x, double y) {
         img.render(gc, x, y, img.getFrameWidth(), img.getFrameHeight());
+    }
+
+    /**
+     * Draws background image on screen.
+     * 
+     * Pretty useless method, but gamemaker has it too.
+     */
+    private void drawBackgroundImage() {
+        drawImage(backgroundImage, 0, 0);
     }
 
     /*************************
