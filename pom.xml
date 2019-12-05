@@ -16,7 +16,7 @@
 
   <build>
     <plugins>
-        <!-- Javadoc generator-->
+        <!-- Javadoc generator
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -28,7 +28,7 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
+        </plugin>-->
         <plugin>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-maven-plugin</artifactId>

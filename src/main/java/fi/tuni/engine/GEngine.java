@@ -28,8 +28,6 @@ public abstract class GEngine extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
-    private MediaPlayer musicPlayer;
-    private ArrayList<MediaPlayer> audioPlayers = new ArrayList<>();
 
     /**
      * Runs at the start of the program.
@@ -308,39 +306,6 @@ public abstract class GEngine extends Application {
         }
 
         objects = temp;
-    }
-
-    /*************************
-        AUDIO
-    **************************/
-
-    public void playMusic(String path) {
-        Media media = new Media(Paths.get("src/main/resources/" + path).toUri().toString());
-        musicPlayer = new MediaPlayer(media);
-        musicPlayer.play();
-    }
-
-    public void playSound(String path, boolean loop) {
-        Media media = new Media(Paths.get("src/main/resources/" + path).toUri().toString());
-        MediaPlayer player = new MediaPlayer(media);
-        audioPlayers.add(player);
-        player.play();
-
-        if (loop) {
-            player.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    player.seek(Duration.ZERO);
-                    player.play();
-                }
-            });
-        } else {
-            player.setOnEndOfMedia(()->soundFreeFromMemory(player));
-        }
-    }
-
-    private void soundFreeFromMemory(MediaPlayer player) {
-        audioPlayers.remove(player);
     }
 
     /*************************

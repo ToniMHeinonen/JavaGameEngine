@@ -23,7 +23,7 @@ public class Game extends GEngine {
         Player one = createInstance(100, 50, Player.class);
         //Player two = createInstance(200, 50, new Player(2, one));
         Coin coin = createInstance(300, 50, Coin.class);
-        playMusic("music/music.mp3");
+        Audio.playSound("music/music.mp3", true);
     }
 
     /**
@@ -31,8 +31,7 @@ public class Game extends GEngine {
      */
     @Override
     public void stepEvent() {
-        if (Input.isKeyPressed("B"))
-            playSound("sounds/sound.mp3", false);
+        
     }
 
     /**
