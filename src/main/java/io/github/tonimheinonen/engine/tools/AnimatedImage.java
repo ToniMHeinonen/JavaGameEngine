@@ -1,4 +1,4 @@
-package fi.tuni.engine.tools;
+package io.github.tonimheinonen.engine.tools;
 
 import javafx.scene.image.Image;
 

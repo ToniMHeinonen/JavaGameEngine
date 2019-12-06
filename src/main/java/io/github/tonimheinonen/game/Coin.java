@@ -1,7 +1,7 @@
-package fi.tuni.game;
+package io.github.tonimheinonen.game;
 
-import fi.tuni.engine.GObject;
-import fi.tuni.engine.tools.*;
+import io.github.tonimheinonen.engine.GObject;
+import io.github.tonimheinonen.engine.tools.*;
 import javafx.scene.paint.Color;
 
 public class Coin extends GObject {

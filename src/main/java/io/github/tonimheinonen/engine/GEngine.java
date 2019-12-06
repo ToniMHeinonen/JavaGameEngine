@@ -1,6 +1,6 @@
-package fi.tuni.engine;
+package io.github.tonimheinonen.engine;
 
-import fi.tuni.engine.tools.*;
+import io.github.tonimheinonen.engine.tools.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;

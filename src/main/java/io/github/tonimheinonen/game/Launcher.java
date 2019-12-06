@@ -1,4 +1,4 @@
-package fi.tuni.game;
+package io.github.tonimheinonen.game;
 
 /*
     This seems to be the only way to create a working jar when using Java 11 and JavaFX.

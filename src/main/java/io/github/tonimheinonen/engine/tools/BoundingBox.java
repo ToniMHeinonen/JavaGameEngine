@@ -1,4 +1,4 @@
-package fi.tuni.engine.tools;
+package io.github.tonimheinonen.engine.tools;
 
 /**
  * Holds object's collision area.

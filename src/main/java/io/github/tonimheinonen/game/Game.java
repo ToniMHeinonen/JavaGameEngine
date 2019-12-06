@@ -1,7 +1,7 @@
-package fi.tuni.game;
+package io.github.tonimheinonen.game;
 
-import fi.tuni.engine.GEngine;
-import fi.tuni.engine.tools.*;
+import io.github.tonimheinonen.engine.GEngine;
+import io.github.tonimheinonen.engine.tools.*;
 
 public class Game extends GEngine {
 
