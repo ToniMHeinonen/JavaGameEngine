@@ -25,6 +25,7 @@ public class Game extends GEngine {
         //Player two = createInstance(200, 50, new Player(2, one));
         Coin coin = createInstance(300, 50, Coin.class);
         Audio.playSound("music/music.mp3", true);
+        createButton("text", 10, 10, MenuButton.class);
     }
 
     /**

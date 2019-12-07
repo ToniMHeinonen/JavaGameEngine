@@ -2,18 +2,18 @@ package io.github.tonimheinonen.engine;
 
 import io.github.tonimheinonen.engine.tools.*;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
@@ -330,6 +330,68 @@ public abstract class GEngine extends Application {
         }
 
         objects = temp;
+    }
+
+    /*************************
+        BUTTONS
+    **************************/
+    /**
+     * Creates object from provided class type.
+     * @param x horizontal position
+     * @param y vertical position
+     * @param type object to create
+     * @param <T> type
+     * @return instanced object
+     */
+    @SuppressWarnings("unchecked")
+     public <T extends GButton> T createButton(String text, int x, int y, Class<T> type) {
+        try {
+            // Create new instance from provided class
+            GButton btn = (GButton) type.getDeclaredConstructor().newInstance();
+            btn = initButton(text, x, y, btn);
+            return (T) btn;     // Cast to provided class
+        }
+        catch (InstantiationException e) {} 
+        catch (IllegalAccessException e) {}
+        catch (NoSuchMethodException e) {
+            System.out.println("You need to declare" +
+            " default constructor for the class, or remove other" +
+            " constructors!");
+            throw new IllegalArgumentException("Default constructor missing!");
+        }
+        catch (InvocationTargetException e) {}
+
+        return null;
+    }
+
+    /**
+     * Creates provided instance.
+     * @param <T> object which extends GObject
+     * @param x coordinate for instance
+     * @param y coordinate for instance
+     * @param type instance to initialize
+     * @return initialized instance
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends GButton> T createButton(String text, int x, int y, GButton type) {
+        return (T) initButton(text, x, y, type);
+    }
+
+    /**
+     * Initializes newly created instance.
+     * @param x coordinate for instance
+     * @param y coordinate for instance
+     * @param obj created instance
+     * @return created instance
+     */
+    private GButton initButton(String text, int x, int y, GButton btn) {
+        btn.setText(text);
+        btn.setTranslateX(x);
+        btn.setTranslateY(y);
+        btn.setOnMousePressed(e->btn.onPressed());
+        btn.setOnMouseReleased(e->btn.onReleased());
+        root.getChildren().add(btn);
+        return btn;
     }
 
     /*************************
