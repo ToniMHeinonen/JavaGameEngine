@@ -50,6 +50,7 @@ public class Player extends GObject {
      */
     @Override
     public void stepEvent() {
+        
         // Player 1 movement
         if (playerSlot == 1) {
             if (Input.isKeyPressedHold("RIGHT")) {

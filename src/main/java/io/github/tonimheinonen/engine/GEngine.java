@@ -11,6 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
@@ -44,9 +45,10 @@ public abstract class GEngine extends Application {
             this.stage = theStage;
             stage.setTitle("GEngine");
             stage.centerOnScreen();
-
+            
             Group root = new Group();
             this.root = root;
+
             Scene theScene = new Scene(root);
             theStage.setScene(theScene);
             
@@ -336,7 +338,8 @@ public abstract class GEngine extends Application {
         BUTTONS
     **************************/
     /**
-     * Creates object from provided class type.
+     * Creates button from provided class type.
+     * @param text text that button has
      * @param x horizontal position
      * @param y vertical position
      * @param type object to create
@@ -366,6 +369,7 @@ public abstract class GEngine extends Application {
 
     /**
      * Creates provided instance.
+     * @param text text that button has
      * @param <T> object which extends GObject
      * @param x coordinate for instance
      * @param y coordinate for instance
@@ -379,17 +383,20 @@ public abstract class GEngine extends Application {
 
     /**
      * Initializes newly created instance.
+     * @param text text that button has
      * @param x coordinate for instance
      * @param y coordinate for instance
-     * @param obj created instance
+     * @param btn created instance
      * @return created instance
      */
     private GButton initButton(String text, int x, int y, GButton btn) {
         btn.setText(text);
         btn.setTranslateX(x);
         btn.setTranslateY(y);
+        btn.createEvent();
         btn.setOnMousePressed(e->btn.onPressed());
         btn.setOnMouseReleased(e->btn.onReleased());
+        
         root.getChildren().add(btn);
         return btn;
     }
