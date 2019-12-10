@@ -2,16 +2,12 @@ package io.github.tonimheinonen.engine;
 
 import io.github.tonimheinonen.engine.tools.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
@@ -46,19 +42,24 @@ public abstract class GEngine extends Application {
             stage.setTitle("GEngine");
             stage.centerOnScreen();
             
+            // Create main group
             Group root = new Group();
             this.root = root;
 
+            // Set root on scene
             Scene theScene = new Scene(root);
             theStage.setScene(theScene);
             
+            // Create canvas for drawing objects
             Canvas canvas = new Canvas(windowWidth, windowHeight);
             root.getChildren().add(canvas);
             this.canvas = canvas;
             
+            // Get gc for drawing objects
             GraphicsContext gc = canvas.getGraphicsContext2D();
             this.gc = gc;
 
+            // Set gameloop timeline
             Timeline gameLoop = new Timeline();
             gameLoop.setCycleCount(Timeline.INDEFINITE);
 
@@ -396,6 +397,12 @@ public abstract class GEngine extends Application {
         btn.createEvent();
         btn.setOnMousePressed(e->btn.onPressed());
         btn.setOnMouseReleased(e->btn.onReleased());
+        btn.setOnMouseDragged(e->btn.onMouseDragged());
+        btn.setOnMouseEntered(e->btn.onMouseEntered());
+        btn.setOnMouseExited(e->btn.onMouseExited());
+
+        // Without this, input stops working. No clue why.
+        btn.setFocusTraversable(false);
         
         root.getChildren().add(btn);
         return btn;
