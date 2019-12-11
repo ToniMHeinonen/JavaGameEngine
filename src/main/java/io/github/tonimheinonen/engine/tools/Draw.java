@@ -1,9 +1,11 @@
 package io.github.tonimheinonen.engine.tools;
 
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public abstract class Draw {
     
@@ -18,7 +20,7 @@ public abstract class Draw {
      * @param height desired height
      */
     public static void image(Image img, double x, double y,
-    double width, double height) {
+                double width, double height) {
         gc.drawImage(img, x, y, width, height);
     }
 
@@ -80,6 +82,22 @@ public abstract class Draw {
      */
     public static void setFont(String font, int size) {
         gc.setFont(new Font(font, size));
+    }
+
+    /**
+     * Sets horizontal alignment of text.
+     * @param align value to set (HA_LEFT / HA_CENTER / HA_RIGHT)
+     */
+    public static void setHorizontalAlign(TextAlignment align) {
+        gc.setTextAlign(align);
+    }
+
+    /**
+     * Sets vertical alignment of text.
+     * @param align value to set (VA_TOP / VA_CENTER / VA_BOTTOM)
+     */
+    public static void setVerticalAlign(VPos align) {
+        gc.setTextBaseline(align);
     }
 
     /**

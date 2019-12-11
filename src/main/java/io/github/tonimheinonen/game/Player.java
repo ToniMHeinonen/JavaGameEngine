@@ -3,7 +3,6 @@ package io.github.tonimheinonen.game;
 import io.github.tonimheinonen.engine.GObject;
 import io.github.tonimheinonen.engine.tools.*;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public class Player extends GObject {
 
@@ -137,7 +136,7 @@ public class Player extends GObject {
      */
     @Override
     public void drawEvent() {
-        drawBounds(1, Color.RED);
+        drawBounds(1, C_RED);
         drawSelf();
     }
 }

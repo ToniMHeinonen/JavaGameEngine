@@ -2,7 +2,6 @@ package io.github.tonimheinonen.game;
 
 import io.github.tonimheinonen.engine.*;
 import io.github.tonimheinonen.engine.tools.*;
-import javafx.scene.paint.Color;
 
 public class Game extends GEngine {
 
@@ -23,7 +22,7 @@ public class Game extends GEngine {
         setWindowSize(800, 600);
         setBackgroundImage("images/background.jpg");
         Player one = createInstance(100, 50, Player.class);
-        //Player two = createInstance(200, 50, new Player(2, one));
+        Player two = createInstance(200, 50, new Player(2, one));
         Coin coin = createInstance(300, 50, Coin.class);
         Audio.playSound("music/music.mp3", true);
         //GButton btn = createButton("text", 10, 10, MenuButton.class);
@@ -42,8 +41,10 @@ public class Game extends GEngine {
      */
     @Override
     public void drawEvent() {
-        Draw.setColor(Color.RED);
-        Draw.text("Hello World", 10, 10);
+        Draw.setColor(C_RED);
+        Draw.setVerticalAlign(VA_TOP);
+        Draw.setHorizontalAlign(HA_CENTER);
         Draw.setFont("Verdana", 20);
+        Draw.text("Hello World", 10, 10);
     }
 }
