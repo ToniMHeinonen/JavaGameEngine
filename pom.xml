@@ -3,7 +3,7 @@
   <groupId>io.github.tonimheinonen</groupId>
   <artifactId>game</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <name>game-engine</name>
   <url>http://maven.apache.org</url>
 
@@ -168,7 +168,7 @@
   <connection>scm:git:git://github.com/tonimheinonen/javagameengine.git</connection>
   <developerConnection>scm:git:git@github.com:tonimheinonen/tonimheinonen.git</developerConnection>
   <url>https://github.com/tonimheinonen/javagameengine</url>
-  <tag>1.0</tag>
+  <tag>HEAD</tag>
   </scm>
 
   
