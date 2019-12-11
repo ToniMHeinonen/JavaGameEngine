@@ -19,7 +19,7 @@ import javafx.util.Duration;
 /**
  * Main class of the software, holds main variables and launches the game.
  */
-public abstract class GEngine extends Application {
+public abstract class GEngine extends Application implements Global {
 
     private int windowWidth = 1280;
     private int windowHeight = 720;
@@ -58,6 +58,7 @@ public abstract class GEngine extends Application {
             // Get gc for drawing objects
             GraphicsContext gc = canvas.getGraphicsContext2D();
             this.gc = gc;
+            Draw.setGraphicsContext(gc);
 
             // Set gameloop timeline
             Timeline gameLoop = new Timeline();
@@ -169,6 +170,9 @@ public abstract class GEngine extends Application {
         canvas.setHeight(height);
     }
 
+    /*************************
+        BACKGROUND
+    **************************/
     /**
      * Sets background for the window.
      * @param path location of the image file
@@ -177,62 +181,14 @@ public abstract class GEngine extends Application {
         backgroundImage = new Image(path);
     }
 
-    /*************************
-        DRAWING
-    **************************/
-    /**
-     * Draws image to provided coordinate and size.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     * @param width desired width
-     * @param height desired height
-     */
-    public void drawImage(Image img, double x, double y,
-    double width, double height) {
-        gc.drawImage(img, x, y, width, height);
-    }
-
-    /**
-     * Draws image to provided coordinate.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     */
-    public void drawImage(Image img, double x, double y) {
-        gc.drawImage(img, x, y, img.getWidth(), img.getHeight());
-    }
-    
-    /**
-     * Draws animated image to provided coordinate and size.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     * @param width desired width
-     * @param height desired height
-     */
-    public void drawAnimatedImage(AnimatedImage img, double x, double y,
-                 double width, double height) {
-        img.render(gc, x, y, width, height);
-    }
-
-    /**
-     * Draws image to provided coordinate.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     */
-    public void drawAnimatedImage(AnimatedImage img, double x, double y) {
-        img.render(gc, x, y, img.getFrameWidth(), img.getFrameHeight());
-    }
-
     /**
      * Draws background image on screen.
      * 
      * Pretty useless method, but gamemaker has it too.
      */
     private void drawBackgroundImage() {
-        drawImage(backgroundImage, 0, 0);
+        if (backgroundImage != null)
+            Draw.image(backgroundImage, 0, 0);
     }
 
     /*************************
@@ -331,7 +287,6 @@ public abstract class GEngine extends Application {
                 temp.remove(o);
             } 
         }
-
         objects = temp;
     }
 
@@ -391,6 +346,7 @@ public abstract class GEngine extends Application {
      * @return created instance
      */
     private GButton initButton(String text, int x, int y, GButton btn) {
+        btn.setMainClass(this);
         btn.setText(text);
         btn.setTranslateX(x);
         btn.setTranslateY(y);

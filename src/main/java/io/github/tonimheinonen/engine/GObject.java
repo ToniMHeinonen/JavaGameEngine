@@ -214,7 +214,7 @@ public abstract class GObject implements Global {
         gc.fillRect(x, y, width, height);
         // Reset values
         gc.setGlobalAlpha(1);
-        gc.setFill(cBlack);
+        gc.setFill(C_BLACK);
     }
 
     /**
@@ -309,53 +309,6 @@ public abstract class GObject implements Global {
      */
     public void destroyInstance(Class<? extends GObject> type) {
         global().destroyInstance(type);
-    }
-
-    // Drawing
-    /**
-     * Draws image to provided coordinate and size.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     * @param width desired width
-     * @param height desired height
-     */
-    public void drawImage(Image img, double x, double y,
-    double width, double height) {
-        global().drawImage(img, x, y, width, height);
-    }
-
-    /**
-     * Draws image to provided coordinate.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     */
-    public void drawImage(Image img, double x, double y) {
-        global().drawImage(img, x, y);
-    }
-
-    /**
-     * Draws animated image to provided coordinate and size.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     * @param width desired width
-     * @param height desired height
-     */
-    public void drawAnimatedImage(AnimatedImage img, double x, double y,
-                 double width, double height) {
-        global().drawAnimatedImage(img, x, y, width, height);
-    }
-
-    /**
-     * Draws image to provided coordinate.
-     * @param img image to draw
-     * @param x coordinate
-     * @param y coordinate
-     */
-    public void drawAnimatedImage(AnimatedImage img, double x, double y) {
-        global().drawAnimatedImage(img, x, y);
     }
 
     /*************************

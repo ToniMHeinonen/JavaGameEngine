@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 public abstract class GButton extends Button {
     
     private ImageView view = new ImageView();
+    private GEngine mainClass;
 
     /**
      * Runs when button is created.
@@ -73,5 +74,27 @@ public abstract class GButton extends Button {
         // Update button's view's size
         view.setFitWidth(width);
         view.setFitHeight(height);
+    }
+
+    /**
+     * Returns reference to main class, which extends GEngine.
+     * @return main class
+     */
+    public GEngine global() {
+        return mainClass;
+    }
+
+    /**
+     * Sets main class when object is created.
+     * 
+     * Main class can not be changed.
+     * @param engine main class
+     */
+    public void setMainClass(GEngine engine) {
+        if (null == mainClass) {
+            mainClass = engine;
+        } else {
+            System.out.println("mainClass can not be changed!");
+        }
     }
 }
