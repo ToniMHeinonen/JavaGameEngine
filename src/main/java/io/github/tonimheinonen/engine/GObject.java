@@ -25,6 +25,7 @@ public abstract class GObject implements Global {
     private GObject other;
     private boolean destroyThis;
     private double direction, speed, maxSpeed, friction;
+    private double gravity, gravityCurForce;
     private boolean maxSpeedInitialized;
 
     public abstract void createEvent();
@@ -33,30 +34,72 @@ public abstract class GObject implements Global {
 
     public abstract void drawEvent();
 
-    /**
-     * Moves object towards direction using provided speed.
-     * 
-     * Direction value should be between 0 - 359.
-     * 0 = Right / 90 = Down / 180 = Left / 270 = Up.
-     * @param direction in degrees
-     * @param speed in pixels
-     */
-    /*public void moveObject(double direction, double speed) {
-        setX(x + speed * Math.cos( Math.toRadians(direction)));
-        setY(y + speed * Math.sin( Math.toRadians(direction)));
-    }*/
+    /*************************
+        CONTROL OBJECT
+    **************************/
 
+    /**
+     * Applies forces for object to control speed and direction.
+     */
     public void applyForces() {
+        // Apply friction
         if (speed > 0)
             speed -= friction;
 
+        // Check speed
         if (speed < 0)
             speed = 0;
         else if (speed > maxSpeed && maxSpeedInitialized)
             speed = maxSpeed;
+
+        // Apply gravity ADD LATER
+        /*if (gravity != 0) {
+            if (speed != 0) {
+                
+                moveObject(gravityCurForce, 90);
+            } else {
+                gravityCurForce = 0;
+            }
+        }*/
         
+        moveObject(speed, direction);
+    }
+
+    /**
+     * Moves object to the given direction using given speed.
+     * @param speed in pixels
+     * @param direction in degrees
+     */
+    private void moveObject(double speed, double direction) {
         setX(x + speed * Math.cos( Math.toRadians(direction)));
         setY(y + speed * Math.sin( Math.toRadians(direction)));
+    }
+
+    /**
+     * Wraps player from one side of the screen to another.
+     * @param horizontal whether to wrap horizontally
+     * @param vertical whether to wrap vertically
+     * @param xOffset how far off the screen before wrapping
+     * @param yOffset how far off the screen before wrapping
+     */
+    public void wrap(boolean horizontal, boolean vertical,
+                    double xOffset, double yOffset) {
+        int width = global().getWindowWidth();
+        int height = global().getWindowHeight();
+        
+        if (horizontal) {
+            if (x < 0 - xOffset)
+                setX(width + (xOffset-1));
+            else if (x > width + xOffset)
+                setX(-xOffset+1);
+        }
+
+        if (vertical) {
+            if (y < 0 - yOffset)
+                setY(height + (yOffset-1));
+            else if (y > height + yOffset)
+                setY(-yOffset+1);
+        }
     }
 
     /*************************
@@ -503,35 +546,69 @@ public abstract class GObject implements Global {
         return curAnim;
     }
 
+    /**
+     * Returns current direction.
+     */
     public double getDirection() {
         return direction;
     }
 
+    /**
+     * Sets direction for the object to move at.
+     * 
+     * Direction value should be between 0 - 359.
+     * 0 = Right / 90 = Down / 180 = Left / 270 = Up.
+     * @param direction in degrees
+     */
     public void setDirection(double direction) {
         this.direction = direction;
     }
 
+    /**
+     * Returns current speed.
+     * @return
+     */
     public double getSpeed() {
         return speed;
     }
 
+    /**
+     * Sets the speed of the object to move
+     * @param speed in pixels
+     */
     public void setSpeed(double speed) {
         this.speed = speed;
     }
 
+    /**
+     * Returns maximun speed allowed.
+     * 
+     * If max speed has not been set, it won't be used.
+     */
     public double getMaxSpeed() {
         return maxSpeed;
     }
 
+    /**
+     * Sets maximum speed for the object.
+     * @param maxSpeed in pixels
+     */
     public void setMaxSpeed(double maxSpeed) {
         maxSpeedInitialized = true;
         this.maxSpeed = maxSpeed;
     }
 
+    /**
+     * Gets the friction of the object.
+     */
     public double getFriction() {
         return friction;
     }
 
+    /**
+     * Sets the friction for the object to decrease speed.
+     * @param friction in pixels
+     */
     public void setFriction(double friction) {
         this.friction = friction;
     }

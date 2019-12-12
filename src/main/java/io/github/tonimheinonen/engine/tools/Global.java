@@ -25,4 +25,11 @@ public interface Global {
     public final VPos VA_TOP = VPos.TOP;
     public final VPos VA_CENTER = VPos.CENTER;
     public final VPos VA_BOTTOM = VPos.BOTTOM;
+
+    public default boolean secondsPassed(long from, double seconds) {
+        if (System.currentTimeMillis() - from <= seconds)
+            return true;
+        
+        return false;
+    }
 }

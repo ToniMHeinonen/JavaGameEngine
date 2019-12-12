@@ -8,9 +8,17 @@ public class Player extends GObject {
     private int playerSlot = 1;
     private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
     private String down, up, right, left;
-    private double speed = 0.5;
-    private boolean immune;
+    private double speed = 0.4;
+    private double maxSpdNormal = 7;
+    private double maxSpdOnHit = 10;
+    private double maxSpdCurrent = maxSpdNormal;
     private int coinsCollected;
+
+    private final int NORMAL = 0, IMMUNE = 1, STUNNED = 2;
+    private int state = NORMAL;
+    private long timeOfHit, timeOfHitEnded;
+    private double stunTime = 2;
+    private double immuneTime = 2;
 
     /**
      * Default constructor for instancing.
@@ -49,7 +57,6 @@ public class Player extends GObject {
             right = "D";
         }
 
-        setMaxSpeed(5);
         setFriction(0.2);
     }
 
@@ -58,10 +65,15 @@ public class Player extends GObject {
      */
     @Override
     public void stepEvent() {
-        immune = false;
-        
-        movePlayer();
+        checkStunned();
+        checkImmune();
+
+        if (state == NORMAL)
+            movePlayer();
+
         collisions();
+
+        wrap(true, true, getWidth(), getHeight());
     }
 
     /**
@@ -70,6 +82,29 @@ public class Player extends GObject {
     @Override
     public void drawEvent() {
         drawSelf();
+        Draw.text(".", getX(), getY());
+    }
+
+    private void checkStunned() {
+        if (state != STUNNED)
+            return;
+
+        if (secondsPassed(timeOfHit, stunTime)) {
+            state = IMMUNE;
+            maxSpdCurrent = maxSpdNormal;
+            timeOfHitEnded = System.currentTimeMillis();
+        }
+
+        spriteIndex(0);
+    }
+
+    public void checkImmune() {
+        if (state != IMMUNE)
+            return;
+
+        if (secondsPassed(timeOfHitEnded, immuneTime)) {
+            state = NORMAL;
+        }
     }
 
     private void movePlayer() {
@@ -97,11 +132,15 @@ public class Player extends GObject {
         // If player is moving
         if (x != 0 || y != 0) {
             setSpeed(getSpeed() + speed);
+
+            if (getSpeed() > maxSpdCurrent)
+                setSpeed(maxSpdCurrent);
+
             setDirection(calculateDirection(x, y));
         }
 
+        // Control animations when stopping
         if (getSpeed() == 0) {
-            
             if (spriteAnimationEnded()) {
                 spriteSpeed(0, false);
                 spriteIndex(0);
@@ -140,16 +179,24 @@ public class Player extends GObject {
     private void collisions() {
         if (collidesWith(Player.class)) {
             Player other = (Player) getCollidedObjects().get(0);
-            if (other.getSpeed() < getSpeed()) {
-                if (!other.isImmune()) {
+            if (other.getState() == NORMAL) {
+                if (other.getSpeed() == getSpeed()) {
+                    double dir = other.getDirection();
+                    other.onHit();
+                    onHit();
+                    other.setDirection(getDirection());
+                    setDirection(dir);
+                    other.setSpeed(getSpeed() * 2);
+                    setSpeed(getSpeed() * 2);
+                } else if (other.getSpeed() < getSpeed()) {
+                    other.onHit();
                     other.setDirection(getDirection());
                     other.setSpeed(getSpeed() * 2);
-
+                    other.applyForces();
+                    
                     if (other.stealCoin()) {
                         coinsCollected++;
                     }
-
-                    immune = true;
                 }
             }
         }
@@ -159,8 +206,8 @@ public class Player extends GObject {
         }
     }
 
-    public boolean isImmune() {
-        return immune;
+    public int getState() {
+        return state;
     }
 
     public boolean stealCoin() {
@@ -170,5 +217,11 @@ public class Player extends GObject {
         } else {
             return false;
         }
+    }
+
+    public void onHit() {
+        state = STUNNED;
+        maxSpdCurrent = maxSpdOnHit;
+        timeOfHit = System.currentTimeMillis();
     }
 }
