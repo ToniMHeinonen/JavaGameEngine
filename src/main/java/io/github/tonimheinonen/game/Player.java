@@ -2,17 +2,15 @@ package io.github.tonimheinonen.game;
 
 import io.github.tonimheinonen.engine.GObject;
 import io.github.tonimheinonen.engine.tools.*;
-import javafx.scene.image.Image;
 
 public class Player extends GObject {
 
     private int playerSlot = 1;
-    private Image img;
-    private AnimatedImage whole, playerDown, playerUp, playerLeft, playerRight;
+    private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
     private String down, up, right, left;
-    private GObject target;
-    private double maxSpd = 5;
-    private double friction = 0.1;
+    private double speed = 0.5;
+    private boolean immune;
+    private int coinsCollected;
 
     /**
      * Default constructor for instancing.
@@ -50,6 +48,9 @@ public class Player extends GObject {
             left = "A";
             right = "D";
         }
+
+        setMaxSpeed(5);
+        setFriction(0.2);
     }
 
     /**
@@ -57,7 +58,10 @@ public class Player extends GObject {
      */
     @Override
     public void stepEvent() {
+        immune = false;
+        
         movePlayer();
+        collisions();
     }
 
     /**
@@ -65,14 +69,13 @@ public class Player extends GObject {
      */
     @Override
     public void drawEvent() {
-        drawBounds(1, C_RED);
         drawSelf();
     }
 
     private void movePlayer() {
         // Movement and animation
-        double x = 0;
-        double y = 0;
+        int x = 0;
+        int y = 0;
 
         if (Input.isKeyPressedHold(right)) {
             spriteSet(playerRight, false);
@@ -93,7 +96,79 @@ public class Player extends GObject {
 
         // If player is moving
         if (x != 0 || y != 0) {
+            setSpeed(getSpeed() + speed);
+            setDirection(calculateDirection(x, y));
+        }
 
+        if (getSpeed() == 0) {
+            
+            if (spriteAnimationEnded()) {
+                spriteSpeed(0, false);
+                spriteIndex(0);
+            }
+        } else {
+            spriteSpeed(10, false);
+        }
+    }
+
+    private double calculateDirection(int x, int y) {
+        // I am bad at mathematics, so I can't figure out a better way to do this
+        if (x == 1) {
+            if (y == 1)
+                return 45;
+            else if (y == -1)
+                return 315;
+            else
+                return 0;
+        } else if (x == -1) {
+            if (y == 1)
+                return 135;
+            else if (y == -1)
+                return 225;
+            else
+                return 180;
+        } else {
+            if (y == 1)
+                return 90;
+            else if (y == -1)
+                return 270;
+        }
+
+        return -1;
+    }
+
+    private void collisions() {
+        if (collidesWith(Player.class)) {
+            Player other = (Player) getCollidedObjects().get(0);
+            if (other.getSpeed() < getSpeed()) {
+                if (!other.isImmune()) {
+                    other.setDirection(getDirection());
+                    other.setSpeed(getSpeed() * 2);
+
+                    if (other.stealCoin()) {
+                        coinsCollected++;
+                    }
+
+                    immune = true;
+                }
+            }
+        }
+
+        if (collidesWith(Coin.class)) {
+            coinsCollected++;
+        }
+    }
+
+    public boolean isImmune() {
+        return immune;
+    }
+
+    public boolean stealCoin() {
+        if (coinsCollected > 0) {
+            coinsCollected--;
+            return true;
+        } else {
+            return false;
         }
     }
 }

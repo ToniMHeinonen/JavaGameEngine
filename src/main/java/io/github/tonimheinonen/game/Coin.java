@@ -1,8 +1,6 @@
 package io.github.tonimheinonen.game;
 
 import io.github.tonimheinonen.engine.GObject;
-import io.github.tonimheinonen.engine.tools.*;
-import javafx.scene.paint.Color;
 
 public class Coin extends GObject {
 
@@ -31,7 +29,6 @@ public class Coin extends GObject {
      */
     @Override
     public void drawEvent() {
-        drawBounds(1, Color.GREEN);
         drawSelf();
     }
 }

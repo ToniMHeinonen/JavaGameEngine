@@ -24,6 +24,8 @@ public abstract class GObject implements Global {
     private ArrayList<GObject> collidedObjects = new ArrayList<>();
     private GObject other;
     private boolean destroyThis;
+    private double direction, speed, maxSpeed, friction;
+    private boolean maxSpeedInitialized;
 
     public abstract void createEvent();
 
@@ -39,7 +41,20 @@ public abstract class GObject implements Global {
      * @param direction in degrees
      * @param speed in pixels
      */
-    public void moveObject(double direction, double speed) {
+    /*public void moveObject(double direction, double speed) {
+        setX(x + speed * Math.cos( Math.toRadians(direction)));
+        setY(y + speed * Math.sin( Math.toRadians(direction)));
+    }*/
+
+    public void applyForces() {
+        if (speed > 0)
+            speed -= friction;
+
+        if (speed < 0)
+            speed = 0;
+        else if (speed > maxSpeed && maxSpeedInitialized)
+            speed = maxSpeed;
+        
         setX(x + speed * Math.cos( Math.toRadians(direction)));
         setY(y + speed * Math.sin( Math.toRadians(direction)));
     }
@@ -486,5 +501,38 @@ public abstract class GObject implements Global {
      */
     public AnimatedImage getCurrentAnimation() {
         return curAnim;
+    }
+
+    public double getDirection() {
+        return direction;
+    }
+
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(double maxSpeed) {
+        maxSpeedInitialized = true;
+        this.maxSpeed = maxSpeed;
+    }
+
+    public double getFriction() {
+        return friction;
+    }
+
+    public void setFriction(double friction) {
+        this.friction = friction;
     }
 }
