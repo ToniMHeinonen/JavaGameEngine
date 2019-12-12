@@ -31,6 +31,19 @@ public abstract class GObject implements Global {
 
     public abstract void drawEvent();
 
+    /**
+     * Moves object towards direction using provided speed.
+     * 
+     * Direction value should be between 0 - 359.
+     * 0 = Right / 90 = Down / 180 = Left / 270 = Up.
+     * @param direction in degrees
+     * @param speed in pixels
+     */
+    public void moveObject(double direction, double speed) {
+        setX(x + speed * Math.cos( Math.toRadians(direction)));
+        setY(y + speed * Math.sin( Math.toRadians(direction)));
+    }
+
     /*************************
         SPRITE
     **************************/
