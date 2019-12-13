@@ -119,12 +119,15 @@ public abstract class GEngine extends Application implements Global {
         stepEvent();
         drawEvent(); 
         
-        // Loop through object's step and draw events
-        for (GObject o : objects) {
+        // Loop through object's events
+        for (GObject o : objects)
             o.stepEvent();
+
+        for (GObject o : objects)
             o.applyForces();
+
+        for (GObject o : objects)
             o.drawEvent();
-        }
 
         destroyFlagged();
         addObjects();

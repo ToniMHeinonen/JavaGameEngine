@@ -7,6 +7,8 @@ public class Player extends GObject {
 
     private int playerSlot = 1;
     private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
+    private double coinsX;
+    private double coinsY = 30;
     private String down, up, right, left;
     private double speed = 0.4;
     private double maxSpdNormal = 7;
@@ -52,11 +54,13 @@ public class Player extends GObject {
             up = "up";
             right = "right";
             left = "left";
+            coinsX = global().getWindowWidth() / 4;
         } else {
             down = "S";
             up = "W";
             left = "A";
             right = "D";
+            coinsX = (global().getWindowWidth() / 4) * 3;
         }
 
         setFriction(0.2);
@@ -90,8 +94,18 @@ public class Player extends GObject {
             drawBounds(0.5, C_BLUE);
         
         drawSelf();
+        drawScore();
     }
 
+    private void drawScore() {
+        Draw.setHorizontalAlign(HA_CENTER);
+        Draw.setFont("Verdana", 25);
+        Draw.text(String.valueOf(coinsCollected), coinsX, coinsY);
+    }
+
+    /**
+     * Controls what happens when player is stunned.
+     */
     private void checkStunned() {
         if (state != STUNNED)
             return;
@@ -102,6 +116,9 @@ public class Player extends GObject {
         spriteIndex(0);
     }
 
+    /**
+     * Controls what happens when player is immune.
+     */
     private void checkImmune() {
         if (state != IMMUNE)
             return;
@@ -110,12 +127,18 @@ public class Player extends GObject {
             state = NORMAL;
     }
 
+    /**
+     * Starts immunity.
+     */
     private void startImmunity() {
         state = IMMUNE;
         maxSpdCurrent = maxSpdNormal;
         startOfImmune = System.currentTimeMillis();
     }
 
+    /**
+     * Checks if hit happened this frame.
+     */
     private void hitHappened() {
         if (applyStun) {
             applyStun = false;
@@ -124,6 +147,9 @@ public class Player extends GObject {
         }
     }
 
+    /**
+     * Moves player and controls it's animation.
+     */
     private void movePlayer() {
         if (state == STUNNED)
             return;
@@ -170,6 +196,11 @@ public class Player extends GObject {
         }
     }
 
+    /**
+     * Calculates the angle in degrees where to move the player.
+     * @param x 1 to -1 to decide which direction to move
+     * @param y 1 to -1 to decide which direction to move
+     */
     private double calculateDirection(int x, int y) {
         // I am bad at mathematics, so I can't figure out a better way to do this
         if (x == 1) {
@@ -196,6 +227,9 @@ public class Player extends GObject {
         return -1;
     }
 
+    /**
+     * Checks collisions with other players and coins.
+     */
     private void collisions() {
         if (collidesWith(Player.class)) {
             Player other = (Player) getCollidedObjects().get(0);
@@ -221,10 +255,10 @@ public class Player extends GObject {
         }
     }
 
-    public int getState() {
-        return state;
-    }
-
+    /**
+     * Checks if coins are left, steal if there is.
+     * @return if theft succeeded
+     */
     public boolean stealCoin() {
         if (coinsCollected > 0) {
             coinsCollected--;
@@ -234,7 +268,13 @@ public class Player extends GObject {
         }
     }
 
+    /**
+     * Controls what happens when player is hit.
+     * @param speed opponent's speed
+     * @param direction opponent's direction
+     */
     public void onHit(double speed, double direction) {
+        Audio.playSound("sounds/ouch.wav", false);
         state = STUNNED;
         maxSpdCurrent = maxSpdOnHit;
         startOfHit = System.currentTimeMillis();
@@ -242,5 +282,13 @@ public class Player extends GObject {
         applyStun = true;
         stunSpeed = speed * 2;
         stunDirection = direction;
+    }
+
+    /**
+     * Returns current state.
+     * @return current state.
+     */
+    public int getState() {
+        return state;
     }
 }
