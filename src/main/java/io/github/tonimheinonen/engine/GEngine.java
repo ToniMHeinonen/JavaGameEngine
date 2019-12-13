@@ -29,6 +29,7 @@ public abstract class GEngine extends Application implements Global {
     private Canvas canvas;
     private GraphicsContext gc;
     private ArrayList<GObject> objects = new ArrayList<>();
+    private ArrayList<GObject> objectsToAdd = new ArrayList<>();
 
     /**
      * Runs at the start of the program.
@@ -126,6 +127,7 @@ public abstract class GEngine extends Application implements Global {
         }
 
         destroyFlagged();
+        addObjects();
 
         // Reset released input after each frame
         Input.resetInput();
@@ -248,7 +250,7 @@ public abstract class GEngine extends Application implements Global {
         obj.setMainClass(this);
         obj.setX(x);
         obj.setY(y);
-        objects.add(obj);
+        objectsToAdd.add(obj);
         obj.setGraphicsContext(gc);
         obj.createEvent();
         return obj;
@@ -289,6 +291,14 @@ public abstract class GEngine extends Application implements Global {
             } 
         }
         objects = temp;
+    }
+
+    private void addObjects() {
+        for (GObject o : objectsToAdd) {
+            objects.add(o);
+        }
+
+        objectsToAdd.clear();
     }
 
     /*************************

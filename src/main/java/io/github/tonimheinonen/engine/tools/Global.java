@@ -27,9 +27,17 @@ public interface Global {
     public final VPos VA_BOTTOM = VPos.BOTTOM;
 
     public default boolean secondsPassed(long from, double seconds) {
-        if (System.currentTimeMillis() - from <= seconds)
+        if (System.currentTimeMillis() >= from + seconds * 1000)
             return true;
         
         return false;
+    }
+
+    public default int randomRange(int min, int max) {
+        return (int)(Math.random() * ((max - min) + 1)) + min;
+    }
+
+    public default double randomRange(double min, double max) {
+        return (Math.random() * ((max - min) + 1)) + min;
     }
 }

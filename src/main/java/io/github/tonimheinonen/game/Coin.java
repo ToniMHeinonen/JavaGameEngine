@@ -19,8 +19,10 @@ public class Coin extends GObject {
     @Override
     public void stepEvent() {
         if (collidesWith(Player.class)) {
-            System.out.println("collect");
             destroyInstance(this);
+            int x = randomRange(0, global().getWindowWidth() - (int)getWidth());
+            int y = randomRange(0, global().getWindowHeight() - (int)getHeight());
+            createInstance(x, y, Coin.class);
         }
     }
 

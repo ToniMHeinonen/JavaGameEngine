@@ -111,7 +111,7 @@ public abstract class GObject implements Global {
      * @return created image
      */
     public Image spriteCreate(String imagePath) {
-        self = new Image(imagePath);
+        self = FileManager.getImage(imagePath);
         return self;
     }
 
@@ -128,7 +128,7 @@ public abstract class GObject implements Global {
      */
     public AnimatedImage spriteCreate(String imagePath, int columns, int rows,
         int totalFrames, int frameWidth, int frameHeight, int frameSpeed) {
-        Image img = new Image(imagePath);
+        Image img = FileManager.getImage(imagePath);
         AnimatedImage anim = new AnimatedImage(img, columns, rows, frameWidth,
              frameHeight, totalFrames, frameSpeed);
 

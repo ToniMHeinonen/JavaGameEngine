@@ -16,9 +16,11 @@ public class Player extends GObject {
 
     private final int NORMAL = 0, IMMUNE = 1, STUNNED = 2;
     private int state = NORMAL;
-    private long timeOfHit, timeOfHitEnded;
+    private long startOfHit, startOfImmune;
     private double stunTime = 2;
-    private double immuneTime = 2;
+    private double immuneTime = 1;
+    private double stunSpeed, stunDirection;
+    private boolean applyStun;
 
     /**
      * Default constructor for instancing.
@@ -68,12 +70,13 @@ public class Player extends GObject {
         checkStunned();
         checkImmune();
 
-        if (state == NORMAL)
-            movePlayer();
+        movePlayer();
 
         collisions();
 
         wrap(true, true, getWidth(), getHeight());
+
+        hitHappened();
     }
 
     /**
@@ -81,33 +84,50 @@ public class Player extends GObject {
      */
     @Override
     public void drawEvent() {
+        if (state == IMMUNE)
+            drawBounds(0.5, C_WHITE);
+        else if (state == STUNNED)
+            drawBounds(0.5, C_BLUE);
+        
         drawSelf();
-        Draw.text(".", getX(), getY());
     }
 
     private void checkStunned() {
         if (state != STUNNED)
             return;
 
-        if (secondsPassed(timeOfHit, stunTime)) {
-            state = IMMUNE;
-            maxSpdCurrent = maxSpdNormal;
-            timeOfHitEnded = System.currentTimeMillis();
-        }
+        if (secondsPassed(startOfHit, stunTime))
+            startImmunity();
 
         spriteIndex(0);
     }
 
-    public void checkImmune() {
+    private void checkImmune() {
         if (state != IMMUNE)
             return;
 
-        if (secondsPassed(timeOfHitEnded, immuneTime)) {
+        if (secondsPassed(startOfImmune, immuneTime))
             state = NORMAL;
+    }
+
+    private void startImmunity() {
+        state = IMMUNE;
+        maxSpdCurrent = maxSpdNormal;
+        startOfImmune = System.currentTimeMillis();
+    }
+
+    private void hitHappened() {
+        if (applyStun) {
+            applyStun = false;
+            setSpeed(stunSpeed);
+            setDirection(stunDirection);
         }
     }
 
     private void movePlayer() {
+        if (state == STUNNED)
+            return;
+        
         // Movement and animation
         int x = 0;
         int y = 0;
@@ -179,20 +199,15 @@ public class Player extends GObject {
     private void collisions() {
         if (collidesWith(Player.class)) {
             Player other = (Player) getCollidedObjects().get(0);
+            
             if (other.getState() == NORMAL) {
+                
                 if (other.getSpeed() == getSpeed()) {
-                    double dir = other.getDirection();
-                    other.onHit();
-                    onHit();
-                    other.setDirection(getDirection());
-                    setDirection(dir);
-                    other.setSpeed(getSpeed() * 2);
-                    setSpeed(getSpeed() * 2);
+                    other.onHit(getSpeed(), getDirection());
+                    onHit(getSpeed(), other.getDirection());
                 } else if (other.getSpeed() < getSpeed()) {
-                    other.onHit();
-                    other.setDirection(getDirection());
-                    other.setSpeed(getSpeed() * 2);
-                    other.applyForces();
+                    startImmunity();
+                    other.onHit(getSpeed(), getDirection());
                     
                     if (other.stealCoin()) {
                         coinsCollected++;
@@ -219,9 +234,13 @@ public class Player extends GObject {
         }
     }
 
-    public void onHit() {
+    public void onHit(double speed, double direction) {
         state = STUNNED;
         maxSpdCurrent = maxSpdOnHit;
-        timeOfHit = System.currentTimeMillis();
+        startOfHit = System.currentTimeMillis();
+
+        applyStun = true;
+        stunSpeed = speed * 2;
+        stunDirection = direction;
     }
 }
