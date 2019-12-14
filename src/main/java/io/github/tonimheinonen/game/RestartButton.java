@@ -22,6 +22,7 @@ public class RestartButton extends GButton {
 
     @Override
     public void onReleased() {
+        
     }
 
     @Override

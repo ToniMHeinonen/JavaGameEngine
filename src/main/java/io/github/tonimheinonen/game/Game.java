@@ -46,9 +46,6 @@ public class Game extends GEngine {
             destroyInstance(Coin.class);
             gameOver = true;
 
-            createButton("Restart", getWindowWidth() / 2, 
-                        getWindowHeight() / 2 + 200, new RestartButton(this));
-
             if (oneWon && twoWon) {
                 winner = "DRAW!";
             } else if (oneWon) {
@@ -57,7 +54,6 @@ public class Game extends GEngine {
                 winner = "PLAYER TWO WON!";
             }
         }
-
     }
 
     /**

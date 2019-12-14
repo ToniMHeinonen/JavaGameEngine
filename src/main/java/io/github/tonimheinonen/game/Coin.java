@@ -1,6 +1,7 @@
 package io.github.tonimheinonen.game;
 
 import io.github.tonimheinonen.engine.GObject;
+import io.github.tonimheinonen.engine.tools.*;
 import javafx.scene.image.Image;
 
 public class Coin extends GObject {
@@ -25,6 +26,7 @@ public class Coin extends GObject {
             int x = randomRange(0, global().getWindowWidth() - (int)getWidth());
             int y = randomRange(0, global().getWindowHeight() - (int)getHeight());
             createInstance(x, y, Coin.class);
+            Audio.playSound("sounds/coin.wav", false);
         }
     }
 
