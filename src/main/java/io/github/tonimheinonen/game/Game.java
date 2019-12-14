@@ -5,6 +5,12 @@ import io.github.tonimheinonen.engine.tools.*;
 
 public class Game extends GEngine {
 
+    private Player one, two;
+    private int maxScore = 5;
+    private int oneScore, twoScore;
+    private boolean gameOver;
+    private String winner;
+
     /**
      * Launches game.
      * @param args given arguments
@@ -21,10 +27,8 @@ public class Game extends GEngine {
         setWindowTitle("Game 1");
         setWindowSize(800, 600);
         setBackgroundImage("images/background.jpg");
-        Player one = createInstance(100, 50, Player.class);
-        Player two = createInstance(200, 50, new Player(2));
-        Coin coin = createInstance(300, 50, Coin.class);
         Audio.playSound("music/music.mp3", true);
+        startGame();
     }
 
     /**
@@ -32,6 +36,27 @@ public class Game extends GEngine {
      */
     @Override
     public void stepEvent() {
+        boolean oneWon = one.getCoinsCollected() >= maxScore;
+        boolean twoWon = two.getCoinsCollected() >= maxScore;
+        
+        if (oneWon || twoWon && !gameOver) {
+            oneScore = one.getCoinsCollected();
+            twoScore = two.getCoinsCollected();
+            destroyInstance(Player.class);
+            destroyInstance(Coin.class);
+            gameOver = true;
+
+            createButton("Restart", getWindowWidth() / 2, 
+                        getWindowHeight() / 2 + 200, new RestartButton(this));
+
+            if (oneWon && twoWon) {
+                winner = "DRAW!";
+            } else if (oneWon) {
+                winner = "PLAYER ONE WON!";
+            } else if (twoWon) {
+                winner = "PLAYER TWO WON!";
+            }
+        }
 
     }
 
@@ -40,5 +65,36 @@ public class Game extends GEngine {
      */
     @Override
     public void drawEvent() {
+        drawGameOver();
+    }
+
+    private void startGame() {
+        one = createInstance(getWindowWidth() / 3, getWindowHeight() / 2, Player.class);
+        two = createInstance(getWindowWidth() / 3 * 2, getWindowHeight() / 2, new Player(2));
+        Coin coin = createInstance(getWindowWidth() / 2, 50, Coin.class);
+        gameOver = false;
+    }
+
+    /**
+     * Draws game over screen.
+     */
+    private void drawGameOver() {
+        if (gameOver) {
+            int space = 50;
+            Draw.setTextSize(35);
+            Draw.setColor(C_RED);
+            Draw.setHorizontalAlign(HA_CENTER);
+            Draw.setVerticalAlign(VA_CENTER);
+            double wCenter = getWindowWidth() / 2;
+            double hCenter = getWindowHeight() / 2;
+            Draw.text("GAME OVER", wCenter, hCenter - space);
+            Draw.text(winner, wCenter, hCenter);
+            Draw.text("Player one score: " + oneScore, wCenter, hCenter + space*2);
+            Draw.text("Player two score: " + twoScore, wCenter, hCenter + space*3);
+        }
+    }
+
+    public void restartGame() {
+        startGame();
     }
 }

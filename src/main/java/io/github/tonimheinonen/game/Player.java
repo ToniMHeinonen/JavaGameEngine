@@ -10,7 +10,7 @@ public class Player extends GObject {
     private double coinsX;
     private double coinsY = 30;
     private String down, up, right, left;
-    private double speed = 0.4;
+    private double speed = 0.2;
     private double maxSpdNormal = 7;
     private double maxSpdOnHit = 10;
     private double maxSpdCurrent = maxSpdNormal;
@@ -63,7 +63,7 @@ public class Player extends GObject {
             coinsX = (global().getWindowWidth() / 4) * 3;
         }
 
-        setFriction(0.2);
+        setFriction(0.1);
     }
 
     /**
@@ -78,7 +78,7 @@ public class Player extends GObject {
 
         collisions();
 
-        wrap(true, true, getWidth(), getHeight());
+        wrap(true, true, getWidth() / 2 - 2, getHeight() / 2 - 2);
 
         hitHappened();
     }
@@ -99,7 +99,7 @@ public class Player extends GObject {
 
     private void drawScore() {
         Draw.setHorizontalAlign(HA_CENTER);
-        Draw.setFont("Verdana", 25);
+        Draw.setTextSize(25);
         Draw.text(String.valueOf(coinsCollected), coinsX, coinsY);
     }
 
@@ -233,13 +233,17 @@ public class Player extends GObject {
     private void collisions() {
         if (collidesWith(Player.class)) {
             Player other = (Player) getCollidedObjects().get(0);
-            
+        
             if (other.getState() == NORMAL) {
-                
-                if (other.getSpeed() == getSpeed()) {
+                // Stupid double value changes to 0.000000000000000000018
+                double diff = getSpeed() - other.getSpeed() - 0.001;
+
+                if (diff <= getFriction() && diff >= 0) {
+                    // If speed is tied counting the friction
                     other.onHit(getSpeed(), getDirection());
                     onHit(getSpeed(), other.getDirection());
-                } else if (other.getSpeed() < getSpeed()) {
+                } else if (diff > getFriction()) {
+                    // Else if speed is faster than opponent's
                     startImmunity();
                     other.onHit(getSpeed(), getDirection());
                     
@@ -290,5 +294,13 @@ public class Player extends GObject {
      */
     public int getState() {
         return state;
+    }
+
+    /**
+     * Returns the amount of coins collected.
+     * @return the amount of coins collected
+     */
+    public int getCoinsCollected() {
+        return coinsCollected;
     }
 }

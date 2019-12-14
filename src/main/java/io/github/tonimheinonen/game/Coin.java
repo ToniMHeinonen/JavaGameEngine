@@ -1,6 +1,7 @@
 package io.github.tonimheinonen.game;
 
 import io.github.tonimheinonen.engine.GObject;
+import javafx.scene.image.Image;
 
 public class Coin extends GObject {
 
@@ -9,7 +10,8 @@ public class Coin extends GObject {
      */
     @Override
     public void createEvent() {
-        spriteCreate("images/Coin.png");
+        Image img = spriteCreate("images/Coin.png");
+        spriteSet(img);
         spriteResize(32, 32);
     }
 

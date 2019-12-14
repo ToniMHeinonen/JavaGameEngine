@@ -3,6 +3,7 @@ package io.github.tonimheinonen.engine.tools;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -10,6 +11,18 @@ import javafx.scene.text.TextAlignment;
 public abstract class Draw {
     
     private static GraphicsContext gc;
+    private static double textSize = 20;
+    private static String textFont = "Verdana";
+
+    /**
+     * Initialize default drawing values.
+     */
+    static {
+        /*gc.setFont(new Font(textFont, textSize));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.setFill(Color.WHITE);*/
+    }
 
     /**
      * Draws image to provided coordinate and size.
@@ -78,10 +91,18 @@ public abstract class Draw {
     /**
      * Sets font for drawn text.
      * @param font name of the font (e. "Verdana")
+
+     */
+    public static void setTextFont(String font) {
+        gc.setFont(new Font(font, textSize));
+    }
+
+    /**
+     * Sets size for drawn text.
      * @param size size of the font (e. 12)
      */
-    public static void setFont(String font, int size) {
-        gc.setFont(new Font(font, size));
+    public static void setTextSize(double size) {
+        gc.setFont(new Font(textFont, size));
     }
 
     /**

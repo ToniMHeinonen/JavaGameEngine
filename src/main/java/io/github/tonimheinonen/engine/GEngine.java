@@ -120,6 +120,7 @@ public abstract class GEngine extends Application implements Global {
         drawEvent(); 
         
         // Loop through object's events
+
         for (GObject o : objects)
             o.stepEvent();
 
@@ -376,6 +377,10 @@ public abstract class GEngine extends Application implements Global {
         
         root.getChildren().add(btn);
         return btn;
+    }
+
+    public void destroyButton(GButton btn) {
+        root.getChildren().remove(btn);
     }
 
     /*************************

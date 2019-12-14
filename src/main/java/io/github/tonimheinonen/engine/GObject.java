@@ -18,6 +18,8 @@ public abstract class GObject implements Global {
     private Image self;
     private AnimatedImage curAnim;
     private float spriteSpd = -99;
+    private double originX = -99;
+    private double originY = -99;
     private boolean drawAnimation;
     private GEngine mainClass;
     private BoundingBox bounds = new BoundingBox();
@@ -111,8 +113,7 @@ public abstract class GObject implements Global {
      * @return created image
      */
     public Image spriteCreate(String imagePath) {
-        self = FileManager.getImage(imagePath);
-        return self;
+        return FileManager.getImage(imagePath);
     }
 
     /**
@@ -248,9 +249,9 @@ public abstract class GObject implements Global {
      */
     public void drawSelf() {
         if (drawAnimation)
-            animator.render(gc, x, y, width, height);
+            animator.render(gc, x - originX, y - originY, width, height);
         else
-            gc.drawImage(self, x, y, width, height);
+            gc.drawImage(self, x - originX, y - originY, width, height);
     }
 
     /**
@@ -264,6 +265,13 @@ public abstract class GObject implements Global {
         origHeight = height;
     }
 
+    private void checkOrigin() {
+        if (originX == -99) {
+            originX = width / 2;
+            originY = height / 2;
+        }
+    }
+
     /*************************
         COLLISIONS
     **************************/
@@ -271,7 +279,8 @@ public abstract class GObject implements Global {
      * Move bounds to new location.
      */
     private void updatePositionAndSize() {
-        bounds.setBox(x, y, width, height);
+        checkOrigin();
+        bounds.setBox(x - originX, y - originY, width, height);
     }
 
     /**
@@ -282,7 +291,7 @@ public abstract class GObject implements Global {
     public void drawBounds(double alpha, Color color) {
         gc.setGlobalAlpha(alpha);
         gc.setFill(color);
-        gc.fillRect(x, y, width, height);
+        gc.fillRect(x - originX, y - originY, width, height);
         // Reset values
         gc.setGlobalAlpha(1);
         gc.setFill(C_BLACK);
