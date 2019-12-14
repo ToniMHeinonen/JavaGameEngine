@@ -99,6 +99,9 @@ public class Player extends GObject {
 
     private void drawScore() {
         Draw.setHorizontalAlign(HA_CENTER);
+        Draw.setVerticalAlign(VA_CENTER);
+        Draw.setTextFont("Verdana");
+        Draw.setColor(C_WHITE);
         Draw.setTextSize(25);
         Draw.text(String.valueOf(coinsCollected), coinsX, coinsY);
     }

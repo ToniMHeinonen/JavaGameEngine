@@ -15,16 +15,6 @@ public abstract class Draw {
     private static String textFont = "Verdana";
 
     /**
-     * Initialize default drawing values.
-     */
-    static {
-        /*gc.setFont(new Font(textFont, textSize));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setTextBaseline(VPos.CENTER);
-        gc.setFill(Color.WHITE);*/
-    }
-
-    /**
      * Draws image to provided coordinate and size.
      * @param img image to draw
      * @param x coordinate
@@ -122,10 +112,14 @@ public abstract class Draw {
     }
 
     /**
-     * Sets graphicsContext to be drawn on.
+     * Sets graphicsContext to be drawn on and initializes default values.
      * @param graphicsContext to be drawn on
      */
     public static void setGraphicsContext(GraphicsContext graphicsContext) {
         gc = graphicsContext;
+        gc.setFont(new Font(textFont, textSize));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.setFill(Color.WHITE);
     }
 }

@@ -6,6 +6,7 @@ import io.github.tonimheinonen.engine.tools.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * Holds all the information every object will need in game.
@@ -146,8 +147,10 @@ public abstract class GObject implements Global {
             return;
 
         drawAnimation = false;
-        width = sprite.getWidth();
-        height = sprite.getHeight();
+        if (width == 0) {
+            width = sprite.getWidth();
+            height = sprite.getHeight();
+        }
         setOriginalSize();
         updatePositionAndSize();
 
@@ -171,8 +174,10 @@ public abstract class GObject implements Global {
         if (this.spriteSpd == -99)
             this.spriteSpd = sprite.getFps();
 
-        width = sprite.getFrameWidth();
-        height = sprite.getFrameHeight();
+        if (width == 0) {
+            width = sprite.getFrameWidth();
+            height = sprite.getFrameHeight();
+        }
         setOriginalSize();
         updatePositionAndSize();
 
@@ -265,8 +270,8 @@ public abstract class GObject implements Global {
         origHeight = height;
     }
 
-    private void checkOrigin() {
-        if (originX == -99) {
+    private void centerOrigin() {
+        if (width > 0) {
             originX = width / 2;
             originY = height / 2;
         }
@@ -279,7 +284,7 @@ public abstract class GObject implements Global {
      * Move bounds to new location.
      */
     private void updatePositionAndSize() {
-        checkOrigin();
+        centerOrigin();
         bounds.setBox(x - originX, y - originY, width, height);
     }
 
@@ -289,12 +294,14 @@ public abstract class GObject implements Global {
      * @param color to use for drawing
      */
     public void drawBounds(double alpha, Color color) {
+        Paint curColor = gc.getFill();
+        double curAlpha = gc.getGlobalAlpha();
         gc.setGlobalAlpha(alpha);
         gc.setFill(color);
         gc.fillRect(x - originX, y - originY, width, height);
         // Reset values
-        gc.setGlobalAlpha(1);
-        gc.setFill(C_BLACK);
+        gc.setGlobalAlpha(curAlpha);
+        gc.setFill(curColor);
     }
 
     /**

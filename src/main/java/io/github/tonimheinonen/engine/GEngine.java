@@ -50,6 +50,7 @@ public abstract class GEngine extends Application implements Global {
             // Set root on scene
             Scene theScene = new Scene(root);
             theStage.setScene(theScene);
+            setWindowSize(windowWidth, windowHeight);
             
             // Create canvas for drawing objects
             Canvas canvas = new Canvas(windowWidth, windowHeight);
@@ -173,8 +174,8 @@ public abstract class GEngine extends Application implements Global {
     public void setWindowSize(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
-        canvas.setWidth(width);
-        canvas.setHeight(height);
+        stage.setWidth(width);
+        stage.setHeight(height);
     }
 
     /*************************
