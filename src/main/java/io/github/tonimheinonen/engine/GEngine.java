@@ -2,12 +2,14 @@ package io.github.tonimheinonen.engine;
 
 import io.github.tonimheinonen.engine.tools.*;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
@@ -46,6 +48,14 @@ public abstract class GEngine extends Application implements Global {
             // Create main group
             Group root = new Group();
             this.root = root;
+            root.setOnMouseClicked(new EventHandler<MouseEvent>() 
+            {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(event.getScreenX());
+                System.out.println(event.getScreenY());
+            }
+            });
 
             // Set root on scene
             Scene theScene = new Scene(root);
