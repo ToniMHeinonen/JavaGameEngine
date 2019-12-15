@@ -12,6 +12,10 @@ public abstract class Input {
     private static ArrayList<String> releasedInput = new ArrayList<>();
     private static ArrayList<String> holdInput = new ArrayList<>();
 
+    private static double mousePosX = -9999, mousePosY = -9999;
+    private static double mousePressedX = -9999, mousePressedY = -9999;
+    private static double mouseReleasedX = -9999, mouseReleasedY = -9999;
+
     /**
      * Handles pressed key event.
      * @param e pressed key
@@ -88,9 +92,9 @@ public abstract class Input {
     }
 
     /**
-     * Clears released input and pressed input.
+     * Clears released input, pressed input and mouse values.
      * 
-     * Pressed input and released input will be cleared after each frame.
+     * All these input values will be cleared after each frame.
      */
     public static void resetInput() {
         if (!releasedInput.isEmpty())
@@ -98,6 +102,11 @@ public abstract class Input {
 
         if (!pressedInput.isEmpty())
             pressedInput.clear();
+
+        mousePressedX = -9999;
+        mousePressedY = -9999;
+        mouseReleasedX = -9999;
+        mouseReleasedY = -9999;
     }
 
     /**
@@ -111,5 +120,44 @@ public abstract class Input {
             code = code.substring(5, code.length());
 
         return code;
+    }
+
+    public static void updateMousePosition(double x, double y) {
+        mousePosX = x;
+        mousePosY = y;
+    }
+
+    public static void updateMousePressed(double x, double y) {
+        mousePressedX = x;
+        mousePressedY = y;
+    }
+
+    public static void updateMouseReleased(double x, double y) {
+        mouseReleasedX = x;
+        mouseReleasedY = y;
+    }
+
+    public static double getMousePosX() {
+        return mousePosX;
+    }
+
+    public static double getMousePosY() {
+        return mousePosY;
+    }
+
+    public static double getMousePressedX() {
+        return mousePressedX;
+    }
+
+    public static double getMousePressedY() {
+        return mousePressedY;
+    }
+
+    public static double getMouseReleasedX() {
+        return mouseReleasedX;
+    }
+
+    public static double getMouseReleasedY() {
+        return mouseReleasedY;
     }
 }

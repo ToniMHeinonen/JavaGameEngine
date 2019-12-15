@@ -48,14 +48,7 @@ public abstract class GEngine extends Application implements Global {
             // Create main group
             Group root = new Group();
             this.root = root;
-            root.setOnMouseClicked(new EventHandler<MouseEvent>() 
-            {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println(event.getScreenX());
-                System.out.println(event.getScreenY());
-            }
-            });
+            setMouseListeners();
 
             // Set root on scene
             Scene theScene = new Scene(root);
@@ -146,6 +139,29 @@ public abstract class GEngine extends Application implements Global {
 
         // Reset released input after each frame
         Input.resetInput();
+    }
+
+    private void setMouseListeners() {
+        root.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Input.updateMousePosition(e.getSceneX(), e.getSceneY());
+            }
+        });
+
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Input.updateMousePressed(e.getSceneX(), e.getSceneY());
+            }
+        });
+
+        root.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Input.updateMouseReleased(e.getSceneX(), e.getSceneY());
+            }
+        });
     }
 
     /**

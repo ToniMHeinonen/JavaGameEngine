@@ -356,6 +356,21 @@ public abstract class GObject implements Global {
     }
 
     /*************************
+        MOUSE
+    **************************/
+    public boolean mouseOver() {
+        return bounds.contains(Input.getMousePosX(), Input.getMousePosY());
+    }
+
+    public boolean mousePressed() {
+        return bounds.contains(Input.getMousePressedX(), Input.getMousePressedY());
+    }
+
+    public boolean mouseReleased() {
+        return bounds.contains(Input.getMouseReleasedX(), Input.getMouseReleasedY());
+    }
+
+    /*************************
         ENGINE METHODS
     **************************/
     // Instances

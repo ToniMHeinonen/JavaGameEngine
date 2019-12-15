@@ -40,4 +40,9 @@ public class BoundingBox {
             && b.x < x + width && b.x + b.width > x
             && b.y < y + height && b.y + b.height > y;
     }
+
+    public boolean contains(double x, double y) {
+        return x >= this.x && x <= this.x + this.width &&
+            y >= this.y && y <= this.y + this.height;
+    }
 }

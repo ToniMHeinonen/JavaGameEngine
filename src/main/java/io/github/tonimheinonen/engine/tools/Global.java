@@ -17,6 +17,9 @@ public interface Global {
     public final Color C_GREEN = Color.GREEN;
     public final Color C_BLUE = Color.BLUE;
     public final Color C_YELLOW = Color.YELLOW;
+    public final Color C_ORANGE = Color.ORANGE;
+    public final Color C_PURPLE = Color.PURPLE;
+    public final Color C_CYAN = Color.CYAN;
 
     // Alignment
     public final TextAlignment HA_LEFT = TextAlignment.LEFT;

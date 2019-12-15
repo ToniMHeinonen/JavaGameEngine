@@ -6,7 +6,7 @@ import io.github.tonimheinonen.engine.tools.*;
 public class Game extends GEngine {
 
     private Player one, two;
-    private int maxScore = 5;
+    private int maxScore = 20;
     private int oneScore, twoScore;
     private boolean gameOver;
     private String winner;
@@ -39,12 +39,15 @@ public class Game extends GEngine {
         boolean oneWon = one.getCoinsCollected() >= maxScore;
         boolean twoWon = two.getCoinsCollected() >= maxScore;
         
-        if (oneWon || twoWon && !gameOver) {
+        if (!gameOver && (oneWon || twoWon)) {
             oneScore = one.getCoinsCollected();
             twoScore = two.getCoinsCollected();
             destroyInstance(Player.class);
             destroyInstance(Coin.class);
             gameOver = true;
+
+            createInstance(getWindowWidth() / 2, 
+                getWindowHeight() / 2 + 200, new RestartBtn(this));
 
             if (oneWon && twoWon) {
                 winner = "DRAW!";
@@ -78,15 +81,15 @@ public class Game extends GEngine {
         if (gameOver) {
             int space = 50;
             Draw.setTextSize(35);
-            Draw.setColor(C_RED);
+            Draw.setColor(C_WHITE);
             Draw.setHorizontalAlign(HA_CENTER);
             Draw.setVerticalAlign(VA_CENTER);
             double wCenter = getWindowWidth() / 2;
-            double hCenter = getWindowHeight() / 2;
-            Draw.text("GAME OVER", wCenter, hCenter - space);
-            Draw.text(winner, wCenter, hCenter);
-            Draw.text("Player one score: " + oneScore, wCenter, hCenter + space*2);
-            Draw.text("Player two score: " + twoScore, wCenter, hCenter + space*3);
+            double startY = 200;
+            Draw.text("GAME OVER", wCenter, startY);
+            Draw.text(winner, wCenter, startY + space);
+            Draw.text("Player one score: " + oneScore, wCenter, startY + space*2);
+            Draw.text("Player two score: " + twoScore, wCenter, startY + space*3);
         }
     }
 
