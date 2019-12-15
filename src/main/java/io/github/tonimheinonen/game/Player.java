@@ -51,6 +51,7 @@ public class Player extends GObject {
         playerRight = spriteCreate("images/playerRight.png", 4, 1, 4, 48, 70, 10);
         spriteSet(playerDown, true);
         spriteSpeed(0, false);
+        setBounds(9, getHeight()/2, 30, getHeight()/2);
 
         if (playerSlot == 1) {
             down = "S";

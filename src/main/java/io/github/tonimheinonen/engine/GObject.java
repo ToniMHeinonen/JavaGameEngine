@@ -158,11 +158,10 @@ public abstract class GObject implements Global {
 
         drawAnimation = false;
         if (width == 0) {
-            width = sprite.getWidth();
-            height = sprite.getHeight();
+            setSize(sprite.getWidth(), sprite.getHeight());
+            setOriginalSize();
+            updateBounds();
         }
-        setOriginalSize();
-        updatePositionAndSize();
 
         self = sprite;
     }
@@ -185,11 +184,10 @@ public abstract class GObject implements Global {
             this.spriteSpd = sprite.getFps();
 
         if (width == 0) {
-            width = sprite.getFrameWidth();
-            height = sprite.getFrameHeight();
+            setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
+            setOriginalSize();
+            updateBounds();
         }
-        setOriginalSize();
-        updatePositionAndSize();
 
         animator.setAnimation(sprite);
         animator.setFps(this.spriteSpd);
@@ -234,9 +232,11 @@ public abstract class GObject implements Global {
      * @param height to change
      */
     public void spriteResize(double width, double height) {
-        this.width = width;
-        this.height = height;
-        updatePositionAndSize();
+        double percentX = width / this.origWidth;
+        double percentY = height / this.origHeight;
+        setSize(width, height);
+        bounds.resizeOffset(percentX, percentY);
+        updateBounds();
     }
 
     /**
@@ -244,9 +244,9 @@ public abstract class GObject implements Global {
      * @param percent 1 = 100%
      */
     public void spriteResize(double percent) {
-        this.width = origWidth * percent;
-        this.height = origHeight * percent;
-        updatePositionAndSize();
+        setSize(origWidth * percent, origHeight * percent);
+        bounds.resizeOffset(percent);
+        updateBounds();
     }
 
     /**
@@ -290,20 +290,25 @@ public abstract class GObject implements Global {
         }
     }
 
+    private void setSize(double width, double height) {
+        this.width = width;
+        this.height = height;
+        centerOrigin();
+    }
+
     /*************************
         COLLISIONS
     **************************/
     /**
      * Move bounds to new location.
      */
-    private void updatePositionAndSize() {
-        centerOrigin();
+    private void updateBounds() {
         bounds.setBox(x - originX, y - originY, width, height);
     }
 
     public void setBounds(double xOffset, double yOffset,
                 double width, double height) {
-        
+        bounds.setOffset(xOffset, yOffset, width, height);
     }
 
     /**
@@ -316,7 +321,8 @@ public abstract class GObject implements Global {
         double curAlpha = gc.getGlobalAlpha();
         gc.setGlobalAlpha(alpha);
         gc.setFill(color);
-        gc.fillRect(x - originX, y - originY, width, height);
+        gc.fillRect(bounds.getX(), bounds.getY(), 
+                    bounds.getWidth(), bounds.getHeight());
         // Reset values
         gc.setGlobalAlpha(curAlpha);
         gc.setFill(curColor);
@@ -454,7 +460,7 @@ public abstract class GObject implements Global {
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
-        updatePositionAndSize();
+        updateBounds();
     }
 
     /**
@@ -471,7 +477,7 @@ public abstract class GObject implements Global {
      */
     public void setX(double x) {
         this.x = x;
-        updatePositionAndSize();
+        updateBounds();
     }
 
     /**
@@ -488,7 +494,7 @@ public abstract class GObject implements Global {
      */
     public void setY(double y) {
         this.y = y;
-        updatePositionAndSize();
+        updateBounds();
     }
 
     /**
