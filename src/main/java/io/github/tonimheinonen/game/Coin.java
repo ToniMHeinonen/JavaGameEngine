@@ -31,7 +31,7 @@ public class Coin extends GObject {
     }
 
     /**
-     * Draws the coin and collision border.
+     * Draws the coin.
      */
     @Override
     public void drawEvent() {

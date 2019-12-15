@@ -97,6 +97,9 @@ public class Player extends GObject {
         drawScore();
     }
 
+    /**
+     * Draws player's score on top of the screen.
+     */
     private void drawScore() {
         Draw.setHorizontalAlign(HA_CENTER);
         Draw.setVerticalAlign(VA_CENTER);

@@ -31,10 +31,20 @@ public abstract class GObject implements Global {
     private double gravity, gravityCurForce;
     private boolean maxSpeedInitialized;
 
+    
+    /** 
+     * Runs when the instance is created.
+     */
     public abstract void createEvent();
-
+    
+    /** 
+     * Runs every frame.
+     */
     public abstract void stepEvent();
-
+    
+    /** 
+     * Runs every frame, use for drawing on screen.
+     */
     public abstract void drawEvent();
 
     /*************************
@@ -270,6 +280,9 @@ public abstract class GObject implements Global {
         origHeight = height;
     }
 
+    /**
+     * Centers the origin of the object.
+     */
     private void centerOrigin() {
         if (width > 0) {
             originX = width / 2;
@@ -358,14 +371,26 @@ public abstract class GObject implements Global {
     /*************************
         MOUSE
     **************************/
+    /** 
+     * Returns if mouse is over current instance.
+     * @return true if mouse is over current instance
+     */
     public boolean mouseOver() {
         return bounds.contains(Input.getMousePosX(), Input.getMousePosY());
     }
-
+    
+    /** 
+     * Returns if mouse was pressed over current instance.
+     * @return true if mouse was pressed over current instance
+     */
     public boolean mousePressed() {
         return bounds.contains(Input.getMousePressedX(), Input.getMousePressedY());
     }
-
+    
+    /** 
+     * Returns if mouse was released over current instance.
+     * @return true if mouse was released over current instance
+     */
     public boolean mouseReleased() {
         return bounds.contains(Input.getMouseReleasedX(), Input.getMouseReleasedY());
     }

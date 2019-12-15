@@ -67,6 +67,9 @@ public class Game extends GEngine {
         drawGameOver();
     }
 
+    /**
+     * Used for starting and restarting the game.
+     */
     private void startGame() {
         one = createInstance(getWindowWidth() / 3, getWindowHeight() / 2, Player.class);
         two = createInstance(getWindowWidth() / 3 * 2, getWindowHeight() / 2, new Player(2));
@@ -93,6 +96,9 @@ public class Game extends GEngine {
         }
     }
 
+    /**
+     * Restarts the game.
+     */
     public void restartGame() {
         startGame();
     }

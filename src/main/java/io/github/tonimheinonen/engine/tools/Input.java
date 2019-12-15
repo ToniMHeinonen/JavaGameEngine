@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.scene.input.KeyEvent;
 
 /**
- * Controls keyboard input.
+ * Controls keyboard and mouse input.
  */
 public abstract class Input {
     private static ArrayList<String> pressedInput = new ArrayList<>();
@@ -122,41 +122,80 @@ public abstract class Input {
         return code;
     }
 
+    /**
+     * Updates position where mouse currenty is.
+     * @param x coordinate
+     * @param y coordinate
+     */
     public static void updateMousePosition(double x, double y) {
         mousePosX = x;
         mousePosY = y;
     }
-
+    
+    /** 
+     * Updates position where mouse was pressed.
+     * @param x coordinate
+     * @param y coordinate
+     */
     public static void updateMousePressed(double x, double y) {
         mousePressedX = x;
         mousePressedY = y;
     }
-
+    
+    /** 
+     * Updates position where mouse was released.
+     * @param x coordinate
+     * @param y coordinate
+     */
     public static void updateMouseReleased(double x, double y) {
         mouseReleasedX = x;
         mouseReleasedY = y;
     }
-
+    
+    /** 
+     * Returns current mouse x coordinate.
+     * @return current mouse x coordinate
+     */
     public static double getMousePosX() {
         return mousePosX;
     }
-
+    
+    /** 
+     * Returns current mouse y coordinate.
+     * @return current mouse y coordinate
+     */
     public static double getMousePosY() {
         return mousePosY;
     }
 
+    /** 
+     * Returns x coordinate where mouse was pressed.
+     * @return x coordinate where mouse was pressed
+     */
     public static double getMousePressedX() {
         return mousePressedX;
     }
-
+    
+    /** 
+     * Returns y coordinate where mouse was pressed.
+     * @return y coordinate where mouse was pressed
+     */
     public static double getMousePressedY() {
         return mousePressedY;
     }
-
+    
+    /** 
+     * Returns x coordinate where mouse was released.
+     * @return x coordinate where mouse was released
+     */
     public static double getMouseReleasedX() {
         return mouseReleasedX;
     }
-
+    
+    /** 
+     * Returns y coordinate where mouse was released.
+     * @return y coordinate where mouse was released
+     */
     public static double getMouseReleasedY() {
         return mouseReleasedY;
     }

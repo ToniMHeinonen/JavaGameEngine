@@ -29,6 +29,12 @@ public interface Global {
     public final VPos VA_CENTER = VPos.CENTER;
     public final VPos VA_BOTTOM = VPos.BOTTOM;
 
+    /**
+     * Checks if provided seconds have passed.
+     * @param from starting time to check
+     * @param seconds how many seconds to pass
+     * @return true if provided amount of seconds has passed
+     */
     public default boolean secondsPassed(long from, double seconds) {
         if (System.currentTimeMillis() >= from + seconds * 1000)
             return true;
@@ -36,10 +42,22 @@ public interface Global {
         return false;
     }
 
+    /**
+     * Returns random int between provided min and max.
+     * @param min minimun allowed value
+     * @param max maximum allowed value
+     * @return random int
+     */
     public default int randomRange(int min, int max) {
         return (int)(Math.random() * ((max - min) + 1)) + min;
     }
 
+    /**
+     * Returns random double between provided min and max.
+     * @param min minimun allowed value
+     * @param max maximum allowed value
+     * @return random int
+     */
     public default double randomRange(double min, double max) {
         return (Math.random() * ((max - min) + 1)) + min;
     }
