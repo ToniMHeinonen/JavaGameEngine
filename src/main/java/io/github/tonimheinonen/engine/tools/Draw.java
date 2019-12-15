@@ -12,6 +12,7 @@ import javafx.scene.text.TextAlignment;
 public abstract class Draw {
     
     private static GraphicsContext gc;
+    private static ColorAdjust c = new ColorAdjust();
     private static double textSize = 20;
     private static String textFont = "Verdana";
 
@@ -97,12 +98,20 @@ public abstract class Draw {
     }
 
     /**
-     * Changes hue of the drawn stuff.
-     * @param value hue value
+     * Sets hue, saturation and lightness of drawing.
+     * 
+     * All values:
+     *  Default = 0.0
+     *  Min = -1.0
+     *  Max = 1.0
+     * @param hue value of hue
+     * @param saturation value of saturation
+     * @param lightness value of lightness
      */
-    public static void setHue(double value) {
-        ColorAdjust c = new ColorAdjust();
-        c.setHue(value);
+    public static void setHSL(double hue, double saturation, double lightness) {
+        c.setHue(hue);
+        c.setSaturation(saturation);
+        c.setBrightness(lightness);
         gc.setEffect(c);
     }
 

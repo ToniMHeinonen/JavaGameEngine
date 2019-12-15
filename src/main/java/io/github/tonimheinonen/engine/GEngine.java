@@ -144,6 +144,12 @@ public abstract class GEngine extends Application implements Global {
         Input.resetInput(); // Reset released input after each frame
     }
 
+    /**
+     * Sets mouse listeners for root.
+     * 
+     * Listeners are used in Input class and Input class is mainly
+     * used in GObject classes.
+     */
     private void setMouseListeners() {
         root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
@@ -179,8 +185,7 @@ public abstract class GEngine extends Application implements Global {
      */
     @Override
     public void stop() {
-        // Close all threads
-        System.exit(0);
+        System.exit(0); // Close all threads
     }
 
     /*************************

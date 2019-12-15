@@ -10,7 +10,7 @@ public class Player extends GObject {
     private double coinsX;
     private double coinsY = 50;
     private String down, up, right, left;
-    private double speed = 0.2;
+    private double speed = 0.25;
     private double maxSpdNormal = 7;
     private double maxSpdOnHit = 10;
     private double maxSpdCurrent = maxSpdNormal;
@@ -20,11 +20,14 @@ public class Player extends GObject {
     private int state = NORMAL;
     private long startOfHit, startOfImmune;
     private double stunTime = 2;
-    private double immuneTime = 1;
+    private double immuneTime = 1.5;
     private double stunSpeed, stunDirection;
     private boolean applyStun;
 
     private boolean movementStarted;
+    private double defaultHue;
+    private boolean showLight;
+    private long lightTime;
 
     /**
      * Default constructor for instancing.
@@ -65,6 +68,7 @@ public class Player extends GObject {
             left = "Left";
             right = "Right";
             coinsX = (global().getWindowWidth() / 4) * 3;
+            defaultHue = -0.75;
         }
 
         setFriction(0.15);
@@ -94,23 +98,36 @@ public class Player extends GObject {
      */
     @Override
     public void drawEvent() {
-        if (state == IMMUNE)
-            drawBounds(0.5, C_WHITE);
-        else if (state == STUNNED)
-            drawBounds(0.5, C_BLUE);
-        
         drawPlayer();
         drawHud();
     }
 
     /**
-     * Draws player with or without hue.
+     * Draws player with or without hsv.
      */
     private void drawPlayer() {
-        if (playerSlot == 2)
-            Draw.setHue(-10);
+        double sat = 0;
+        double light = 0;
+
+        // Toggle light to create flashing effect
+        if(secondsPassed(lightTime, 0.1)) {
+            lightTime = System.currentTimeMillis();
+            showLight = !showLight;
+        }
+
+        if (state == STUNNED) {
+            // If player is stunned, change saturation
+            sat = -0.75;
+        } else if (state == IMMUNE) {
+            // If player is immune and showLight is true, change lightness
+            if (showLight)
+                light = 0.5;
+        }
+
+        // Change HSL and reset it after drawing
+        Draw.setHSL(defaultHue, sat, light);
         drawSelf();
-        Draw.setHue(0);
+        Draw.setHSL(0, 0, 0);
     }
 
     /**
