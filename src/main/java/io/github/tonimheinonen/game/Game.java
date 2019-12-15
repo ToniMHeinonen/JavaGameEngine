@@ -6,7 +6,7 @@ import io.github.tonimheinonen.engine.tools.*;
 public class Game extends GEngine {
 
     private Player one, two;
-    private int maxScore = 20;
+    private int targetScore = 10;
     private int oneScore, twoScore;
     private boolean gameOver;
     private String winner;
@@ -25,8 +25,8 @@ public class Game extends GEngine {
     @Override
     public void createEvent() {
         setWindowTitle("Game 1");
-        setWindowSize(800, 600);
-        setBackgroundImage("images/background.jpg");
+        setWindowSize(800, 608);
+        setBackgroundImage("images/background.png");
         Audio.playSound("music/music.mp3", true);
         startGame();
     }
@@ -36,8 +36,8 @@ public class Game extends GEngine {
      */
     @Override
     public void stepEvent() {
-        boolean oneWon = one.getCoinsCollected() >= maxScore;
-        boolean twoWon = two.getCoinsCollected() >= maxScore;
+        boolean oneWon = one.getCoinsCollected() >= targetScore;
+        boolean twoWon = two.getCoinsCollected() >= targetScore;
         
         if (!gameOver && (oneWon || twoWon)) {
             oneScore = one.getCoinsCollected();
@@ -71,9 +71,10 @@ public class Game extends GEngine {
      * Used for starting and restarting the game.
      */
     private void startGame() {
+        targetScore += 10;
         one = createInstance(getWindowWidth() / 3, getWindowHeight() / 2, Player.class);
         two = createInstance(getWindowWidth() / 3 * 2, getWindowHeight() / 2, new Player(2));
-        Coin coin = createInstance(getWindowWidth() / 2, 50, Coin.class);
+        createInstance(getWindowWidth() / 2, 50, Coin.class);
         gameOver = false;
     }
 

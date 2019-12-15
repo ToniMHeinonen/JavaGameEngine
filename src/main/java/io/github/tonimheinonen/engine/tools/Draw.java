@@ -2,6 +2,7 @@ package io.github.tonimheinonen.engine.tools;
 
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -93,6 +94,16 @@ public abstract class Draw {
      */
     public static void setTextSize(double size) {
         gc.setFont(new Font(textFont, size));
+    }
+
+    /**
+     * Changes hue of the drawn stuff.
+     * @param value hue value
+     */
+    public static void setHue(double value) {
+        ColorAdjust c = new ColorAdjust();
+        c.setHue(value);
+        gc.setEffect(c);
     }
 
     /**

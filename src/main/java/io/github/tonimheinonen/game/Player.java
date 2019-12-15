@@ -8,7 +8,7 @@ public class Player extends GObject {
     private int playerSlot = 1;
     private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
     private double coinsX;
-    private double coinsY = 30;
+    private double coinsY = 50;
     private String down, up, right, left;
     private double speed = 0.2;
     private double maxSpdNormal = 7;
@@ -23,6 +23,8 @@ public class Player extends GObject {
     private double immuneTime = 1;
     private double stunSpeed, stunDirection;
     private boolean applyStun;
+
+    private boolean movementStarted;
 
     /**
      * Default constructor for instancing.
@@ -48,22 +50,23 @@ public class Player extends GObject {
         playerLeft = spriteCreate("images/playerLeft.png", 4, 1, 4, 48, 70, 10);
         playerRight = spriteCreate("images/playerRight.png", 4, 1, 4, 48, 70, 10);
         spriteSet(playerDown, true);
+        spriteSpeed(0, false);
 
         if (playerSlot == 1) {
-            down = "down";
-            up = "up";
-            right = "right";
-            left = "left";
-            coinsX = global().getWindowWidth() / 4;
-        } else {
             down = "S";
             up = "W";
-            left = "A";
             right = "D";
+            left = "A";
+            coinsX = global().getWindowWidth() / 4;
+        } else {
+            down = "Down";
+            up = "Up";
+            left = "Left";
+            right = "Right";
             coinsX = (global().getWindowWidth() / 4) * 3;
         }
 
-        setFriction(0.1);
+        setFriction(0.15);
     }
 
     /**
@@ -93,20 +96,48 @@ public class Player extends GObject {
         else if (state == STUNNED)
             drawBounds(0.5, C_BLUE);
         
-        drawSelf();
-        drawScore();
+        drawPlayer();
+        drawHud();
     }
 
     /**
-     * Draws player's score on top of the screen.
+     * Draws player with or without hue.
      */
-    private void drawScore() {
+    private void drawPlayer() {
+        if (playerSlot == 2)
+            Draw.setHue(-10);
+        drawSelf();
+        Draw.setHue(0);
+    }
+
+    /**
+     * Draws hud elements on screen.
+     */
+    private void drawHud() {
         Draw.setHorizontalAlign(HA_CENTER);
         Draw.setVerticalAlign(VA_CENTER);
         Draw.setTextFont("Verdana");
         Draw.setColor(C_WHITE);
-        Draw.setTextSize(25);
+
+        drawControls();
+
+        // Draws player's score on top of the screen
+        Draw.setTextSize(35);
         Draw.text(String.valueOf(coinsCollected), coinsX, coinsY);
+    }
+
+    /**
+     * Draws controls when movement has not yet started.
+     */
+    private void drawControls() {
+        if (!movementStarted) {
+            Draw.setTextSize(25);
+            int offset = 70;
+            Draw.text(up, getX(), getY() - offset);
+            Draw.text(down, getX(), getY() + offset);
+            Draw.text(right, getX() + offset, getY());
+            Draw.text(left, getX() - offset, getY());
+        }
     }
 
     /**
@@ -183,6 +214,9 @@ public class Player extends GObject {
 
         // If player is moving
         if (x != 0 || y != 0) {
+            if (!movementStarted)
+                movementStarted = true;
+
             setSpeed(getSpeed() + speed);
 
             if (getSpeed() > maxSpdCurrent)
