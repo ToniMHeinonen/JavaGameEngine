@@ -14,6 +14,7 @@ import javafx.animation.Timeline;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
@@ -116,29 +117,31 @@ public abstract class GEngine extends Application implements Global {
         // Clear the canvas
         gc.clearRect(0, 0, windowWidth, windowHeight);
 
-        // Draw background image
-        drawBackgroundImage();
+        drawBackgroundImage();  // Draw background image
                     
         // Run main game object's step and draw events
         stepEvent();
         drawEvent(); 
         
         // Loop through object's events
-
         for (GObject o : objects)
             o.stepEvent();
 
         for (GObject o : objects)
             o.applyForces();
 
-        for (GObject o : objects)
+        // Sort objects in their drawing depth order
+        ArrayList<GObject> depthSorted = objects.stream().sorted(
+            (o1, o2)->Integer.compare(o2.getDepth(), o1.getDepth())).
+            collect(Collectors.toCollection(ArrayList::new));
+
+        for (GObject o : depthSorted)
             o.drawEvent();
 
-        destroyFlagged();
-        addObjects();
+        destroyFlagged();   // Destroy objects marked for destruction
+        addObjects();       // Add objects marked for creation
 
-        // Reset released input after each frame
-        Input.resetInput();
+        Input.resetInput(); // Reset released input after each frame
     }
 
     private void setMouseListeners() {

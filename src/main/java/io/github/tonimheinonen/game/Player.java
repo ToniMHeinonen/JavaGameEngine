@@ -74,6 +74,8 @@ public class Player extends GObject {
      */
     @Override
     public void stepEvent() {
+        setDepth((int)-getY()); // Sets depth using y value
+        
         checkStunned();
         checkImmune();
 

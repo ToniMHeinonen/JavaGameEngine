@@ -12,7 +12,7 @@ public class Game extends GEngine {
     private String winner;
 
     /**
-     * Launches game.
+     * Launches the game.
      * @param args given arguments
      */
     public static void main(String[] args) {

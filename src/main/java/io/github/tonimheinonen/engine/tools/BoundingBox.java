@@ -45,4 +45,20 @@ public class BoundingBox {
         return x >= this.x && x <= this.x + this.width &&
             y >= this.y && y <= this.y + this.height;
     }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
 }

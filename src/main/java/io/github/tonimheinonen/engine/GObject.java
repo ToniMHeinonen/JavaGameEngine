@@ -30,7 +30,7 @@ public abstract class GObject implements Global {
     private double direction, speed, maxSpeed, friction;
     private double gravity, gravityCurForce;
     private boolean maxSpeedInitialized;
-
+    private int depth;
     
     /** 
      * Runs when the instance is created.
@@ -299,6 +299,11 @@ public abstract class GObject implements Global {
     private void updatePositionAndSize() {
         centerOrigin();
         bounds.setBox(x - originX, y - originY, width, height);
+    }
+
+    public void setBounds(double xOffset, double yOffset,
+                double width, double height) {
+        
     }
 
     /**
@@ -667,5 +672,23 @@ public abstract class GObject implements Global {
      */
     public void setFriction(double friction) {
         this.friction = friction;
+    }
+
+    /**
+     * Returns drawing depth of the object.
+     * @return
+     */
+    public int getDepth() {
+        return depth;
+    }
+
+    /**
+     * Sets drawing depth of the object.
+     * 
+     * Lower number draws on top of higher number.
+     * @param depth wanted depth (-2 draws on top of -1)
+     */
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 }
