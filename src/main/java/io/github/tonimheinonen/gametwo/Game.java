@@ -22,7 +22,7 @@ public class Game extends GEngine {
     @Override
     public void createEvent() {
         setWindowTitle("Game 2");
-        setWindowSize(1280, 720);
+        setWindowSize(1024, 800);
         middleX = getWindowWidth() / 2;
         //setBackgroundImage("images/background.png");
         Audio.playSound("music/music.mp3", true);
