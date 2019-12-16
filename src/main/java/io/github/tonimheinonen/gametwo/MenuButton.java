@@ -24,7 +24,8 @@ public class MenuButton extends GObject {
         if (mouseReleased()) {
             if (text.equals("Play")) {
                 main.play();
-            } else if (text.equals("Highscores")) {
+            } else if (text.equals("Highscores") ||
+                        text.equals("Results")) {
                 main.showHighscores();
             } else if (text.equals("Exit")) {
                 main.exit();

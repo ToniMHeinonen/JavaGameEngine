@@ -32,7 +32,7 @@ public class ScoreScreen extends GObject {
 
     @Override
     public void drawEvent() {
-        Draw.setColor(C_BLACK);
+        Draw.setColor(C_ORANGE);
         Draw.setTextSize(35);
         if (scores.isEmpty()) {
             Draw.text("No scores yet!", middleX, 200);
