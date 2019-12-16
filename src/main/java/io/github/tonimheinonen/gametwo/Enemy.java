@@ -38,7 +38,7 @@ public class Enemy extends GObject {
         resize();
 
         if(mousePressed()) {
-            main.enemyClicked();
+            main.gameEnded();
         }
     }
 

@@ -61,7 +61,7 @@ public class Game extends GEngine {
         }
 
         // Create target
-        target = createInstance(0, 0, Target.class);
+        target = createInstance(0, 0, new Target(this));
     }
 
     public void showHighscores() {
@@ -73,10 +73,11 @@ public class Game extends GEngine {
         closeProgram();
     }
 
-    public void enemyClicked() {
+    public void gameEnded() {
         destroyInstance(Target.class);
         destroyInstance(Enemy.class);
 
+        Highscore.addScore("", target.getScore());
         showHighscores();
     }
 }

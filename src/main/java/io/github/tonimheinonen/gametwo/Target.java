@@ -5,12 +5,27 @@ import io.github.tonimheinonen.engine.tools.*;
 
 public class Target extends GObject {
 
+    private Game main;
+    private boolean clicked;
+    private int score;
+
+    // Movement
+    private double changeMovementTime = 2;
     private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
     private double maxSpd = 7;
     private long lastMovement;
-    private boolean clicked;
-    private double changeMovementTime = 2;
-    private int score;
+
+    // Timer
+    private int timeleft = 10;
+    private long lastSecond;
+
+    // Spawn enemy timer
+    private int spawnTime = 10;
+    private long lastSpawn;
+
+    public Target(Game main) {
+        this.main = main;
+    }
 
     @Override
     public void createEvent() {
@@ -25,30 +40,38 @@ public class Target extends GObject {
 
         setX(randomRange(0, global().getWindowWidth()));
         setY(randomRange(0, global().getWindowHeight()));
+
+        lastSecond = System.currentTimeMillis();
+        lastSpawn = System.currentTimeMillis();
     }
 
     @Override
     public void stepEvent() {
-        clicked = false;
-        wrap(true, true, getWidth() / 2, getHeight() / 2);
-        setDepth((int)-getY());
+        clicked = false;        // Reset clicked so that flash white works
+        wrap(true, true, getWidth() / 2, getHeight() / 2);  // Set wrapping
+        setDepth((int)-getY()); // Set depth depending on Y coordinate
         
-        if (secondsPassed(lastMovement, changeMovementTime)) {
-            lastMovement = System.currentTimeMillis();
-            changeSpdAndDir();
-        }
+        movementTimer();
 
+        // Target hit
         if (mousePressed()) {
             clicked = true;
             score++;
+            timeleft++;
             Audio.playSound("sounds/hit.wav", false);
         }
+
+        spawnTimer();
+        countdownTimer();
     }
 
     @Override
     public void drawEvent() {
+        Draw.setTextSize(35);
+        Draw.setColor(C_BLACK);
         drawTarget();
         drawScore();
+        drawTimer();
     }
 
     private void drawTarget() {
@@ -61,11 +84,41 @@ public class Target extends GObject {
     private void drawScore() {
         double x = global().getWindowWidth()/2;
         double y = 50;
-        Draw.setTextSize(35);
         Draw.text("Score: " + String.valueOf(score), x, y);
     }
 
-    public void changeSpdAndDir() {
+    private void drawTimer() {
+        Draw.setHorizontalAlign(HA_LEFT);
+        Draw.text("Time: " + String.valueOf(timeleft), 50, 50);
+        Draw.setHorizontalAlign(HA_CENTER);
+    }
+
+    private void movementTimer() {
+        if (secondsPassed(lastMovement, changeMovementTime)) {
+            lastMovement = System.currentTimeMillis();
+            changeSpdAndDir();
+        }
+    }
+
+    private void spawnTimer() {
+        if (secondsPassed(lastSpawn, spawnTime)) {
+            lastSpawn = System.currentTimeMillis();
+            createInstance(0, 0, new Enemy(main));
+        }
+    }
+
+    private void countdownTimer() {
+        if (secondsPassed(lastSecond, 1)) {
+            lastSecond = System.currentTimeMillis();
+            timeleft--;
+
+            if (timeleft <= 0) {
+                main.gameEnded();
+            }
+        }
+    }
+
+    private void changeSpdAndDir() {
         // Movement and animation
         int x = 0, y = 0;
 
@@ -117,5 +170,9 @@ public class Target extends GObject {
         }
 
         return -1;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
