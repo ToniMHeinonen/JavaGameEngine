@@ -8,7 +8,9 @@ public class Target extends GObject {
     private AnimatedImage playerDown, playerUp, playerLeft, playerRight;
     private double maxSpd = 7;
     private long lastMovement;
+    private boolean clicked;
     private double changeMovementTime = 2;
+    private int score;
 
     @Override
     public void createEvent() {
@@ -27,6 +29,7 @@ public class Target extends GObject {
 
     @Override
     public void stepEvent() {
+        clicked = false;
         wrap(true, true, getWidth() / 2, getHeight() / 2);
         setDepth((int)-getY());
         
@@ -36,13 +39,30 @@ public class Target extends GObject {
         }
 
         if (mousePressed()) {
-
+            clicked = true;
+            score++;
+            Audio.playSound("sounds/hit.wav", false);
         }
     }
 
     @Override
     public void drawEvent() {
+        drawTarget();
+        drawScore();
+    }
+
+    private void drawTarget() {
+        if (clicked)
+            Draw.setHSL(0, 0, 1);
         drawSelf();
+        Draw.setHSL(0, 0, 0);
+    }
+
+    private void drawScore() {
+        double x = global().getWindowWidth()/2;
+        double y = 50;
+        Draw.setTextSize(35);
+        Draw.text("Score: " + String.valueOf(score), x, y);
     }
 
     public void changeSpdAndDir() {

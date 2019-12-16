@@ -115,6 +115,7 @@ public abstract class GEngine extends Application implements Global {
      */
     private void controlGameLoop() {
         // Clear the canvas
+        gc.setEffect(null);     // Clear effect, effect ruins clearRect
         gc.clearRect(0, 0, windowWidth, windowHeight);
 
         drawBackgroundImage();  // Draw background image
@@ -245,7 +246,7 @@ public abstract class GEngine extends Application implements Global {
      * @return instanced object
      */
     @SuppressWarnings("unchecked")
-     public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
+     public <T extends GObject> T createInstance(double x, double y, Class<T> type) {
         try {
             // Create new instance from provided class
             GObject obj = (GObject) type.getDeclaredConstructor().newInstance();
@@ -274,7 +275,7 @@ public abstract class GEngine extends Application implements Global {
      * @return initialized instance
      */
     @SuppressWarnings("unchecked")
-    public <T extends GObject> T createInstance(int x, int y, GObject type) {
+    public <T extends GObject> T createInstance(double x, double y, GObject type) {
         return (T) initInstance(x, y, type);
     }
 
@@ -285,7 +286,7 @@ public abstract class GEngine extends Application implements Global {
      * @param obj created instance
      * @return created instance
      */
-    private GObject initInstance(int x, int y, GObject obj) {
+    private GObject initInstance(double x, double y, GObject obj) {
         obj.setMainClass(this);
         obj.setX(x);
         obj.setY(y);
