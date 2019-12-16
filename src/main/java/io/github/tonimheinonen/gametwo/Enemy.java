@@ -1,7 +1,6 @@
 package io.github.tonimheinonen.gametwo;
 
 import io.github.tonimheinonen.engine.*;
-import io.github.tonimheinonen.engine.tools.*;
 
 public class Enemy extends GObject {
 
@@ -16,15 +15,17 @@ public class Enemy extends GObject {
         String[] sprites = new String[] {"red.png", "green.png", "blue.png"};
 
         String sprite = sprites[randomRange(0, sprites.length - 1)];
-        AnimatedImage img = spriteCreate("images/" + sprite, 3, 1, 3, 64, 64, 5);
-        spriteSet(img, true);
+        spriteSet(spriteCreate("images/" + sprite, 3, 1, 3, 64, 64, 5), true);
         setX(randomRange(0, global().getWindowWidth()));
         setY(randomRange(0, global().getWindowHeight()));
+        setSpeed(2);
+        setDirection(randomRange(0, 359));
     }
 
     @Override
     public void stepEvent() {
         wrap(true, true, getWidth() / 2, getHeight() / 2);
+        setDepth((int)-getY());
 
         if(mousePressed()) {
             main.enemyClicked();
