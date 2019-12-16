@@ -1,6 +1,7 @@
 package io.github.tonimheinonen.gametwo;
 
 import io.github.tonimheinonen.engine.*;
+import io.github.tonimheinonen.engine.tools.Audio;
 
 public class Enemy extends GObject {
 
@@ -38,6 +39,7 @@ public class Enemy extends GObject {
         resize();
 
         if(mousePressed()) {
+            Audio.playSound("sounds/ouch.wav", false);
             main.gameEnded();
         }
     }

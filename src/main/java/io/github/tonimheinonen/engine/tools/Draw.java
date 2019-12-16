@@ -63,6 +63,17 @@ public abstract class Draw {
     }
 
     /**
+     * Draws rectangle at the given coordinates.
+     * @param x1 left border
+     * @param y1 top border
+     * @param x2 right border
+     * @param y2 bottom border
+     */
+    public static void rectangle(double x1, double y1, double x2, double y2) {
+        gc.fillRect(x1, y1, x2 - x1, y2 - y1);
+    }
+
+    /**
      * Draws text with current color.
      * @param text to draw
      * @param x coordinate

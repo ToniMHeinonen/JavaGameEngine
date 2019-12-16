@@ -42,7 +42,7 @@ public class Game extends GEngine {
      */
     @Override
     public void stepEvent() {
-
+        
     }
 
     /**
@@ -50,16 +50,16 @@ public class Game extends GEngine {
      */
     @Override
     public void drawEvent() {
+        Draw.setTextSize(50);
+        Draw.setColor(C_WHITE);
+        Draw.setHorizontalAlign(HA_CENTER);
+        Draw.setVerticalAlign(VA_CENTER);
         drawLogo();
         drawGameOver();
     }
 
     private void drawLogo() {
         if (state == MENU) {
-            Draw.setTextSize(50);
-            Draw.setColor(C_ORANGE);
-            Draw.setHorizontalAlign(HA_CENTER);
-            Draw.setVerticalAlign(VA_CENTER);
             Draw.text("CLICK THE TARGET", middleX, ySpace);
         }
     }
@@ -67,10 +67,6 @@ public class Game extends GEngine {
     private void drawGameOver() {
         if (state == GAMEOVER) {
             int space = 100;
-            Draw.setTextSize(50);
-            Draw.setColor(C_ORANGE);
-            Draw.setHorizontalAlign(HA_CENTER);
-            Draw.setVerticalAlign(VA_CENTER);
             Draw.text("GAME OVER", middleX, middleY - space);
             Draw.text("Your score: " + String.valueOf(target.getScore()), middleX, middleY);
         }

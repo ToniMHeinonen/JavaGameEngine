@@ -68,7 +68,7 @@ public class Target extends GObject {
     @Override
     public void drawEvent() {
         Draw.setTextSize(35);
-        Draw.setColor(C_ORANGE);
+        Draw.setColor(C_WHITE);
         drawTarget();
         drawScore();
         drawTimer();

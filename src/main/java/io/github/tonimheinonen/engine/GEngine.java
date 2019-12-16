@@ -28,6 +28,7 @@ public abstract class GEngine extends Application implements Global {
     private int windowHeight = 720;
     private Group root;
     private Stage stage;
+    private Scene scene;
     private Image backgroundImage;
     private Canvas canvas;
     private GraphicsContext gc;
@@ -52,8 +53,8 @@ public abstract class GEngine extends Application implements Global {
             setMouseListeners();
 
             // Set root on scene
-            Scene theScene = new Scene(root);
-            theStage.setScene(theScene);
+            this.scene = new Scene(root);
+            theStage.setScene(scene);
             
             // Create canvas for drawing objects
             Canvas canvas = new Canvas(windowWidth, windowHeight);
@@ -70,8 +71,8 @@ public abstract class GEngine extends Application implements Global {
             gameLoop.setCycleCount(Timeline.INDEFINITE);
 
             // Handle input
-            theScene.setOnKeyPressed(Input::handlePressed);
-            theScene.setOnKeyReleased(Input::handleReleased);
+            scene.setOnKeyPressed(Input::handlePressed);
+            scene.setOnKeyReleased(Input::handleReleased);
 
             // Set original window size
             setWindowSize(windowWidth, windowHeight);
@@ -211,8 +212,10 @@ public abstract class GEngine extends Application implements Global {
     public void setWindowSize(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
+        stage.setResizable(false);
         stage.setWidth(width);
         stage.setHeight(height);
+        stage.sizeToScene();
         canvas.setWidth(width);
         canvas.setHeight(height);
     }
