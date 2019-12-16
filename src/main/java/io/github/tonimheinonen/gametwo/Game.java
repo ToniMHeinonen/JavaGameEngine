@@ -6,7 +6,6 @@ import io.github.tonimheinonen.engine.tools.*;
 public class Game extends GEngine {
 
     private Target target;
-    private double middleX;
 
     /**
      * Launches the game.
@@ -23,7 +22,6 @@ public class Game extends GEngine {
     public void createEvent() {
         setWindowTitle("Game 2");
         setWindowSize(1024, 800);
-        middleX = getWindowWidth() / 2;
         //setBackgroundImage("images/background.png");
         Audio.playSound("music/music.mp3", true);
 
@@ -35,7 +33,7 @@ public class Game extends GEngine {
      */
     @Override
     public void stepEvent() {
-        
+
     }
 
     /**
@@ -48,6 +46,7 @@ public class Game extends GEngine {
 
     public void createMenu() {
         double space = 200;
+        double middleX = getWindowWidth() / 2;
         createInstance(middleX, space, new MenuButton(this, "Play"));
         createInstance(middleX, space * 2, new MenuButton(this, "Highscores"));
         createInstance(middleX, space * 3, new MenuButton(this, "Exit"));
@@ -56,17 +55,18 @@ public class Game extends GEngine {
     public void play() {
         destroyInstance(MenuButton.class);
 
+        // Create enemies
         for (int i = 0; i < 10; i++) {
             createInstance(0, 0, new Enemy(this));
         }
 
+        // Create target
         target = createInstance(0, 0, Target.class);
     }
 
     public void showHighscores() {
         destroyInstance(MenuButton.class);
-
-
+        createInstance(0, 0, new ScoreScreen(this));
     }
 
     public void exit() {
@@ -74,6 +74,9 @@ public class Game extends GEngine {
     }
 
     public void enemyClicked() {
+        destroyInstance(Target.class);
+        destroyInstance(Enemy.class);
 
+        showHighscores();
     }
 }

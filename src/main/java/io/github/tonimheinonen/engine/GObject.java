@@ -449,6 +449,14 @@ public abstract class GObject implements Global {
         global().destroyInstance(type);
     }
 
+    /**
+     * Marks all instances for destruction except ignored objects.
+     * @param ignore object which won't be destroyed
+     */
+    public void destroyInstanceAll(GObject... ignore) {
+        global().destroyInstanceAll(ignore);
+    }
+
     /*************************
         GETTERS & SETTERS
     **************************/

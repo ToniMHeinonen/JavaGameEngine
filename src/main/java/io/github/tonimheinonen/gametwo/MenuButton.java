@@ -28,6 +28,9 @@ public class MenuButton extends GObject {
                 main.showHighscores();
             } else if (text.equals("Exit")) {
                 main.exit();
+            } else if (text.equals("Back")) {
+                destroyInstanceAll();
+                main.createMenu();
             }
         }
     }

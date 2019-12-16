@@ -321,6 +321,22 @@ public abstract class GEngine extends Application implements Global {
     }
 
     /**
+     * Marks all instances for destruction except ignored objects.
+     * @param ignore object which won't be destroyed
+     */
+    public void destroyInstanceAll(GObject... ignore) {
+        for (GObject o : objects) {
+            o.setDestroyThis(true);
+            
+            for (GObject i : ignore) {
+                
+                if (o.equals(i))
+                    o.setDestroyThis(false);
+            }   
+        }
+    }
+
+    /**
      * Destroys all instances which are marked for destruction.
      */
     private void destroyFlagged() {

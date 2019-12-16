@@ -72,11 +72,9 @@ public abstract class Highscore {
      * @param value sort descending or ascending
      */
     public static void sortByDescendingOrder(boolean value) {
-        if (sortByDesc != value) {
-            sortByDesc = value;
-            sortScores();
-            saveScores();
-        }
+        sortByDesc = value;
+        sortScores();
+        saveScores();
     }
 
     /**

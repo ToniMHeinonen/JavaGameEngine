@@ -6,6 +6,13 @@ public class Enemy extends GObject {
 
     private Game main;
 
+    // Size
+    private double size;
+    private double maxSize = 2;
+    private double minSize = 0.5;
+    private double sizeSpd = 0.01;
+    private boolean increase;
+
     public Enemy(Game main) {
         this.main = main;
     }
@@ -20,12 +27,15 @@ public class Enemy extends GObject {
         setY(randomRange(0, global().getWindowHeight()));
         setSpeed(2);
         setDirection(randomRange(0, 359));
+        size = randomRange(0.5, 1.5);
     }
 
     @Override
     public void stepEvent() {
         wrap(true, true, getWidth() / 2, getHeight() / 2);
         setDepth((int)-getY());
+
+        resize();
 
         if(mousePressed()) {
             main.enemyClicked();
@@ -35,5 +45,21 @@ public class Enemy extends GObject {
     @Override
     public void drawEvent() {
         drawSelf();
+    }
+
+    private void resize() {
+        spriteResize(size);
+
+        if (increase) {
+            if (size < maxSize)
+                size += sizeSpd;
+            else
+                increase = false;
+        } else {
+            if (size > minSize)
+                size -= sizeSpd;
+            else
+                increase = true;
+        }
     }
 }
