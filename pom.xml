@@ -72,25 +72,80 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <!-- Javafx controls -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
+      <classifier>win</classifier>
       <version>11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <classifier>mac</classifier>
+      <version>11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <classifier>linux</classifier>
+      <version>11</version>
+    </dependency>
+    <!-- Javafx fxml -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <classifier>win</classifier>
+        <version>11</version>
     </dependency>
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-fxml</artifactId>
+        <classifier>mac</classifier>
+        <version>11</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <classifier>linux</classifier>
+        <version>11</version>
+    </dependency>
+    <!-- Javafx graphics -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <classifier>win</classifier>
         <version>11</version>
     </dependency>
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-graphics</artifactId>
+        <classifier>mac</classifier>
+        <version>11</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <classifier>linux</classifier>
         <version>11</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-media</artifactId>
+        <classifier>win</classifier>
+        <version>11</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <classifier>mac</classifier>
+        <version>11</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <classifier>linux</classifier>
         <version>11</version>
     </dependency>
   </dependencies>

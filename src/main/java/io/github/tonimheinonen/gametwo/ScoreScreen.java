@@ -38,6 +38,8 @@ public class ScoreScreen extends GObject {
             Draw.text("No scores yet!", middleX, 200);
         } else {
             for (int i = 0; i < scores.size(); i++) {
+                if (i > 6)
+                    break;
                 String number = String.valueOf(i + 1);
                 String score = String.valueOf(Math.round(scores.get(i)));
 

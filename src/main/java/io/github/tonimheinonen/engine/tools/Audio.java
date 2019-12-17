@@ -76,7 +76,7 @@ public abstract class Audio {
         Media media;
 
         if (!medias.containsKey(path)) {
-            media = new Media(Paths.get("src/main/resources/" + path).toUri().toString());
+            media = new Media(Audio.class.getResource("/" + path).toString());
             medias.put(path, media);
         } else {
             media = medias.get(path);
