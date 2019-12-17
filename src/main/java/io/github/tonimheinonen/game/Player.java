@@ -37,7 +37,6 @@ public class Player extends GObject {
     /**
      * Gets playerslot and target to look out for.
      * @param playerSlot player number
-     * @param target opponent
      */
     public Player(int playerSlot) {
         this.playerSlot = playerSlot;

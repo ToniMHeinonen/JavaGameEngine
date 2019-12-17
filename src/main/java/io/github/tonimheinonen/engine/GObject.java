@@ -404,6 +404,7 @@ public abstract class GObject implements Global {
      * @param x horizontal position
      * @param y vertical position
      * @param type object to create
+     * @param <T> type
      * @return instanced object
      */
     public <T extends GObject> T createInstance(int x, int y, Class<T> type) {
@@ -612,6 +613,7 @@ public abstract class GObject implements Global {
 
     /**
      * Returns current direction.
+     * @return current direction
      */
     public double getDirection() {
         return direction;
@@ -630,7 +632,7 @@ public abstract class GObject implements Global {
 
     /**
      * Returns current speed.
-     * @return
+     * @return current speed
      */
     public double getSpeed() {
         return speed;
@@ -664,6 +666,7 @@ public abstract class GObject implements Global {
 
     /**
      * Gets the friction of the object.
+     * @return friction of the object
      */
     public double getFriction() {
         return friction;
@@ -679,7 +682,7 @@ public abstract class GObject implements Global {
 
     /**
      * Returns drawing depth of the object.
-     * @return
+     * @return drawing depth of the object
      */
     public int getDepth() {
         return depth;
