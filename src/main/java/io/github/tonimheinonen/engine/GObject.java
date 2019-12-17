@@ -28,7 +28,6 @@ public abstract class GObject implements Global {
     private GObject other;
     private boolean destroyThis;
     private double direction, speed, maxSpeed, friction;
-    private double gravity, gravityCurForce;
     private boolean maxSpeedInitialized;
     private int depth;
     
@@ -64,16 +63,6 @@ public abstract class GObject implements Global {
             speed = 0;
         else if (speed > maxSpeed && maxSpeedInitialized)
             speed = maxSpeed;
-
-        // Apply gravity ADD LATER
-        /*if (gravity != 0) {
-            if (speed != 0) {
-                
-                moveObject(gravityCurForce, 90);
-            } else {
-                gravityCurForce = 0;
-            }
-        }*/
         
         moveObject(speed, direction);
     }

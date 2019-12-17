@@ -8,17 +8,28 @@ public class MenuButton extends GObject {
     private Game main;
     private String text;
 
+    /**
+     * Gets main class and text for the button.
+     * @param main engine class
+     * @param text text to display
+     */
     public MenuButton(Game main, String text) {
         this.main = main;
         this.text = text;
     }
 
+    /**
+     * Creates sprite for the button.
+     */
     @Override
     public void createEvent() {
         spriteSet(spriteCreate("images/Button.png"));
         spriteResize(1.5);
     }
 
+    /**
+     * Checks button presses.
+     */
     @Override
     public void stepEvent() {
         if (mouseReleased()) {
@@ -36,6 +47,9 @@ public class MenuButton extends GObject {
         }
     }
 
+    /**
+     * Draws button.
+     */
     @Override
     public void drawEvent() {
         if (!mouseOver())

@@ -1,6 +1,5 @@
 package io.github.tonimheinonen.engine.tools;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import javafx.scene.media.Media;

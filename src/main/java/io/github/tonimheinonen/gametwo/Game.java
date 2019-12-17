@@ -58,12 +58,18 @@ public class Game extends GEngine {
         drawGameOver();
     }
 
+    /**
+     * Draw game name at the top of the menu.
+     */
     private void drawLogo() {
         if (state == MENU) {
             Draw.text("CLICK THE TARGET", middleX, ySpace);
         }
     }
 
+    /**
+     * Draw game over text when game is over.
+     */
     private void drawGameOver() {
         if (state == GAMEOVER) {
             int space = 100;
@@ -72,6 +78,9 @@ public class Game extends GEngine {
         }
     }
 
+    /**
+     * Create menu buttons.
+     */
     public void createMenu() {
         state = MENU;
         createInstance(middleX, ySpace * 2, new MenuButton(this, "Play"));
@@ -79,6 +88,9 @@ public class Game extends GEngine {
         createInstance(middleX, ySpace * 4, new MenuButton(this, "Exit"));
     }
 
+    /**
+     * Create enemies and target.
+     */
     public void play() {
         state = PLAY;
         destroyInstance(MenuButton.class);
@@ -92,12 +104,18 @@ public class Game extends GEngine {
         target = createInstance(0, 0, new Target(this));
     }
 
+    /**
+     * Create score screen.
+     */
     public void showHighscores() {
         state = SCORE;
         destroyInstanceAll();
         createInstance(0, 0, new ScoreScreen(this));
     }
 
+    /**
+     * Show game over and add highscore.
+     */
     public void gameEnded() {
         state = GAMEOVER;
         destroyInstance(Target.class);
@@ -106,6 +124,9 @@ public class Game extends GEngine {
         createInstance(middleX, middleY + 200, new MenuButton(this, "Results"));
     }
 
+    /**
+     * Close the program.
+     */
     public void exit() {
         closeProgram();
     }

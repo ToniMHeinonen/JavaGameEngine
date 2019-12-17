@@ -13,10 +13,17 @@ public class ScoreScreen extends GObject {
     private double space = 100;
     private double startY = 100;
 
+    /**
+     * Gets main class reference.
+     * @param main engine class
+     */
     public ScoreScreen(Game main) {
         this.main = main;
     }
 
+    /**
+     * Loads high scores.
+     */
     @Override
     public void createEvent() {
         createInstance(100, 100, new MenuButton(main, "Back"));
@@ -25,11 +32,15 @@ public class ScoreScreen extends GObject {
         middleX = global().getWindowWidth() / 2;
     }
 
+    /**
+     * Runs every frame.
+     */
     @Override
     public void stepEvent() {
 
     }
 
+    // Draws scores.
     @Override
     public void drawEvent() {
         Draw.setTextSize(50);

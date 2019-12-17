@@ -7,15 +7,25 @@ public class RestartBtn extends GObject {
 
     private Game main;
 
+    /**
+     * Gets main class reference.
+     * @param main engine class
+     */
     public RestartBtn(Game main) {
         this.main = main;
     }
 
+    /**
+     * Creates sprite for the button.
+     */
     @Override
     public void createEvent() {
         spriteSet(spriteCreate("images/Button.png"));
     }
 
+    /**
+     * Checks button presses.
+     */
     @Override
     public void stepEvent() {
         if (mouseReleased()) {
@@ -24,6 +34,9 @@ public class RestartBtn extends GObject {
         }
     }
 
+    /**
+     * Draws button.
+     */
     @Override
     public void drawEvent() {
         if (!mouseOver())
