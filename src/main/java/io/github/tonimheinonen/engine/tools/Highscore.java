@@ -14,7 +14,7 @@ public abstract class Highscore {
     
     private static ArrayList<String> names = new ArrayList<>();
     private static ArrayList<Double> scores = new ArrayList<>();
-    private static String path = "src/main/resources/Highscore.ini";
+    private static String path;
     private static String valueIndicator = "::";
     private static String nameID = "name" + valueIndicator;
     private static String sep = "/";
@@ -26,6 +26,17 @@ public abstract class Highscore {
      */
     static {
         try {
+            // Get operating system default app location
+            String pathFile = null;
+            if (System.getProperty("os.name").contains("Win")) {
+                pathFile = System.getenv("AppData");
+            } else {
+                pathFile = System.getProperty("user.home");
+            }
+
+            pathFile += "/GEngineHighscore.ini";
+            path = pathFile;
+
             // Read all the lines to a list
             List<String> list = Files.readAllLines(Path.of(path));
 
