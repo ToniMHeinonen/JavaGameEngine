@@ -11,6 +11,6 @@ public class Launcher {
      * @param args given arguments
      */
     public static void main(String[] args) {
-        Game.main(args);
+        ClickTheTarget.main(args);
     }
 }

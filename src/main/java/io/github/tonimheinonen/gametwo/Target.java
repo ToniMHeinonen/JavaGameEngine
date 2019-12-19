@@ -5,7 +5,7 @@ import io.github.tonimheinonen.engine.tools.*;
 
 public class Target extends GObject {
 
-    private Game main;
+    private ClickTheTarget main;
     private boolean clicked;
     private int score;
 
@@ -27,7 +27,7 @@ public class Target extends GObject {
      * Gets main class reference.
      * @param main engine class
      */
-    public Target(Game main) {
+    public Target(ClickTheTarget main) {
         this.main = main;
     }
 

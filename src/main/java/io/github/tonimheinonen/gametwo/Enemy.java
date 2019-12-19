@@ -5,7 +5,7 @@ import io.github.tonimheinonen.engine.tools.Audio;
 
 public class Enemy extends GObject {
 
-    private Game main;
+    private ClickTheTarget main;
 
     // Size
     private double size;
@@ -18,7 +18,7 @@ public class Enemy extends GObject {
      * Gets main class reference.
      * @param main engine class
      */
-    public Enemy(Game main) {
+    public Enemy(ClickTheTarget main) {
         this.main = main;
     }
 

@@ -7,7 +7,7 @@ import io.github.tonimheinonen.engine.tools.*;
 
 public class ScoreScreen extends GObject {
 
-    private Game main;
+    private ClickTheTarget main;
     private ArrayList<Double> scores;
     private double middleX;
     private double space = 100;
@@ -17,7 +17,7 @@ public class ScoreScreen extends GObject {
      * Gets main class reference.
      * @param main engine class
      */
-    public ScoreScreen(Game main) {
+    public ScoreScreen(ClickTheTarget main) {
         this.main = main;
     }
 

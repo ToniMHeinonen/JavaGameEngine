@@ -5,7 +5,7 @@ import io.github.tonimheinonen.engine.tools.*;
 
 public class MenuButton extends GObject {
 
-    private Game main;
+    private ClickTheTarget main;
     private String text;
 
     /**
@@ -13,7 +13,7 @@ public class MenuButton extends GObject {
      * @param main engine class
      * @param text text to display
      */
-    public MenuButton(Game main, String text) {
+    public MenuButton(ClickTheTarget main, String text) {
         this.main = main;
         this.text = text;
     }

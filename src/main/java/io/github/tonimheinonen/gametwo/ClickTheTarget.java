@@ -3,7 +3,7 @@ package io.github.tonimheinonen.gametwo;
 import io.github.tonimheinonen.engine.*;
 import io.github.tonimheinonen.engine.tools.*;
 
-public class Game extends GEngine {
+public class ClickTheTarget extends GEngine {
 
     private Target target;
     private double middleX;
@@ -42,7 +42,7 @@ public class Game extends GEngine {
      */
     @Override
     public void stepEvent() {
-        
+
     }
 
     /**
@@ -117,11 +117,13 @@ public class Game extends GEngine {
      * Show game over and add highscore.
      */
     public void gameEnded() {
-        state = GAMEOVER;
-        destroyInstance(Target.class);
-        destroyInstance(Enemy.class);
-        Highscore.addScore("", target.getScore());
-        createInstance(middleX, middleY + 200, new MenuButton(this, "Results"));
+        if (state != GAMEOVER) {
+            state = GAMEOVER;
+            destroyInstance(Target.class);
+            destroyInstance(Enemy.class);
+            Highscore.addScore("", target.getScore());
+            createInstance(middleX, middleY + 200, new MenuButton(this, "Results"));
+        }
     }
 
     /**
