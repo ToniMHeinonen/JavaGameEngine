@@ -46,6 +46,9 @@ public abstract class GEngine extends Application implements Global {
             this.stage = theStage;
             stage.setTitle("GEngine");
             stage.centerOnScreen();
+
+            // Initialize highscores
+            Highscore.loadScores(this.getClass().getSimpleName());
             
             // Create main group
             Group root = new Group();

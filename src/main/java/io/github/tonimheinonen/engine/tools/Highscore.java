@@ -2,6 +2,7 @@ package io.github.tonimheinonen.engine.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -23,8 +24,9 @@ public abstract class Highscore {
 
     /**
      * Loads previously saved highscores.
+     * @param gameName name of the folder where to save scores
      */
-    static {
+    public static void loadScores(String gameName) {
         try {
             // Get operating system default app location
             String pathFile = null;
@@ -34,7 +36,16 @@ public abstract class Highscore {
                 pathFile = System.getProperty("user.home");
             }
 
-            pathFile += "/GEngineHighscore.ini";
+            // Create directory for the game
+            String dir = pathFile + "/" + gameName;
+
+            File directory = new File(dir);
+            if (!directory.exists()){
+                directory.mkdir();
+            }
+
+            // Get path to the file
+            pathFile = dir + "/Highscore.ini";
             path = pathFile;
 
             // Read all the lines to a list
