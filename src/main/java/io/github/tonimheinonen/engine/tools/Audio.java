@@ -1,6 +1,8 @@
 package io.github.tonimheinonen.engine.tools;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -11,7 +13,7 @@ import javafx.util.Duration;
  */
 public abstract class Audio {
 
-    private static HashMap<String, MediaPlayer> audioPlayers = new HashMap<>();
+    private static HashMap<String, ArrayList<MediaPlayer>> audioPlayers = new HashMap<>();
     private static HashMap<String, Media> medias = new HashMap<>();
     
     /** 
@@ -22,7 +24,17 @@ public abstract class Audio {
     public static void playSound(String path, boolean loop) {
         Media media = loadMedia(path);
         MediaPlayer player = new MediaPlayer(media);
-        audioPlayers.put(path, player);
+
+        // If current path audio has not been played yet, create arraylist
+        if (!audioPlayers.containsKey(path)) {
+            ArrayList<MediaPlayer> players = new ArrayList<>();
+            players.add(player);
+            audioPlayers.put(path, players);
+        } else {
+            ArrayList<MediaPlayer> players = audioPlayers.get(path);
+            players.add(player);
+        }
+
         player.play();
 
         if (loop) {
@@ -34,7 +46,7 @@ public abstract class Audio {
                 }
             });
         } else {
-            player.setOnEndOfMedia(()->soundFreeFromMemory(path));
+            player.setOnEndOfMedia(()->soundFreeFromMemory(path, player));
         }
     }
     
@@ -43,9 +55,14 @@ public abstract class Audio {
      * @param path location of the sound file
      */
     public static void stopSound(String path) {
-        MediaPlayer player = audioPlayers.get(path);
-        player.stop();
-        soundFreeFromMemory(path);
+        Iterator<MediaPlayer> i = audioPlayers.get(path).iterator();
+
+        while (i.hasNext()) {
+            MediaPlayer m = i.next();
+            m.stop();
+            soundFreeFromMemory(null, m);
+            i.remove();
+        }
     }
     
     /** 
@@ -53,8 +70,7 @@ public abstract class Audio {
      * @param path location of the sound file
      */
     public static void pauseSound(String path) {
-        MediaPlayer player = audioPlayers.get(path);
-        player.pause();
+        audioPlayers.get(path).forEach(p->p.pause());
     }
     
     /** 
@@ -62,8 +78,7 @@ public abstract class Audio {
      * @param path location of the sound file
      */
     public static void resumeSound(String path) {
-        MediaPlayer player = audioPlayers.get(path);
-        player.play();
+        audioPlayers.get(path).forEach(p->p.play());
     }
     
     /** 
@@ -88,8 +103,13 @@ public abstract class Audio {
     /** 
      * Frees sound media player from memory.
      * @param path location of the sound file
+     * @param player mediaplayer to dispose and remove
      */
-    private static void soundFreeFromMemory(String path) {
-        audioPlayers.remove(path);
+    private static void soundFreeFromMemory(String path, MediaPlayer player) {
+        // If path is null, player is removed elsewhere
+        if (path != null)
+            audioPlayers.get(path).remove(player);
+
+        player.dispose();
     }
 }
