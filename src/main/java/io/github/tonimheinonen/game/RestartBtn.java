@@ -5,13 +5,13 @@ import io.github.tonimheinonen.engine.tools.*;
 
 public class RestartBtn extends GObject {
 
-    private Game main;
+    private CoinFight main;
 
     /**
      * Gets main class reference.
      * @param main engine class
      */
-    public RestartBtn(Game main) {
+    public RestartBtn(CoinFight main) {
         this.main = main;
     }
 

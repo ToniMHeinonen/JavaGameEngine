@@ -3,7 +3,7 @@ package io.github.tonimheinonen.game;
 import io.github.tonimheinonen.engine.*;
 import io.github.tonimheinonen.engine.tools.*;
 
-public class Game extends GEngine {
+public class CoinFight extends GEngine {
 
     private Player one, two;
     private int targetScore = 10;
